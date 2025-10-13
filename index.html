@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>RA Exercises</title>
+<style>
+  :root{--w:980px;}
+  body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:#0b0e12;color:#e7e9ee;margin:0;padding:16px;}
+  .wrap{max-width:var(--w);margin:0 auto;}
+  .head{display:flex;gap:8px;align-items:center;justify-content:space-between;margin-bottom:12px}
+  .pill{font-size:12px;background:#1a2230;border:1px solid #2b3a55;padding:6px 10px;border-radius:999px}
+  h1{font-size:18px;margin:0}
+  .card{background:#10161f;border:1px solid #223047;border-radius:14px;padding:16px;margin:12px 0;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+  .prompt{font-weight:600;margin-bottom:10px}
+  .controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+  button{cursor:pointer;border:1px solid #314462;background:#172133;color:#e7e9ee;border-radius:10px;padding:8px 12px}
+  button:hover{background:#1e2a40}
+  input[type="text"]{width:100%;max-width:420px;background:#0e131b;border:1px solid #32445f;color:#fff;border-radius:10px;padding:8px 10px}
+  .ok{color:#6ee7a8}
+  .bad{color:#fca5a5}
+  .muted{color:#9aa7bd;font-size:13px}
+  .hr{height:1px;background:#1f2a3d;margin:18px 0}
+  .foot{display:flex;gap:8px;align-items:center;justify-content:flex-end}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head">
+    <h1>Interactive Exercises</h1>
+    <div class="pill" id="meta"></div>
+  </div>
+
+  <div id="list"></div>
+
+  <div class="hr"></div>
+  <div class="foot muted">Tip: Use the 🔊 button to hear the instruction. Your answers are checked locally.</div>
+</div>
+
+<script>
+/* --- 0) URL params --- */
+const url = new URL(location.href);
+const level = url.searchParams.get('level') || 'A1';
+const unit = url.searchParams.get('unit') || 'L2';
+const section = url.searchParams.get('section') || 'grammar';
+document.getElementById('meta').textContent = `${level} • ${unit} • ${section}`;
+
+/* --- 1) Inline dataset (TEMP for tonight). Replace with Neon fetch tomorrow. --- */
+const DATA = {
+  A1: {
+    L2: {
+      grammar: [
+        { id:"L2-G-01", kind:"Fill",
+          prompt:"I ___ a cat.", answer:"have",
+          explain:"Present Simple: I have a cat."
+        },
+        { id:"L2-G-02", kind:"YesNo",
+          prompt:"A lady → ladys (plural). Is that correct?",
+          answer:"No", explain:"y → ies: lady → ladies."
+        },
+        { id:"L2-G-03", kind:"Fill",
+          prompt:"a box → ____ (plural)", answer:"boxes",
+          explain:"After x,s,sh,ch,o → add 'es': box → boxes."
+        }
+      ],
+      story: [
+        { id:"L2-S-01", kind:"YesNo",
+          prompt:"The box of toys is big. Is this sentence singular?",
+          answer:"Yes", explain:"The subject 'box' is singular."
+        },
+        { id:"L2-S-02", kind:"Fill",
+          prompt:"There are two ____ in the room. (bus)", answer:"buses",
+          explain:"bus → buses."
+        }
+      ]
+    }
+  }
+};
+
+/* --- 2) TTS helper (Web Speech API, click-only) --- */
+function speak(text){
+  try{
+    const u = new SpeechSynthesisUtterance(text);
+    u.rate = 1.0; u.pitch = 1.0;
+    speechSynthesis.speak(u);
+  }catch{}
+}
+
+/* --- 3) Render --- */
+const items = (((DATA[level]||{})[unit]||{})[section]) || [];
+const list = document.getElementById('list');
+
+if(!items.length){
+  list.innerHTML = `<div class="card"><div class="prompt">No items for ${level}/${unit}/${section}.</div>
+  <div class="muted">Check URL parameters or dataset.</div></div>`;
+}
+
+items.forEach((it, idx) => {
+  const card = document.createElement('div'); card.className = 'card';
+
+  const p = document.createElement('div'); p.className = 'prompt';
+  p.textContent = `${idx+1}. ${it.prompt}`;
+  card.appendChild(p);
+
+  const controls = document.createElement('div'); controls.className = 'controls';
+
+  const listen = document.createElement('button');
+  listen.textContent = '🔊 Listen';
+  listen.onclick = () => speak(it.prompt);
+  controls.appendChild(listen);
+
+  let answerUI, result;
+  result = document.createElement('div'); result.className='muted';
+
+  if(it.kind === 'Fill'){
+    answerUI = document.createElement('input');
+    answerUI.type = 'text'; answerUI.placeholder = 'Type your answer…';
+    const check = document.createElement('button'); check.textContent = 'Check';
+    check.onclick = () => {
+      const val = (answerUI.value||'').trim().toLowerCase();
+      const ok = val === String(it.answer).trim().toLowerCase();
+      result.textContent = ok ? 'Correct!' : `Not quite. ${it.explain||''}`;
+      result.className = ok ? 'ok' : 'bad';
+    };
+    controls.append(answerUI, check);
+
+    const show = document.createElement('button'); show.textContent = 'Show answer';
+    show.onclick = () => { answerUI.value = it.answer; result.textContent = it.explain||''; result.className='muted'; };
+    controls.appendChild(show);
+
+  } else if(it.kind === 'YesNo'){
+    const yes = document.createElement('button'); yes.textContent = 'Yes';
+    const no = document.createElement('button');  no.textContent  = 'No';
+    const checkYN = (val)=>{
+      const ok = String(val).toLowerCase() === String(it.answer).toLowerCase();
+      result.textContent = ok ? 'Correct!' : `Not quite. ${it.explain||''}`;
+      result.className = ok ? 'ok' : 'bad';
+    };
+    yes.onclick = ()=>checkYN('Yes'); no.onclick = ()=>checkYN('No');
+    controls.append(yes,no);
+
+    const explain = document.createElement('button'); explain.textContent='Explain';
+    explain.onclick = ()=>{ result.textContent = it.explain||''; result.className='muted'; };
+    controls.appendChild(explain);
+  }
+
+  card.appendChild(controls);
+  card.appendChild(result);
+  list.appendChild(card);
+});
+</script>
+</body>
+</html>
