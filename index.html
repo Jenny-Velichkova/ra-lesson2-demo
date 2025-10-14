@@ -34,7 +34,7 @@
   <div id="list"></div>
 
   <div class="hr"></div>
-  <div class="foot muted">Tip: Use the 🔊 button to hear the instruction. Your answers are checked locally.</div>
+  <div class="foot muted">Tip: Use the 🔊 button to hear the sentence. Your answers are checked locally.</div>
 </div>
 
 <script>
@@ -45,7 +45,7 @@ const unit = url.searchParams.get('unit') || 'L2';
 const section = url.searchParams.get('section') || 'grammar';
 document.getElementById('meta').textContent = `${level} • ${unit} • ${section}`;
 
-/* --- 1) Inline dataset (TEMP for tonight). Replace with Neon fetch tomorrow. --- */
+/* --- 1) Inline dataset (TEMP). Replace with Neon fetch next. --- */
 const DATA = {
   A1: {
     L2: {
@@ -77,12 +77,37 @@ const DATA = {
   }
 };
 
-/* --- 2) TTS helper (Web Speech API, click-only) --- */
+/* --- 2) TTS helpers (Web Speech API, click-only) --- */
+// Нормализиране: маха подсказки в скоби, заменя underscores с 'blank', стрелки с 'to', чисти двойни интервали.
+function normalizeForSpeech(t){
+  return String(t)
+    .replace(/\([^)]*\)/g, ' ')   // remove ( ... )
+    .replace(/_{2,}/g, ' blank ') // ____ -> "blank"
+    .replace(/_/g, ' blank ')     // _ -> "blank"
+    .replace(/→/g, ' to ')
+    .replace(/[•◆◦■\-–—]/g, ' ')
+    .replace(/\s{2,}/g, ' ')
+    .trim();
+}
+
+// Опит за избор на мъжки/EN гласове
+let preferredVoice = null;
+function pickMaleVoice(){
+  const voices = window.speechSynthesis.getVoices?.() || [];
+  const byMaleName = voices.find(v => /(male|david|george|guy|daniel|microsoft|google uk english male)/i.test(v.name));
+  const byLangEN   = voices.find(v => /^en(-|_)/i.test(v.lang));
+  preferredVoice = byMaleName || byLangEN || voices[0] || null;
+}
+window.speechSynthesis.onvoiceschanged = pickMaleVoice;
+pickMaleVoice();
+
 function speak(text){
   try{
-    const u = new SpeechSynthesisUtterance(text);
+    const u = new SpeechSynthesisUtterance(normalizeForSpeech(text));
+    if (preferredVoice) u.voice = preferredVoice;
     u.rate = 1.0; u.pitch = 1.0;
-    speechSynthesis.speak(u);
+    window.speechSynthesis.cancel(); // спри предишното, за да няма наслагване
+    window.speechSynthesis.speak(u);
   }catch{}
 }
 
@@ -104,6 +129,7 @@ items.forEach((it, idx) => {
 
   const controls = document.createElement('div'); controls.className = 'controls';
 
+  // Озвучаване само на изречението на упражнението
   const listen = document.createElement('button');
   listen.textContent = '🔊 Listen';
   listen.onclick = () => speak(it.prompt);
