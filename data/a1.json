@@ -1,0 +1,1124 @@
+{
+  "courseId": "a1",
+  "lessons": {
+    "l05": {
+      "lessonId": "l05",
+      "title": "Lesson 05",
+      "videoUrl": null,
+      "exercises": [
+        {
+          "exerciseId": "ex_l05_fill_01",
+          "templateType": "Fill",
+          "title": "Fill in the blanks based on the story / Попълнете пропуснатите думи според историята.",
+          "payload": {
+            "lines": [
+              "Lily and Tom are in the ________.",
+              "The classroom is ________ and nice.",
+              "There is a ________ on the wall.",
+              "The ________ and chairs are in front of the whiteboard.",
+              "Lily is at the ________.",
+              "Tom is ________ to Lily.",
+              "The ________ is on the book.",
+              "The ________ is on the desk.",
+              "The teacher is at the ________.",
+              "Lily says, \"We are here, ________!\"",
+              "Answers:",
+              "classroom",
+              "bright",
+              "whiteboard",
+              "desks",
+              "desk",
+              "next",
+              "pencil",
+              "book",
+              "whiteboard",
+              "Mrs. Smith",
+              "2.  Speak the words / MCQ",
+              "Не е игра-ако може да показва колко процента се е справил правилно, може да му дава съвет да продължава-поне докато го направи над 80%. Но иначе, колкото по-висок процент-толкова по-добре. Искам да има фийдбак. Да дава различни награди според процентите.",
+              "Rearrange the sentences to match the story / подредете изреченията според историята.",
+              "\"Where are my students?\" she asks with a smile.",
+              "Lily says, \"We are here, Mrs. Smith!\"",
+              "The classroom is bright and nice.",
+              "The desks and chairs are in front of the whiteboard.",
+              "Lily is at the desk, and Tom is next to her.",
+              "The pencil is on the book, and the book is on the desk.",
+              "The teacher is at the whiteboard.",
+              "Correct order:",
+              "The classroom is bright and nice.",
+              "The desks and chairs are in front of the whiteboard.",
+              "Lily is at the desk, and Tom is next to her.",
+              "The pencil is on the book, and the book is on the desk.",
+              "The teacher is at the whiteboard.",
+              "\"Where are my students?\" she asks with a smile.",
+              "Lily says, \"We are here, Mrs. Smith!\"",
+              "3. Questions and negatives (speak the words or reorder the words in sentences) Ако е подреждане в изречения-ще трябва да се дадат отговорите на английски с разбъркани думи-те да ги подредят.",
+              "Не е игра-ако може да показва колко процента се е справил правилно, може да му дава съвет да продължава-поне докато го направи над 80%. Но иначе, колкото по-висок процент-толкова по-добре. Искам да има фийдбак. Да дава различни награди според процентите.",
+              "Make questions and negatives / Направете тези изречения въпросителни и отрицателни.",
+              "Statement: The classroom is bright.\rQuestion: Is the classroom bright?\rNegative: The classroom is not bright.",
+              "Statement: The whiteboard is on the wall.\rQuestion: Is the whiteboard on the wall?\rNegative: The whiteboard is not on the wall.",
+              "Statement: The desks are in the classroom.\rQuestion: Are the desks in the classroom?\rNegative: The desks are not in the classroom.",
+              "Statement: The teacher is at the whiteboard.\rQuestion: Is the teacher at the whiteboard?\rNegative: The teacher is not at the whiteboard.",
+              "Statement: The book is on the desk.\rQuestion: Is the book on the desk?\rNegative: The book is not on the desk.",
+              "Statement: The pencil is on the book.\rQuestion: Is the pencil on the book?\rNegative: The pencil is not on the book.",
+              "Statement: The students are in the classroom.\rQuestion: Are the students in the classroom?\rNegative: The students are not in the classroom.",
+              "4.  Speak the words/Fill the blanks",
+              "Не е игра-ако може да показва колко процента се е справил правилно, може да му дава съвет да продължава-поне докато го направи над 80%. Но иначе, колкото по-висок процент-толкова по-добре. Искам да има фийдбак. Да дава различни награди според процентите."
+            ]
+          },
+          "feedback": {
+            "wrong": "Not quite. Use the target form for this task. Try repeating the full correct sentence out loud.",
+            "readCorrectAloud": true
+          }
+        },
+        {
+          "exerciseId": "ex_l05_fill_02",
+          "templateType": "Fill",
+          "title": "Fill in the blanks with the correct short answer or sentence / Попълнете празните места с правилния кратък отговор или изречение.",
+          "payload": {
+            "lines": [
+              "Where is the classroom?\rStudent Answer: ________\rCorrect Answer: The classroom is in the school.",
+              "Where is the whiteboard?\rStudent Answer: ________\rCorrect Answer: The whiteboard is on the wall.",
+              "Where are the desks?\rStudent Answer: ________\rCorrect Answer: The desks are in the classroom.",
+              "Where is the teacher?\rStudent Answer: ________\rCorrect Answer: The teacher is at the whiteboard.",
+              "Where is the book?\rStudent Answer: ________\rCorrect Answer: The book is on the desk.",
+              "Where are the students?\rStudent Answer: ________\rCorrect Answer: The students are at the desks.",
+              "Where is the pencil?\rStudent Answer: ________\rCorrect Answer: The pencil is on the book.",
+              "Where is Tom?\rStudent Answer: ________\rCorrect Answer: Tom is next to Lily."
+            ]
+          },
+          "feedback": {
+            "wrong": "Not quite. Use the target form for this task. Try repeating the full correct sentence out loud.",
+            "readCorrectAloud": true
+          }
+        }
+      ]
+    },
+    "l07": {
+      "lessonId": "l07",
+      "title": "Lesson 07",
+      "videoUrl": null,
+      "exercises": [
+        {
+          "exerciseId": "ex_l07_yesno_01",
+          "templateType": "YesNo",
+          "title": "Answer the questions with short answers / Отговорете на въпросите с кратки отговори:",
+          "payload": {
+            "lines": [
+              "A.",
+              "Is John in the living-room?\rYes, he is.",
+              "Is he in the kitchen?\rNo, he isn’t.",
+              "Is John’s wife in the kitchen?\rYes, she is.",
+              "Is her name Mary?\rYes, it is.",
+              "Is Mary calling him?\rYes, she is.",
+              "Is the baby with John?\rNo, he isn’t.",
+              "Is the baby in the kitchen?\rNo, he isn’t.",
+              "Is the baby upstairs?\rYes, he is.",
+              "Is the baby making a noise?\rNo, he isn’t.",
+              "Is the baby quiet?\rYes, he is.",
+              "Is the baby in the bedroom?\rNo, he isn’t.",
+              "Is he in the bathroom?\rYes, he is.",
+              "Is the baby cleaning his shoes?\rYes, he is.",
+              "Is he using Mary’s toothbrush?\rYes, he is.",
+              "2. Questions and negatives (speak the words)",
+              "Да отговорят говоримо с отрицателно и положително изречение, обединени в едно. Отричат едното и потвърждават вярното.",
+              "Не е игра-ако може да показва колко процента се е справил правилно, може да му дава съвет да продължава-поне докато го направи над 80%. Но иначе, колкото по-висок процент-толкова по-добре. Искам да има фийдбак. Да дава различни награди според процентите."
+            ]
+          },
+          "feedback": {
+            "wrong": "Not quite. Re-check the rule, then try again. Now say the correct sentence out loud.",
+            "readCorrectAloud": true
+          }
+        },
+        {
+          "exerciseId": "ex_l07_yesno_02",
+          "templateType": "YesNo",
+          "title": "Answer the questions with a positive and a negative sentence / Отговорете на въпросите с положително и отрицателно изречение:",
+          "payload": {
+            "lines": [
+              "Is John in the living-room or in the kitchen?\rHe is in the living-room but he is not in the kitchen.",
+              "Is his wife in the living-room or in the kitchen?\rShe is in the kitchen but she is not in the living-room.",
+              "Is his wife’s name Mary or June?\rHer name is Mary but her name is not June.",
+              "Is the baby upstairs or downstairs?\rThe baby is upstairs but the baby is not downstairs.",
+              "Is the baby in the bedroom or in the bathroom?\rThe baby is in the bathroom but the baby is not in the bedroom.",
+              "Is the baby cleaning his shoes or his teeth?\rThe baby is cleaning his shoes but the baby is not cleaning his teeth.",
+              "(Short opened question-speak the words)",
+              "Не е игра-ако може да показва колко процента се е справил правилно, може да му дава съвет да продължава-поне докато го направи над 80%. Но иначе, колкото по-висок процент-толкова по-добре. Искам да има фийдбак. Да дава различни награди според процентите."
+            ]
+          },
+          "feedback": {
+            "wrong": "Not quite. Re-check the rule, then try again. Now say the correct sentence out loud.",
+            "readCorrectAloud": true
+          }
+        },
+        {
+          "exerciseId": "ex_l07_yesno_03",
+          "templateType": "YesNo",
+          "title": "Answer the questions with full answers according to the text / Отговорете на въпросите с пълни отговори според текста:",
+          "payload": {
+            "lines": [
+              "Full answers / Пълни отговори",
+              "What is the name of John’s wife?\rHer name is Mary.",
+              "What is John doing?\rJohn is looking for the baby.",
+              "What is the baby cleaning?\rThe baby is cleaning his shoes.",
+              "What is he using?\rHe is using Mary’s toothbrush."
+            ]
+          },
+          "feedback": {
+            "wrong": "Not quite. Re-check the rule, then try again. Now say the correct sentence out loud.",
+            "readCorrectAloud": true
+          }
+        }
+      ]
+    },
+    "l09": {
+      "lessonId": "l09",
+      "title": "Lesson 09",
+      "videoUrl": null,
+      "exercises": [
+        {
+          "exerciseId": "ex_l09_yesno_01",
+          "templateType": "YesNo",
+          "title": "Answer the questions with short answers / Отговорете на въпросите с кратки отговори:",
+          "payload": {
+            "lines": [
+              "A.",
+              "Is Mrs Jenkins in a department store?",
+              "Yes, she is.",
+              "Is she buying a coat?",
+              "Yes, she is.",
+              "Is she buying a toothbrush?",
+              "No, she isn't.",
+              "Is Mrs Jenkins standing near the counter?",
+              "Yes, she is.",
+              "Is she waiting for the shop assistant?",
+              "Yes, she is.",
+              "Is the lady fat?",
+              "Yes, she is.",
+              "Are Mrs Jenkins and the fat lady waiting for the shop assistant?",
+              "Yes, they are.",
+              "Is Mrs Jenkins serving the fat lady?",
+              "No, she isn't.",
+              "Does the fat lady want a coat?",
+              "Yes, she does.",
+              "Does she want a toothbrush?",
+              "No, she doesn't.",
+              "Does Mrs Jenkins want a coat too?",
+              "Yes, she does.",
+              "Is Mrs Jenkins a shop assistant?",
+              "No, she isn't.",
+              "Is Mrs Jenkins a customer?",
+              "Yes, she is."
+            ]
+          },
+          "feedback": {
+            "wrong": "Not quite. Re-check the rule, then try again. Now say the correct sentence out loud.",
+            "readCorrectAloud": true
+          }
+        },
+        {
+          "exerciseId": "ex_l09_yesno_02",
+          "templateType": "YesNo",
+          "title": "Answer the questions with a positive and a negative sentence / Отговорете на въпросите с положително и отрицателно изречение:",
+          "payload": {
+            "lines": [
+              "B.",
+              "Is Mrs Jenkins buying a coat or a toothbrush?",
+              "She is buying a coat but she is not buying a toothbrush.",
+              "Is she standing near the counter or near the door?",
+              "She is standing near the counter but she is not standing near the door.",
+              "Is a lady standing near the counter or near the door?",
+              "She is standing near the counter but she is not standing near the door.",
+              "Is the lady fat or thin?",
+              "She is fat but she is not thin.",
+              "Is Mrs Jenkins a customer or a shop assistant?",
+              "She is a customer but she is not a shop assistant.",
+              "Full answers / Пълни отговори",
+              "C.",
+              "What is Mrs Jenkins buying?",
+              "She is going to buy a coat.",
+              "What is the fat lady doing?",
+              "She is talking to Mrs Jenkins.",
+              "What do Mrs Jenkins and the fat lady want?",
+              "They want to buy a coat.",
+              "What is Mrs Jenkins?",
+              "She is a customer."
+            ]
+          },
+          "feedback": {
+            "wrong": "Not quite. Re-check the rule, then try again. Now say the correct sentence out loud.",
+            "readCorrectAloud": true
+          }
+        }
+      ]
+    },
+    "l06": {
+      "lessonId": "l06",
+      "title": "Lesson 06",
+      "videoUrl": null,
+      "exercises": [
+        {
+          "exerciseId": "ex_l06_yesno_01",
+          "templateType": "YesNo",
+          "title": "Answer the questions with short answers / Отговорете на въпросите с кратки отговори:",
+          "payload": {
+            "lines": [
+              "A.",
+              "Is Robert Jones a detective?\rYes, he is.",
+              "Is Robert Jones a librarian?\rNo, he isn’t.",
+              "Is Robert Jones in the library now?\rYes, he is.",
+              "Is Miss Green a detective?\rNo, she isn’t.",
+              "Is she a librarian?\rYes, she is.",
+              "Is the Inspector looking for a book?\rYes, he is.",
+              "Is the book good?\rYes, it is.",
+              "2. Questions and negatives (speak the words)",
+              "Да отговорят говоримо с отрицателно и положително изречение, обединени в едно. Отричат едното и потвърждават вярното.",
+              "Не е игра-ако може да показва колко процента се е справил правилно, може да му дава съвет да продължава-поне докато го направи над 80%. Но иначе, колкото по-висок процент-толкова по-добре. Искам да има фийдбак. Да дава различни награди според процентите."
+            ]
+          },
+          "feedback": {
+            "wrong": "Not quite. Re-check the rule, then try again. Now say the correct sentence out loud.",
+            "readCorrectAloud": true
+          }
+        },
+        {
+          "exerciseId": "ex_l06_yesno_02",
+          "templateType": "YesNo",
+          "title": "Answer the questions with a positive and a negative sentence / Отговорете на въпросите с положително и отрицателно изречение:",
+          "payload": {
+            "lines": [
+              "Is Robert Jones a detective or a librarian?\rHe is a detective but he is not a librarian.",
+              "Is Miss Green a detective or a librarian?\rShe is a librarian but she is not a detective.",
+              "Are Robert Jones and Miss Green in the library or at school?\rThey are in the library but they are not at school.",
+              "Is Robert Jones looking for a book or a newspaper?\rHe is looking for a book but he is not looking for a newspaper.",
+              "Is the book a story about animals or a detective story?\rIt is a detective story but it is not a story about animals.",
+              "Is the book good or bad?\rIt is good but it is not bad."
+            ]
+          },
+          "feedback": {
+            "wrong": "Not quite. Re-check the rule, then try again. Now say the correct sentence out loud.",
+            "readCorrectAloud": true
+          }
+        }
+      ]
+    },
+    "l10": {
+      "lessonId": "l10",
+      "title": "Lesson 10",
+      "videoUrl": null,
+      "exercises": [
+        {
+          "exerciseId": "ex_l10_yesno_01",
+          "templateType": "YesNo",
+          "title": "Answer the questions with short answers / Отговорете на въпросите с кратки отговори:",
+          "payload": {
+            "lines": [
+              "А",
+              "Do Mr. Taylor and the stranger live in Hampstead?",
+              "Yes, they do.",
+              "Does Mr Taylor know his next-door neighbour?",
+              "No, he doesn't.",
+              "Does Mr. Taylor live in Pond Street?",
+              "Yes, he does.",
+              "Does the stranger live in Lake Street?",
+              "No, he doesn't.",
+              "Does the stranger live in Pond Street too?",
+              "Yes, he does.",
+              "Are they next-door neighbours?",
+              "Yes, they are.",
+              "Is the stranger's name Taylor?",
+              "No, it isn't.",
+              "Is the stranger's name Bennet?",
+              "Yes, it is."
+            ]
+          },
+          "feedback": {
+            "wrong": "Not quite. Re-check the rule, then try again. Now say the correct sentence out loud.",
+            "readCorrectAloud": true
+          }
+        },
+        {
+          "exerciseId": "ex_l10_yesno_02",
+          "templateType": "YesNo",
+          "title": "Answer the questions with a positive and a negative sentence / Отговорете на въпросите с положително и отрицателно изречение:",
+          "payload": {
+            "lines": [
+              "B.",
+              "Is Mr. Taylor on a ship or in an aeroplane?",
+              "Mr. Taylor is on a ship but he is not on an aeroplane.",
+              "Is the ship going to America or Australia?",
+              "The ship is going to America but the ship is not going to Australia.",
+              "Is Mr. Taylor talking to a friend or to a stranger?",
+              "Mr. Taylor is talking to a stranger but she is not talking to a friend.",
+              "Does the stranger live in London or in New York?",
+              "The stranger lives in London but he doesn't live in New York.",
+              "Do Mr. Taylor and the stranger live in Pond Street or Lake Street?",
+              "They live in Pond Street but they don't live in Lake Street.",
+              "Is the stranger's name Taylor or Bennet?",
+              "The stranger's name is Bennet but the stranger's name is not Taylor.",
+              "Full answers / Пълни отговори",
+              "C.",
+              "What is Mr. Taylor's address?",
+              "Mr Taylor's address is 24 Pond Street, Hampstead.",
+              "What is the stranger's address?",
+              "The stranger's address is 25 Pond Street, Hampstead.",
+              "What is the stranger's name?",
+              "The stranger's name is Bennet."
+            ]
+          },
+          "feedback": {
+            "wrong": "Not quite. Re-check the rule, then try again. Now say the correct sentence out loud.",
+            "readCorrectAloud": true
+          }
+        }
+      ]
+    },
+    "l15": {
+      "lessonId": "l15",
+      "title": "Lesson 15",
+      "videoUrl": null,
+      "exercises": [
+        {
+          "exerciseId": "ex_l15_yesno_01",
+          "templateType": "YesNo",
+          "title": "Answer the questions with short answers / Отговорете на въпросите с кратки отговори:",
+          "payload": {
+            "lines": [
+              "А",
+              "Did they get up very early last Sunday?",
+              "Yes, they did.",
+              "Did father start the car?",
+              "No, he didn't.",
+              "Did the car move?",
+              "No, the car didn't move.",
+              "Isn't there any petrol in the tank?",
+              "Yes, there isn't any petrol in the tank.",
+              "Can Jimmy go to the garage?",
+              "No, he can't.",
+              "Is the garage shut?",
+              "Yes, it is.",
+              "Will father and mother stay in the car?",
+              "No, they won't.",
+              "Won't the children stay in the car?",
+              "Yes, they will.",
+              "Did the children go to sleep?",
+              "No, they didn't."
+            ]
+          },
+          "feedback": {
+            "wrong": "Not quite. Re-check the rule, then try again. Now say the correct sentence out loud.",
+            "readCorrectAloud": true
+          }
+        },
+        {
+          "exerciseId": "ex_l15_yesno_02",
+          "templateType": "YesNo",
+          "title": "Answer the questions with a positive and a negative sentence / Отговорете на въпросите с положително и отрицателно изречение:",
+          "payload": {
+            "lines": [
+              "B.",
+              "Do they go to the country on Sundays or do they stay at home?",
+              "They go to the country on Sundays but they don't stay at home.",
+              "Did they get up early or late last Sunday?",
+              "They got up early, but they didn't get up late.",
+              "Were mother and father ready at 6:30 or at 10:00 o'clock?",
+              "They were ready at 6:30 but they weren't ready at 10 o'clock.",
+              "Did father start the engine or did Jimmy start it?",
+              "Father started the engine but Jimmy didn't start it.",
+              "Is there any petrol in the tank or is the tank empty?",
+              "The tank is empty and there isn't any petrol.",
+              "Will Jimmy get some petrol, or will he stay in the car?",
+              "Jimmy will get some petrol but he will not stay in the car.",
+              "Is the garage open or shut?",
+              "The garage is shut but it is not open.",
+              "Did mother and father go back to bed, or did they stay in the car?",
+              "Mother and father went back to bed, but they didn't stay in the car.",
+              "Did father wake up the children or did mother wake up the children?",
+              "Father woke up the children but the mother didn't wake up the children.",
+              "Full answers / Пълни отговори",
+              "C",
+              "When does father take the children to the country?",
+              "Father takes the children to the country on Sundays.",
+              "At what time were mother and father ready?",
+              "Mother and father were ready at 6:30.",
+              "Whose car was it?",
+              "It was my father's car.",
+              "Where did father sit?",
+              "Father sat behind the wheel.",
+              "Why did mother and father go back to bed?",
+              "They went back to bed because the car wouldn't start and the garage was shut.",
+              "What did the children do?",
+              "Jimmy and I stayed in the car and didn't go back to sleep.",
+              "When did father knock at the window of the car?",
+              "Father knocked at the window of the car at nine o'clock."
+            ]
+          },
+          "feedback": {
+            "wrong": "Not quite. Re-check the rule, then try again. Now say the correct sentence out loud.",
+            "readCorrectAloud": true
+          }
+        }
+      ]
+    },
+    "l03": {
+      "lessonId": "l03",
+      "title": "Lesson 03",
+      "videoUrl": null,
+      "exercises": [
+        {
+          "exerciseId": "ex_l03_fill_01",
+          "templateType": "Fill",
+          "title": "Fill in the blanks based on the story / Попълнете пропуснатите думи според историята.",
+          "payload": {
+            "lines": [
+              "Lily has three _________.",
+              "Lily asks, \"What are _________?\"",
+              "Her mother replies, \"These are _________.\"",
+              "Lily picks up one of the _________.",
+              "Lily says, \"These are not _________.\"",
+              "Lily smiles and says, \"These are my new _________.\"",
+              "Answers:",
+              "toys",
+              "these",
+              "toys",
+              "toys",
+              "cars",
+              "toys",
+              "2. Speak the words / MCQ",
+              "Не е игра-ако може да показва колко процента се е справил правилно, може да му дава съвет да продължава-поне докато го направи над 80%. Но иначе, колкото по-висок процент-толкова по-добре. Искам да има фийдбак. Да дава различни награди според процентите.",
+              "Rearrange the sentences to match the story / подредете изреченията според историята.",
+              "\"These are my new toys!\"",
+              "Lily finds a doll.",
+              "Lily opens the box.",
+              "Lily asks, \"What is this?\"",
+              "Lily's mother says, \"This is a doll.\"",
+              "Lily points to the last toy.",
+              "Lily's mother says, \"This is a ball.\"",
+              "Correct order:",
+              "Lily opens the box.",
+              "Lily asks, \"What is this?\"",
+              "Lily's mother says, \"This is a ball.\"",
+              "Lily finds a doll.",
+              "Lily asks, \"What is this?\"",
+              "Lily's mother says, \"This is a doll.\"",
+              "Lily says, \"These are my new toys!\"",
+              "3 Speak the words/Fill the blanks",
+              "Не е игра-ако може да показва колко процента се е справил правилно, може да му дава съвет да продължава-поне докато го направи над 80%. Но иначе, колкото по-висок процент-толкова по-добре. Искам да има фийдбак. Да дава различни награди според процентите."
+            ]
+          },
+          "feedback": {
+            "wrong": "Not quite. Use the target form for this task. Try repeating the full correct sentence out loud.",
+            "readCorrectAloud": true
+          }
+        },
+        {
+          "exerciseId": "ex_l03_fill_02",
+          "templateType": "Fill",
+          "title": "Fill in the blanks with the correct short answer or sentence / Попълнете празните места с правилния кратък отговор или изречение.",
+          "payload": {
+            "lines": [
+              "Are these toys? (toys)\rStudent Answer: ___\rCorrect Answer: Yes, they are. These are toys.",
+              "Are these cars? (toys)\rStudent Answer: ___\rCorrect Answer: No, they aren’t. These are toys.",
+              "Are these dolls? (balls)\rStudent Answer: ___\rCorrect Answer: No, they aren’t. These are balls.",
+              "Are these bikes? (cars)\rStudent Answer: ___\rCorrect Answer: No, they aren’t. These are cars.",
+              "Are these chairs? (chairs)\rStudent Answer: ___\rCorrect Answer: Yes, they are. These are chairs.",
+              "Are these apples? (dolls)\rStudent Answer: ___\rCorrect Answer: No, they aren’t. These are dolls.",
+              "Are these cakes? (cakes)\rStudent Answer: ___\rCorrect Answer: Yes, they are. These are cakes.",
+              "Are these rings? (balls)\rStudent Answer: ___\rCorrect Answer: No, they aren’t. These are balls.",
+              "Are these bikes? (bikes)\rStudent Answer: ___\rCorrect Answer: Yes, they are. These are bikes.",
+              "Are these books? (chairs)\rStudent Answer: ___\rCorrect Answer: No, they aren’t. These are chairs.",
+              "Are these apples? (toys)\rStudent Answer: ___\rCorrect Answer: No, they aren’t. These are toys.",
+              "Are these balls? (balls)\rStudent Answer: ___\rCorrect Answer: Yes, they are. These are balls.",
+              "Are these toys? (toys)\rStudent Answer: ___\rCorrect Answer: Yes, they are. These are toys.",
+              "Are these rings? (dolls)\rStudent Answer: ___\rCorrect Answer: No, they aren’t. These are dolls."
+            ]
+          },
+          "feedback": {
+            "wrong": "Not quite. Use the target form for this task. Try repeating the full correct sentence out loud.",
+            "readCorrectAloud": true
+          }
+        }
+      ]
+    },
+    "l13": {
+      "lessonId": "l13",
+      "title": "Lesson 13",
+      "videoUrl": null,
+      "exercises": [
+        {
+          "exerciseId": "ex_l13_yesno_01",
+          "templateType": "YesNo",
+          "title": "Answer the questions with short answers / Отговорете на въпросите с кратки отговори:",
+          "payload": {
+            "lines": [
+              "(all exercises speak the words or flush cards pronunciation)",
+              "A.",
+              "Is Mr. Mason standing in front of a car?",
+              "Yes, he is.",
+              "Is he in the car?",
+              "No, he is not.",
+              "Is he looking at the car?",
+              "Yes, he is.",
+              "Is it a big car?",
+              "Yes, it is.",
+              "Does Mr. Mason like big cars?",
+              "Yes, he does.",
+              "Can the policeman see Mr. Mason?",
+              "Yes, he can.",
+              "Is the policeman writing in a notebook?",
+              "Yes, he is.",
+              "Is the policeman giving a piece of paper to Mr. Mason?",
+              "Yes, he is.",
+              "Is the piece of paper a ticket?",
+              "Yes, it is.",
+              "Can Mr. Mason see the notice?",
+              "Yes, he can.",
+              "Does the notice say 'No Parking'?",
+              "Yes, it does.",
+              "Does the notice say 'Parking'?",
+              "No, it doesn't.",
+              "Is this the policeman's car?",
+              "No, it is not.",
+              "Is it Mr. Mason's car?",
+              "No, it is not."
+            ]
+          },
+          "feedback": {
+            "wrong": "Not quite. Re-check the rule, then try again. Now say the correct sentence out loud.",
+            "readCorrectAloud": true
+          }
+        },
+        {
+          "exerciseId": "ex_l13_yesno_02",
+          "templateType": "YesNo",
+          "title": "Answer the questions with a positive and a negative sentence / Отговорете на въпросите с положително и отрицателно изречение:",
+          "payload": {
+            "lines": [
+              "B.",
+              "Is Mr. Mason looking at a car or at a van?",
+              "Mr. Mason is looking at a car but he is not looking at a van.",
+              "Is it a big car or a small car?",
+              "It is a big car but it is not a small car.",
+              "Does Mr. Mason like big cars or small cars?",
+              "Mr. Mason likes big cars but he doesn't like small cars.",
+              "Is the policeman standing behind Mr. Mason or is he in the car?",
+              "The policeman is standing behind Mr. Mason but he is not in the car.",
+              "Is he giving Mr. Mason a ticket or a notebook?",
+              "He is giving Mr. Mason a ticket but he is not giving a notebook.",
+              "Does the notice say 'No Parking' or 'Parking'?",
+              "The notice says 'No Parking' but it doesn't say \"Parking\".",
+              "Full answers / Пълни отговори",
+              "C.",
+              "What is Mr. Mason doing?",
+              "Mr Mason is observing the car in front of him.",
+              "What does Mr. Mason like?",
+              "Mr. Mason likes big cars.",
+              "What is the policeman giving to Mr. Mason?",
+              "The policeman is giving a ticket to Mr. Mason."
+            ]
+          },
+          "feedback": {
+            "wrong": "Not quite. Re-check the rule, then try again. Now say the correct sentence out loud.",
+            "readCorrectAloud": true
+          }
+        }
+      ]
+    },
+    "l08": {
+      "lessonId": "l08",
+      "title": "Lesson 08",
+      "videoUrl": null,
+      "exercises": [
+        {
+          "exerciseId": "ex_l08_yesno_01",
+          "templateType": "YesNo",
+          "title": "Answer the questions with short answers / Отговорете на въпросите с кратки отговори:",
+          "payload": {
+            "lines": [
+              "A.",
+              "Is Mrs. Robinson in her garden?",
+              "Yes, she is.",
+              "Is she in her kitchen?",
+              "No, she isn't.",
+              "Is Mrs. Robinson standing near the fence?",
+              "Yes, she is.",
+              "Is Mrs Robinson talking to Mrs Price?",
+              "Yes, she is.",
+              "Is Mrs. Robinson talking to her husband?",
+              "No, she isn't.",
+              "Is Mr Price using the ladder now?",
+              "Yes, he is.",
+              "Is Mr Price upstairs?",
+              "Yes, he is.",
+              "Is he painting?",
+              "Yes, he is.",
+              "Is this his hobby?",
+              "No, it isn't.",
+              "Is Mr. Price an artist?",
+              "No, he isn't.",
+              "Is Mr. Price painting the bathroom?",
+              "Yes, he is."
+            ]
+          },
+          "feedback": {
+            "wrong": "Not quite. Re-check the rule, then try again. Now say the correct sentence out loud.",
+            "readCorrectAloud": true
+          }
+        },
+        {
+          "exerciseId": "ex_l08_yesno_02",
+          "templateType": "YesNo",
+          "title": "Answer the questions with a positive and a negative sentence / Отговорете на въпросите с положително и отрицателно изречение:",
+          "payload": {
+            "lines": [
+              "B.",
+              "Is Mrs. Robinson in the kitchen or in the garden?",
+              "She is in the garden but she is not in the kitchen.",
+              "Is Mrs Robinson talking to Mrs Price or to her husband?",
+              "She is talking to Mrs. Price but she is not talking to her husband.",
+              "Is Mr. Price upstairs, or is he in the garden?",
+              "He is upstairs but he is not in the garden.",
+              "Is he painting a picture, or is he painting the bathroom?",
+              "He is painting the bathroom but he is not painting a picture.",
+              "Full answers / Пълни отговори",
+              "C.",
+              "What are Mrs. Robinson and Mrs. Price doing?",
+              "They are talking.",
+              "What is Mr. Price doing?",
+              "He is painting the bathroom."
+            ]
+          },
+          "feedback": {
+            "wrong": "Not quite. Re-check the rule, then try again. Now say the correct sentence out loud.",
+            "readCorrectAloud": true
+          }
+        }
+      ]
+    },
+    "l04": {
+      "lessonId": "l04",
+      "title": "Lesson 04",
+      "videoUrl": null,
+      "exercises": [
+        {
+          "exerciseId": "ex_l04_fill_01",
+          "templateType": "Fill",
+          "title": "Fill in the blanks based on the story / Попълнете пропуснатите думи според историята.",
+          "payload": {
+            "lines": [
+              "Lily is a ________.",
+              "Tom is her ________.",
+              "Their mother is ________.",
+              "Their father is ________.",
+              "Lily and Tom are ________ friends.",
+              "Their parents ________ Lily and Tom.",
+              "“Are you ________?” their mother asks.",
+              "“Yes, we are ________!” Lily replies.",
+              "Answers:",
+              "girl",
+              "brother",
+              "kind",
+              "tall",
+              "good",
+              "love",
+              "happy",
+              "happy",
+              "2.  Speak the words / MCQ",
+              "Не е игра-ако може да показва колко процента се е справил правилно, може да му дава съвет да продължава-поне докато го направи над 80%. Но иначе, колкото по-висок процент-толкова по-добре. Искам да има фийдбак. Да дава различни награди според процентите.",
+              "Rearrange the sentences to match the story / подредете изреченията според историята.",
+              "\"Are you happy?\" their mother asks.",
+              "Lily and Tom are good friends.",
+              "Their mother is kind.",
+              "Lily is a girl, and Tom is her brother.",
+              "Their father is tall.",
+              "\"Yes, we are happy!\" Lily replies.",
+              "\"Is it sunny today?\" their father asks.",
+              "Correct order:",
+              "Lily is a girl, and Tom is her brother.",
+              "Lily and Tom are good friends.",
+              "Their mother is kind.",
+              "Their father is tall.",
+              "\"Are you happy?\" their mother asks.",
+              "\"Yes, we are happy!\" Lily replies.",
+              "\"Is it sunny today?\" their father asks.",
+              "3. Speak the words/Fill the blanks",
+              "Не е игра-ако може да показва колко процента се е справил правилно, може да му дава съвет да продължава-поне докато го направи над 80%. Но иначе, колкото по-висок процент-толкова по-добре. Искам да има фийдбак. Да дава различни награди според процентите."
+            ]
+          },
+          "feedback": {
+            "wrong": "Not quite. Use the target form for this task. Try repeating the full correct sentence out loud.",
+            "readCorrectAloud": true
+          }
+        },
+        {
+          "exerciseId": "ex_l04_fill_02",
+          "templateType": "Fill",
+          "title": "Fill in the blanks with the correct short answer or sentence / Попълнете празните места с правилния кратък отговор или изречение.",
+          "payload": {
+            "lines": [
+              "Am I Lily? (Lily)\rStudent Answer: ___\rCorrect Answer: Yes, you are.",
+              "Is he Tom? (Tom)\rStudent Answer: ___\rCorrect Answer: Yes, he is.",
+              "Is she their mother? (mother)\rStudent Answer: ___\rCorrect Answer: Yes, she is.",
+              "Are they friends? (friends)\rStudent Answer: ___\rCorrect Answer: Yes, they are.",
+              "Are we happy? (happy)\rStudent Answer: ___\rCorrect Answer: Yes, we are.",
+              "Is it sunny today? (sunny)\rStudent Answer: ___\rCorrect Answer: Yes, it is.",
+              "Are you my best friend? (best friend)\rStudent Answer: ___\rCorrect Answer: Yes, I am.",
+              "Is he a good student? (student)\rStudent Answer: ___\rCorrect Answer: Yes, he is.",
+              "Is she my sister? (sister)\rStudent Answer: ___\rCorrect Answer: Yes, she is.",
+              "Are we ready to go? (ready)\rStudent Answer: ___\rCorrect Answer: Yes, we are.",
+              "(speak the words or flush cards pronunciation)",
+              "Rewrite the sentences as questions and negatives / Направете въпросителни и отрицателни изречения.",
+              "Statement: I am Lily.\rQuestion: Am I Lily?\rNegative: I am not Lily.",
+              "Statement: He is Tom.\rQuestion: Is he Tom?\rNegative: He is not Tom.",
+              "Statement: She is their mother.\rQuestion: Is she their mother?\rNegative: She is not their mother.",
+              "Statement: They are friends.\rQuestion: Are they friends?\rNegative: They are not friends.",
+              "Statement: We are happy.\rQuestion: Are we happy?\rNegative: We are not happy.",
+              "Statement: It is sunny today.\rQuestion: Is it sunny today?\rNegative: It is not sunny today.",
+              "Statement: You are my best friend.\rQuestion: Are you my best friend?\rNegative: You are not my best friend.",
+              "Statement: I am a student.\rQuestion: Am I a student?\rNegative: I am not a student.",
+              "Statement: He is my brother.\rQuestion: Is he my brother?\rNegative: He is not my brother.",
+              "Statement: She is happy.\rQuestion: Is she happy?\rNegative: She is not happy."
+            ]
+          },
+          "feedback": {
+            "wrong": "Not quite. Use the target form for this task. Try repeating the full correct sentence out loud.",
+            "readCorrectAloud": true
+          }
+        }
+      ]
+    },
+    "l11": {
+      "lessonId": "l11",
+      "title": "Lesson 11",
+      "videoUrl": null,
+      "exercises": [
+        {
+          "exerciseId": "ex_l11_yesno_01",
+          "templateType": "YesNo",
+          "title": "Answer the questions with short answers / Отговорете на въпросите с кратки отговори:",
+          "payload": {
+            "lines": [
+              "A.",
+              "Are Tommy and Alice in the park?",
+              "Answer: Yes, they are.",
+              "Are they with their mother?",
+              "Answer: Yes, they are.",
+              "Are the children with their father?",
+              "Answer: No, they aren't.",
+              "Are the children tired?",
+              "Answer: Yes, they are.",
+              "Is their mother tired too?",
+              "Answer: Yes, she is.",
+              "Can they sit on the grass?",
+              "Answer: No, they can't.",
+              "Is the grass wet?",
+              "Answer: Yes, it is.",
+              "Can the children sit on the bench?",
+              "Answer: No, they can't.",
+              "Is the bench wet?",
+              "Answer: Yes, it is.",
+              "Is it raining?",
+              "Answer: No, it isn't.",
+              "Can they see a notice on the bench?",
+              "Answer: Yes, they can.",
+              "Can Alice read the notice?",
+              "Answer: Yes, she can.",
+              "Can Tommy read it?",
+              "Answer: Yes, he can.",
+              "Does the notice say 'Wet Paint'?",
+              "Answer: Yes, it does."
+            ]
+          },
+          "feedback": {
+            "wrong": "Not quite. Re-check the rule, then try again. Now say the correct sentence out loud.",
+            "readCorrectAloud": true
+          }
+        },
+        {
+          "exerciseId": "ex_l11_yesno_02",
+          "templateType": "YesNo",
+          "title": "Answer the questions with a positive and a negative sentence / Отговорете на въпросите с положително и отрицателно изречение:",
+          "payload": {
+            "lines": [
+              "B.",
+              "Are the children with their mother or with their father?",
+              "They are with their mother but they are not with their father.",
+              "Are they walking or running?",
+              "They are walking but they are not running.",
+              "Can the children see a bench or a pond?",
+              "They can see a bench but they can't see a pond.",
+              "Is the bench near a tree or near a pond?",
+              "The bench is near a tree but it is not near a pond.",
+              "Is the notice on the bench or on the grass?",
+              "The notice is on the bench but it is not on the grass.",
+              "Does the notice say 'Wet Paint' or 'Keep Off the Grass'?",
+              "The notice says 'Wet Paint' but it does not say \"Keep off the grass\".",
+              "Full answers / Пълни отговори",
+              "C.",
+              "What are the children's names?",
+              "The children's names are Alice and Tommy.",
+              "What are the children doing?",
+              "The children are walking in the park.",
+              "What can Alice see?",
+              "Alice can see a bench near a tree.",
+              "What is on the bench?",
+              "There is a notice on the bench.",
+              "What does the notice say?",
+              "The notice says 'Wet Paint'."
+            ]
+          },
+          "feedback": {
+            "wrong": "Not quite. Re-check the rule, then try again. Now say the correct sentence out loud.",
+            "readCorrectAloud": true
+          }
+        }
+      ]
+    },
+    "l14": {
+      "lessonId": "l14",
+      "title": "Lesson 14",
+      "videoUrl": null,
+      "exercises": [
+        {
+          "exerciseId": "ex_l14_yesno_01",
+          "templateType": "YesNo",
+          "title": "Answer the questions with short answers / Отговорете на въпросите с кратки отговори:",
+          "payload": {
+            "lines": [
+              "A",
+              "Does Mrs. Ford want any butter? Yes, she does.",
+              "Doesn't she want any cheese? Yes, she does.",
+              "Doesn't Mrs. Ford want a tin of tomato soup? No, she doesn’t.",
+              "Has the grocer any tomato soup? No, he hasn’t.",
+              "Are there any tins on the shelf? Yes, there are.",
+              "Do these tins contain tomato soup? Yes, they do.",
+              "Don't they contain tomatoes? Yes, they do.",
+              "Will the grocer send the things to Mrs. Ford's house? No, he won’t.",
+              "Can he send the eggs too? No, he can’t.",
+              "Will he send the eggs? No, he won’t",
+              "B Answer the questions with a positive and a negative sentence / Отговорете на въпросите с положително и отрицателно изречение:",
+              "Does Mrs. Ford want some biscuits or some bread? Mrs. Ford wants some biscuits but she doesn’t want any bread.",
+              "Does she want a tin of tomato soup or a tin of tomatoes? She wants a tin of tomato soup but she doesn’t want a tin of tomatoes.",
+              "Are the tins on the shelf or on the counter? The tins are on the counter but they are not on the shelf.",
+              "Will the grocer send the things or will Mrs. Ford carry them? Mrs. Ford will carry the things but the grocer will not send them.",
+              "Will Mrs. Ford take the eggs with her or will the grocer send them? Mrs. Ford will carry the eggs but the grocer will not.",
+              "C Full answers / Пълни отговори",
+              "Who wants some butter and cheese? Mrs. Ford wants some butter and cheese.",
+              "Who will send the things to Mrs. Ford's house? Mrs. Ford will carry the things.",
+              "Who will carry the eggs? Mrs. Ford will carry the eggs.",
+              "Who is very careless? The delivery boy is very careless."
+            ]
+          },
+          "feedback": {
+            "wrong": "Not quite. Re-check the rule, then try again. Now say the correct sentence out loud.",
+            "readCorrectAloud": true
+          }
+        }
+      ]
+    },
+    "l12": {
+      "lessonId": "l12",
+      "title": "Lesson 12",
+      "videoUrl": null,
+      "exercises": [
+        {
+          "exerciseId": "ex_l12_yesno_01",
+          "templateType": "YesNo",
+          "title": "Answer the questions with short answers / Отговорете на въпросите с кратки отговори:",
+          "payload": {
+            "lines": [
+              "A.",
+              "Is Sally five years old?",
+              "Yes, she is.",
+              "Is she ten years old?",
+              "No, she isn't.",
+              "Does she go to school every day?",
+              "Yes, she does.",
+              "Does Sally paint pictures at school?",
+              "Yes, she does.",
+              "Does Sally leave the pictures at school?",
+              "No, she doesn't.",
+              "Does she bring them home?",
+              "Yes, she does.",
+              "Does she show the pictures to her mother?",
+              "Yes, she does.",
+              "Can her mother understand them?",
+              "No, she can't.",
+              "Can Sally understand her pictures?",
+              "Yes, she can.",
+              "Can мother see a house in Sally's picture?",
+              "Yes, she can.",
+              "Can she see lines in the picture?",
+              "Yes, she can.",
+              "Are the lines trees?",
+              "Yes, they are.",
+              "Is the tree in the sky?",
+              "Yes, it is.",
+              "Is Sally's mother in the picture too?",
+              "Yes, she is."
+            ]
+          },
+          "feedback": {
+            "wrong": "Not quite. Re-check the rule, then try again. Now say the correct sentence out loud.",
+            "readCorrectAloud": true
+          }
+        },
+        {
+          "exerciseId": "ex_l12_yesno_02",
+          "templateType": "YesNo",
+          "title": "Answer the questions with a positive and a negative sentence / Отговорете на въпросите с положително и отрицателно изречение:",
+          "payload": {
+            "lines": [
+              "B.",
+              "Is Sally five or six?",
+              "She is five but she is not six.",
+              "Does she go to school or does she stay at home?",
+              "She goes to school but she doesn't stay at home.",
+              "Does she paint pictures at school or does she read books?",
+              "She paints pictures at school but she doesn't read books.",
+              "Does Sally bring the pictures home or does she leave them at school?",
+              "She brings them home but she doesn't leave them at school.",
+              "Is Sally's mother looking at a picture or at a book?",
+              "She is looking at a picture but she is not looking at a book.",
+              "Are the lines in the picture green or red?",
+              "They are green but they are not red.",
+              "Is the tree in the sky or near the house?",
+              "It is in the sky but it is not near the house.",
+              "Full answers / Пълни отговори",
+              "C.",
+              "What does Sally do at school?",
+              "She paints pictures.",
+              "What does she do with the pictures?",
+              "She brings them home.",
+              "What does she show her mother?",
+              "She shows her mother the pictures.",
+              "What can her mother see in the picture?",
+              "She can see trees.",
+              "What colour are the trees in Sally's picture?",
+              "They are green.",
+              "Is Sally's mother looking at a picture or at a book?",
+              "She is looking at a picture but she is not looking at a book.",
+              "Are the lines in the picture green or red?",
+              "They are green but they are not red.",
+              "Is the tree in the sky or near the house?",
+              "It is in the sky but it is not near the house.",
+              "Full answers / Пълни отговори",
+              "C.",
+              "What does Sally do at school?",
+              "She paints pictures.",
+              "What does she do with the pictures?",
+              "She brings them home.",
+              "What does she show her mother?",
+              "She shows her mother the pictures.",
+              "What can her mother see in the picture?",
+              "She can see trees.",
+              "What colour are the trees in Sally's picture?",
+              "They are green."
+            ]
+          },
+          "feedback": {
+            "wrong": "Not quite. Re-check the rule, then try again. Now say the correct sentence out loud.",
+            "readCorrectAloud": true
+          }
+        }
+      ]
+    },
+    "l02": {
+      "lessonId": "l02",
+      "title": "Lesson 02",
+      "videoUrl": null,
+      "exercises": [
+        {
+          "exerciseId": "ex_l02_fill_01",
+          "templateType": "Fill",
+          "title": "Fill in the blanks based on the story / Попълнете пропуснатите думи според историята.",
+          "payload": {
+            "lines": [
+              "Lily has a ________.",
+              "Inside the box, Lily finds a ________.",
+              "Lily says, \"This is my new ________.\"",
+              "Lily's mother says, \"This is a ________.\"",
+              "Lily smiles because she has a ________.",
+              "Lily picks up the ________.",
+              "\"This is not a ________,\" says Lily.",
+              "Lily opens the ________.",
+              "Answers:",
+              "box",
+              "ball",
+              "toy",
+              "doll",
+              "toy",
+              "doll",
+              "ball",
+              "box",
+              "2. Speak the words / MCQ",
+              "Не е игра-ако може да показва колко процента се е справил правилно, може да му дава съвет да продължава-поне докато го направи над 80%. Но иначе, колкото по-висок процент-толкова по-добре. Искам да има фийдбак. Да дава различни награди според процентите.",
+              "Rearrange the sentences to match the story / подредете изреченията според историята.",
+              "\"This is my new toy!\"",
+              "Lily finds a doll.",
+              "Lily opens the box.",
+              "Lily asks, \"What is this?\"",
+              "Lily's mother says, \"This is a doll.\"",
+              "Lily picks up the doll.",
+              "Lily's mother says, \"This is a ball.\"",
+              "Correct order:",
+              "Lily opens the box.",
+              "Lily asks, \"What is this?\"",
+              "Lily's mother says, \"This is a ball.\"",
+              "Lily asks, \"What is this?\"",
+              "Lily's mother says, \"This is a doll.\"",
+              "Lily picks up the doll.",
+              "Lily says, \"This is my new toy!\"",
+              "3. Speak the words/Fill the blanks",
+              "Не е игра-ако може да показва колко процента се е справил правилно, може да му дава съвет да продължава-поне докато го направи над 80%. Но иначе, колкото по-висок процент-толкова по-добре. Искам да има фийдбак. Да дава различни награди според процентите."
+            ]
+          },
+          "feedback": {
+            "wrong": "Not quite. Use the target form for this task. Try repeating the full correct sentence out loud.",
+            "readCorrectAloud": true
+          }
+        },
+        {
+          "exerciseId": "ex_l02_fill_02",
+          "templateType": "Fill",
+          "title": "Fill in the blanks with the correct short answer or sentence / Попълнете празните места с правилния кратък отговор или изречение.",
+          "payload": {
+            "lines": [
+              "Is this a box? (toy)\rStudent Answer: ___\rCorrect Answer: No, it isn’t. This is a toy.",
+              "Is this a ball? (ball)\rStudent Answer: ___\rCorrect Answer: Yes, it is. This is a ball.",
+              "Is this a doll? (ring)\rStudent Answer: ___\rCorrect Answer: No, it isn’t. This is a ring.",
+              "Is this a car? (bike)\rStudent Answer: ___\rCorrect Answer: No, it isn’t. This is a bike.",
+              "Is this a chair? (chair)\rStudent Answer: ___\rCorrect Answer: Yes, it is. This is a chair.",
+              "Is this milk? (water)\rStudent Answer: ___\rCorrect Answer: No, it isn’t. This is water.",
+              "Is this bread? (bread)\rStudent Answer: ___\rCorrect Answer: Yes, it is. This is bread.",
+              "Is this a cake? (cake)\rStudent Answer: ___\rCorrect Answer: Yes, it is. This is a cake.",
+              "Is this a book? (apple)\rStudent Answer: ___\rCorrect Answer: No, it isn’t. This is an apple.",
+              "Is this a toy? (doll)\rStudent Answer: ___\rCorrect Answer: No, it isn’t. This is a doll.",
+              "Is this a bike? (bike)\rStudent Answer: ___\rCorrect Answer: Yes, it is. This is a bike.",
+              "Is this an apple? (ball)\rStudent Answer: ___\rCorrect Answer: No, it isn’t. This is a ball.",
+              "Is this water? (water)\rStudent Answer: ___\rCorrect Answer: Yes, it is. This is water.",
+              "Is this a ring? (chair)\rStudent Answer: ___\rCorrect Answer: No, it isn’t. This is a chair."
+            ]
+          },
+          "feedback": {
+            "wrong": "Not quite. Use the target form for this task. Try repeating the full correct sentence out loud.",
+            "readCorrectAloud": true
+          }
+        }
+      ]
+    }
+  },
+  "feedbackDefaults": {
+    "Fill": {
+      "wrong": "Not quite. Use the target form for this task. Try repeating the full correct sentence out loud.",
+      "readCorrectAloud": true
+    },
+    "YesNo": {
+      "wrong": "Not quite. Re-check the rule, then try again. Now say the correct sentence out loud.",
+      "readCorrectAloud": true
+    },
+    "Pronunciation": {
+      "wrong": "Almost there. Listen once more and repeat clearly.",
+      "readCorrectAloud": true
+    }
+  }
+}
