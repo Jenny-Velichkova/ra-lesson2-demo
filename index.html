@@ -45,7 +45,7 @@ const unit = url.searchParams.get('unit') || 'L2';
 const section = url.searchParams.get('section') || 'grammar';
 document.getElementById('meta').textContent = `${level} • ${unit} • ${section}`;
 
-/* --- 1) Inline dataset (TEMP). Replace with Neon fetch next. --- */
+/* --- 1) Inline dataset (TEMP). Replace with Neon/JSON later. --- */
 const DATA = {
   A1: {
     L2: {
@@ -77,20 +77,29 @@ const DATA = {
   }
 };
 
-/* --- 2) TTS helpers (Web Speech API, click-only) --- */
-// Нормализиране: маха подсказки в скоби, заменя underscores с 'blank', стрелки с 'to', чисти двойни интервали.
+/* --- 2) TTS helpers --- */
+// правим текста приятен за слушане
 function normalizeForSpeech(t){
   return String(t)
     .replace(/\([^)]*\)/g, ' ')   // remove ( ... )
-    .replace(/_{2,}/g, ' blank ') // ____ -> "blank"
-    .replace(/_/g, ' blank ')     // _ -> "blank"
     .replace(/→/g, ' to ')
     .replace(/[•◆◦■\-–—]/g, ' ')
     .replace(/\s{2,}/g, ' ')
     .trim();
 }
 
-// Опит за избор на мъжки/EN гласове
+// ако има празно място, казваме човешка инструкция
+function toInstructionalSpeech(prompt){
+  const hasBlank = /_{1,}/.test(prompt);
+  const clean = normalizeForSpeech(prompt);
+  if (hasBlank) {
+    // Вместо "blank/underscore" → „Complete the sentence…“
+    return "Complete the sentence: " + clean.replace(/_{1,}/g, " … ");
+  }
+  return clean;
+}
+
+// избор на мъжки/EN глас
 let preferredVoice = null;
 function pickMaleVoice(){
   const voices = window.speechSynthesis.getVoices?.() || [];
@@ -98,17 +107,44 @@ function pickMaleVoice(){
   const byLangEN   = voices.find(v => /^en(-|_)/i.test(v.lang));
   preferredVoice = byMaleName || byLangEN || voices[0] || null;
 }
-window.speechSynthesis.onvoiceschanged = pickMaleVoice;
-pickMaleVoice();
+window.speechSynthesis.onvoiceschanged = pickMaleVoice; pickMaleVoice();
 
 function speak(text){
   try{
     const u = new SpeechSynthesisUtterance(normalizeForSpeech(text));
     if (preferredVoice) u.voice = preferredVoice;
     u.rate = 1.0; u.pitch = 1.0;
-    window.speechSynthesis.cancel(); // спри предишното, за да няма наслагване
+    window.speechSynthesis.cancel();
     window.speechSynthesis.speak(u);
   }catch{}
+}
+
+/* --- 2a) Smart feedback (rule + tip) --- */
+function smartWrongFeedback(it){
+  const t = (it.prompt || "").toLowerCase();
+
+  // have / has
+  if (/\bhave\b|\bhas\b|have\/has/.test(t)) {
+    return "Not quite. With 'I, you, we, they' use 'have'; with 'he, she, it' use 'has'. Try repeating the sentence out loud.";
+  }
+
+  // plural -s/-es (има дума plural или типични -es форми)
+  if (t.includes("plural") || /boxes|buses|churches|tomatoes|classes|wishes/.test(t)) {
+    return "Not quite. For nouns ending in -x, -s, -sh, -ch, or -o, add '-es'. Say the plural form out loud.";
+  }
+
+  // предлози at / on / in (често с празно)
+  if (/_+/.test(it.prompt || "") && /\b(at|on|in)\b/.test(t)) {
+    return "Not quite. Use 'at' for specific places/times (at home, at 5), 'on' for days/dates (on Monday), and 'in' for months/longer periods (in June, in the morning). Try the sentence again.";
+  }
+
+  // Yes/No
+  if ((it.kind||it.templateType||"").toLowerCase() === "yesno") {
+    return "Not quite. Use short answers correctly: Yes, he does. / No, he doesn't. Repeat the correct short answer out loud.";
+  }
+
+  // по подразбиране
+  return "Not quite. Re-check the rule and try again. Say the correct sentence out loud.";
 }
 
 /* --- 3) Render --- */
@@ -129,10 +165,10 @@ items.forEach((it, idx) => {
 
   const controls = document.createElement('div'); controls.className = 'controls';
 
-  // Озвучаване само на изречението на упражнението
+  // Listen: казваме човешка инструкция, ако има празно
   const listen = document.createElement('button');
   listen.textContent = '🔊 Listen';
-  listen.onclick = () => speak(it.prompt);
+  listen.onclick = () => speak(toInstructionalSpeech(it.prompt));
   controls.appendChild(listen);
 
   let answerUI, result;
@@ -145,8 +181,16 @@ items.forEach((it, idx) => {
     check.onclick = () => {
       const val = (answerUI.value||'').trim().toLowerCase();
       const ok = val === String(it.answer).trim().toLowerCase();
-      result.textContent = ok ? 'Correct!' : `Not quite. ${it.explain||''}`;
-      result.className = ok ? 'ok' : 'bad';
+      if (ok){
+        result.textContent = 'Correct!';
+        result.className = 'ok';
+        speak('Correct! Well done.');
+      } else {
+        const msg = smartWrongFeedback(it);
+        result.textContent = msg;
+        result.className = 'bad';
+        speak(msg);
+      }
     };
     controls.append(answerUI, check);
 
@@ -159,8 +203,16 @@ items.forEach((it, idx) => {
     const no = document.createElement('button');  no.textContent  = 'No';
     const checkYN = (val)=>{
       const ok = String(val).toLowerCase() === String(it.answer).toLowerCase();
-      result.textContent = ok ? 'Correct!' : `Not quite. ${it.explain||''}`;
-      result.className = ok ? 'ok' : 'bad';
+      if (ok){
+        result.textContent = 'Correct!';
+        result.className = 'ok';
+        speak('Correct! Well done.');
+      } else {
+        const msg = smartWrongFeedback(it);
+        result.textContent = msg;
+        result.className = 'bad';
+        speak(msg);
+      }
     };
     yes.onclick = ()=>checkYN('Yes'); no.onclick = ()=>checkYN('No');
     controls.append(yes,no);
