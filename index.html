@@ -40,66 +40,26 @@
 <script>
 /* --- 0) URL params --- */
 const url = new URL(location.href);
-const level = url.searchParams.get('level') || 'A1';
-const unit = url.searchParams.get('unit') || 'L2';
+const level   = url.searchParams.get('level')   || 'A1';
+const unit    = url.searchParams.get('unit')    || 'L2';
 const section = url.searchParams.get('section') || 'grammar';
 document.getElementById('meta').textContent = `${level} • ${unit} • ${section}`;
 
-/* --- 1) Inline dataset (TEMP). Replace with Neon/JSON later. --- */
-const DATA = {
-  A1: {
-    L2: {
-      grammar: [
-        { id:"L2-G-01", kind:"Fill",
-          prompt:"I ___ a cat.", answer:"have",
-          explain:"Present Simple: I have a cat."
-        },
-        { id:"L2-G-02", kind:"YesNo",
-          prompt:"A lady → ladys (plural). Is that correct?",
-          answer:"No", explain:"y → ies: lady → ladies."
-        },
-        { id:"L2-G-03", kind:"Fill",
-          prompt:"a box → ____ (plural)", answer:"boxes",
-          explain:"After x,s,sh,ch,o → add 'es': box → boxes."
-        }
-      ],
-      story: [
-        { id:"L2-S-01", kind:"YesNo",
-          prompt:"The box of toys is big. Is this sentence singular?",
-          answer:"Yes", explain:"The subject 'box' is singular."
-        },
-        { id:"L2-S-02", kind:"Fill",
-          prompt:"There are two ____ in the room. (bus)", answer:"buses",
-          explain:"bus → buses."
-        }
-      ]
-    }
-  }
-};
-
-/* --- 2) TTS helpers --- */
-// правим текста приятен за слушане
+/* --- 1) TTS helpers (остават) --- */
 function normalizeForSpeech(t){
   return String(t)
-    .replace(/\([^)]*\)/g, ' ')   // remove ( ... )
+    .replace(/\([^)]*\)/g, ' ')
     .replace(/→/g, ' to ')
     .replace(/[•◆◦■\-–—]/g, ' ')
     .replace(/\s{2,}/g, ' ')
     .trim();
 }
-
-// ако има празно място, казваме човешка инструкция
 function toInstructionalSpeech(prompt){
-  const hasBlank = /_{1,}/.test(prompt);
-  const clean = normalizeForSpeech(prompt);
-  if (hasBlank) {
-    // Вместо "blank/underscore" → „Complete the sentence…“
-    return "Complete the sentence: " + clean.replace(/_{1,}/g, " … ");
-  }
+  const hasBlank = /_{1,}/.test(prompt||'');
+  const clean = normalizeForSpeech(prompt||'');
+  if (hasBlank) return "Complete the sentence: " + clean.replace(/_{1,}/g, " … ");
   return clean;
 }
-
-// избор на мъжки/EN глас
 let preferredVoice = null;
 function pickMaleVoice(){
   const voices = window.speechSynthesis.getVoices?.() || [];
@@ -108,7 +68,6 @@ function pickMaleVoice(){
   preferredVoice = byMaleName || byLangEN || voices[0] || null;
 }
 window.speechSynthesis.onvoiceschanged = pickMaleVoice; pickMaleVoice();
-
 function speak(text){
   try{
     const u = new SpeechSynthesisUtterance(normalizeForSpeech(text));
@@ -119,113 +78,155 @@ function speak(text){
   }catch{}
 }
 
-/* --- 2a) Smart feedback (rule + tip) --- */
+/* --- 1a) Smart feedback (остават) --- */
 function smartWrongFeedback(it){
   const t = (it.prompt || "").toLowerCase();
 
-  // have / has
   if (/\bhave\b|\bhas\b|have\/has/.test(t)) {
     return "Not quite. With 'I, you, we, they' use 'have'; with 'he, she, it' use 'has'. Try repeating the sentence out loud.";
   }
-
-  // plural -s/-es (има дума plural или типични -es форми)
   if (t.includes("plural") || /boxes|buses|churches|tomatoes|classes|wishes/.test(t)) {
     return "Not quite. For nouns ending in -x, -s, -sh, -ch, or -o, add '-es'. Say the plural form out loud.";
   }
-
-  // предлози at / on / in (често с празно)
   if (/_+/.test(it.prompt || "") && /\b(at|on|in)\b/.test(t)) {
     return "Not quite. Use 'at' for specific places/times (at home, at 5), 'on' for days/dates (on Monday), and 'in' for months/longer periods (in June, in the morning). Try the sentence again.";
   }
-
-  // Yes/No
   if ((it.kind||it.templateType||"").toLowerCase() === "yesno") {
     return "Not quite. Use short answers correctly: Yes, he does. / No, he doesn't. Repeat the correct short answer out loud.";
   }
-
-  // по подразбиране
   return "Not quite. Re-check the rule and try again. Say the correct sentence out loud.";
 }
 
-/* --- 3) Render --- */
-const items = (((DATA[level]||{})[unit]||{})[section]) || [];
-const list = document.getElementById('list');
+/* --- 2) Load + Render from JSON --- */
+async function loadData(level, unit, section){
+  // избираме файл според секцията
+  const file = section === 'grammar' ? 'data/a1_grammar.json' : 'data/a1.json';
+  const res = await fetch(file, { cache: 'no-store' });
+  if (!res.ok) throw new Error(`Fetch failed: ${res.status} ${res.statusText}`);
+  const data = await res.json();
 
-if(!items.length){
-  list.innerHTML = `<div class="card"><div class="prompt">No items for ${level}/${unit}/${section}.</div>
-  <div class="muted">Check URL parameters or dataset.</div></div>`;
+  // очаквана структура: { lessons: { L2: { exercises:[...] }, ... }, feedbackDefaults:{...} }
+  const lessons = data.lessons || {};
+  const key = lessons[unit] ? unit
+            : lessons[unit?.toUpperCase?.()] ? unit.toUpperCase()
+            : lessons['L'+String(unit).replace(/^L/i,'')] ? 'L'+String(unit).replace(/^L/i,'')
+            : null;
+
+  const lesson   = key ? lessons[key] : {};
+  const items    = Array.isArray(lesson?.exercises) ? lesson.exercises : [];
+  const defaults = data.feedbackDefaults || {};
+
+  // ако имаме дефолтен feedback за тип и упражнението няма свое — добавяме го
+  items.forEach(ex => {
+    if (!ex.feedback) {
+      const t = (ex.kind || ex.templateType || 'Fill');
+      if (defaults[t]) ex.feedback = defaults[t];
+    }
+  });
+
+  return items;
 }
 
-items.forEach((it, idx) => {
-  const card = document.createElement('div'); card.className = 'card';
+function renderItems(items){
+  const list = document.getElementById('list');
 
-  const p = document.createElement('div'); p.className = 'prompt';
-  p.textContent = `${idx+1}. ${it.prompt}`;
-  card.appendChild(p);
-
-  const controls = document.createElement('div'); controls.className = 'controls';
-
-  // Listen: казваме човешка инструкция, ако има празно
-  const listen = document.createElement('button');
-  listen.textContent = '🔊 Listen';
-  listen.onclick = () => speak(toInstructionalSpeech(it.prompt));
-  controls.appendChild(listen);
-
-  let answerUI, result;
-  result = document.createElement('div'); result.className='muted';
-
-  if(it.kind === 'Fill'){
-    answerUI = document.createElement('input');
-    answerUI.type = 'text'; answerUI.placeholder = 'Type your answer…';
-    const check = document.createElement('button'); check.textContent = 'Check';
-    check.onclick = () => {
-      const val = (answerUI.value||'').trim().toLowerCase();
-      const ok = val === String(it.answer).trim().toLowerCase();
-      if (ok){
-        result.textContent = 'Correct!';
-        result.className = 'ok';
-        speak('Correct! Well done.');
-      } else {
-        const msg = smartWrongFeedback(it);
-        result.textContent = msg;
-        result.className = 'bad';
-        speak(msg);
-      }
-    };
-    controls.append(answerUI, check);
-
-    const show = document.createElement('button'); show.textContent = 'Show answer';
-    show.onclick = () => { answerUI.value = it.answer; result.textContent = it.explain||''; result.className='muted'; };
-    controls.appendChild(show);
-
-  } else if(it.kind === 'YesNo'){
-    const yes = document.createElement('button'); yes.textContent = 'Yes';
-    const no = document.createElement('button');  no.textContent  = 'No';
-    const checkYN = (val)=>{
-      const ok = String(val).toLowerCase() === String(it.answer).toLowerCase();
-      if (ok){
-        result.textContent = 'Correct!';
-        result.className = 'ok';
-        speak('Correct! Well done.');
-      } else {
-        const msg = smartWrongFeedback(it);
-        result.textContent = msg;
-        result.className = 'bad';
-        speak(msg);
-      }
-    };
-    yes.onclick = ()=>checkYN('Yes'); no.onclick = ()=>checkYN('No');
-    controls.append(yes,no);
-
-    const explain = document.createElement('button'); explain.textContent='Explain';
-    explain.onclick = ()=>{ result.textContent = it.explain||''; result.className='muted'; };
-    controls.appendChild(explain);
+  if(!items.length){
+    list.innerHTML = `<div class="card"><div class="prompt">No items for ${level}/${unit}/${section}.</div>
+    <div class="muted">Check URL parameters or dataset.</div></div>`;
+    return;
   }
 
-  card.appendChild(controls);
-  card.appendChild(result);
-  list.appendChild(card);
-});
+  list.innerHTML = '';
+
+  items.forEach((it, idx) => {
+    const card = document.createElement('div'); card.className = 'card';
+
+    const p = document.createElement('div'); p.className = 'prompt';
+    p.textContent = `${idx+1}. ${it.prompt || ''}`;
+    card.appendChild(p);
+
+    const controls = document.createElement('div'); controls.className = 'controls';
+
+    // 🔊 Listen
+    const listen = document.createElement('button');
+    listen.textContent = '🔊 Listen';
+    listen.onclick = () => speak(toInstructionalSpeech(it.prompt || ''));
+    controls.appendChild(listen);
+
+    let result = document.createElement('div'); result.className='muted';
+
+    const kind = (it.kind || it.templateType || '').toLowerCase();
+
+    if(kind === 'fill'){
+      const answerUI = document.createElement('input');
+      answerUI.type = 'text'; answerUI.placeholder = 'Type your answer…';
+
+      const check = document.createElement('button'); check.textContent = 'Check';
+      check.onclick = () => {
+        const val = (answerUI.value||'').trim().toLowerCase();
+        const ok = val === String(it.answer||'').trim().toLowerCase();
+        if (ok){
+          result.textContent = 'Correct!';
+          result.className = 'ok';
+          speak('Correct! Well done.');
+        } else {
+          const msg = (it.feedback && it.feedback.wrong) ? it.feedback.wrong : smartWrongFeedback(it);
+          result.textContent = msg;
+          result.className = 'bad';
+          speak(msg);
+          if (it.feedback && it.feedback.readCorrectAloud && it.explain){
+            speak(it.explain);
+          }
+        }
+      };
+      controls.append(answerUI, check);
+
+      const show = document.createElement('button'); show.textContent = 'Show answer';
+      show.onclick = () => { answerUI.value = it.answer||''; result.textContent = it.explain||''; result.className='muted'; };
+      controls.appendChild(show);
+
+    } else if(kind === 'yesno'){
+      const yes = document.createElement('button'); yes.textContent = 'Yes';
+      const no  = document.createElement('button'); no.textContent  = 'No';
+
+      const checkYN = (val)=>{
+        const ok = String(val).toLowerCase() === String(it.answer||'').toLowerCase();
+        if (ok){
+          result.textContent = 'Correct!';
+          result.className = 'ok';
+          speak('Correct! Well done.');
+        } else {
+          const msg = (it.feedback && it.feedback.wrong) ? it.feedback.wrong : smartWrongFeedback(it);
+          result.textContent = msg;
+          result.className = 'bad';
+          speak(msg);
+          if (it.feedback && it.feedback.readCorrectAloud && it.explain){
+            speak(it.explain);
+          }
+        }
+      };
+      yes.onclick = ()=>checkYN('Yes'); no.onclick = ()=>checkYN('No');
+      controls.append(yes,no);
+
+      const explain = document.createElement('button'); explain.textContent='Explain';
+      explain.onclick = ()=>{ result.textContent = it.explain||''; result.className='muted'; };
+      controls.appendChild(explain);
+    }
+
+    card.appendChild(controls);
+    card.appendChild(result);
+    list.appendChild(card);
+  });
+}
+
+// стартираме
+loadData(level, unit, section)
+  .then(items => renderItems(items))
+  .catch(err => {
+    const list = document.getElementById('list');
+    list.innerHTML = `<div class="card"><div class="prompt">Error loading data.</div>
+    <div class="muted">${String(err)}</div></div>`;
+  });
 </script>
 </body>
 </html>
