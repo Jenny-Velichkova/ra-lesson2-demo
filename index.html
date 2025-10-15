@@ -81,99 +81,123 @@ function speak(text){
 /* --- 1a) Smart feedback --- */
 function smartWrongFeedback(it){
   const t = (it.prompt || "").toLowerCase();
-  if (/\bhave\b|\bhas\b|have\/has/.test(t)) {
-    return "Not quite. With 'I, you, we, they' use 'have'; with 'he, she, it' use 'has'. Try repeating the sentence out loud.";
-  }
-  if (t.includes("plural") || /boxes|buses|churches|tomatoes|classes|wishes/.test(t)) {
-    return "Not quite. For nouns ending in -x, -s, -sh, -ch, or -o, add '-es'. Say the plural form out loud.";
-  }
-  if (/_+/.test(it.prompt || "") && /\b(at|on|in)\b/.test(t)) {
-    return "Not quite. Use 'at' for specific places/times (at home, at 5), 'on' for days/dates (on Monday), and 'in' for months/longer periods (in June, in the morning). Try the sentence again.";
-  }
-  if ((it.kind||it.templateType||"").toLowerCase() === "yesno") {
-    return "Not quite. Use short answers correctly: Yes, he does. / No, he doesn't. Repeat the correct short answer out loud.";
-  }
+  if (/\bhave\b|\bhas\b|have\/has/.test(t)) return "Not quite. With 'I, you, we, they' use 'have'; with 'he, she, it' use 'has'. Try repeating the sentence out loud.";
+  if (t.includes("plural") || /boxes|buses|churches|tomatoes|classes|wishes/.test(t)) return "Not quite. For nouns ending in -x, -s, -sh, -ch, or -o, add '-es'. Say the plural form out loud.";
+  if (/_+/.test(it.prompt || "") && /\b(at|on|in)\b/.test(t)) return "Not quite. Use 'at' for specific places/times (at home, at 5), 'on' for days/dates (on Monday), and 'in' for months/longer periods (in June, in the morning). Try the sentence again.";
+  if ((it.kind||it.templateType||"").toLowerCase() === "yesno") return "Not quite. Use short answers correctly: Yes, he does. / No, he doesn't. Repeat the correct short answer out loud.";
   return "Not quite. Re-check the rule and try again. Say the correct sentence out loud.";
 }
 
-/* --- 2) Load + normalize from JSON (v2) --- */
+/* small helpers */
+const isInstruction = (s)=>{
+  const t = (s||'').toLowerCase();
+  return (
+    t.startsWith('translate ') || t.includes('превед') ||
+    t.startsWith('make ') || t.includes('въпросителн') || t.includes('отрицателн') ||
+    t.startsWith('put ') || t.includes('поставете') ||
+    t.includes('learn the new words') || t.includes('новите думи') ||
+    t.includes('use the words') || t.includes('fill the gaps') ||
+    t.includes('study the new words')
+  );
+};
+const cleanAnswer = s => String(s||'').replace(/^["«»*]+|["«»*]+$/g,'').replace(/\.$/,'').trim();
+
+/* --- 2) Load + normalize from JSON (rich parser) --- */
 async function loadData(level, unit, section){
   const file = section === 'grammar' ? 'data/a1_grammar.json' : 'data/a1.json';
   const res = await fetch(file, { cache: 'no-store' });
   if (!res.ok) throw new Error(`Fetch failed: ${res.status} ${res.statusText}`);
   const data = await res.json();
 
-  // 1) lessons (в твоя JSON е data.lessons)
   const lessons = data.lessons || data[level] || {};
 
-  // 2) нормализиран ключ: L2 → l02/L02/l2...
+  // нормализиране на ключа L2/l02/02
   const uRaw = String(unit);
   const n = (uRaw.match(/\d+/) || [''])[0];
-  const candidates = [
-    uRaw, uRaw.toUpperCase(), uRaw.toLowerCase(),
-    'L'+n, 'l'+n,
-    'L'+n.padStart(2,'0'), 'l'+n.padStart(2,'0')
-  ];
-  let lesson = null;
-  for (const k of candidates){ if (lessons[k]) { lesson = lessons[k]; break; } }
-
+  const candidates = [uRaw,uRaw.toUpperCase(),uRaw.toLowerCase(),'L'+n,'l'+n,'L'+n.padStart(2,'0'),'l'+n.padStart(2,'0')];
+  let lesson = null; for (const k of candidates){ if (lessons[k]) { lesson = lessons[k]; break; } }
   const exs = Array.isArray(lesson?.exercises) ? lesson.exercises : [];
   const defaults = data.feedbackDefaults || {};
 
-  // 3) разгъваме payload.lines → {kind,prompt,answer,explain,feedback}
   const items = [];
-  exs.forEach(ex => {
-    const lines = Array.isArray(ex.payload?.lines) ? ex.payload.lines : [];
 
-    for (let i = 0; i < lines.length; i++){
-      const cur = String(lines[i] ?? '');
-      const nxt = String(lines[i+1] ?? '');
+  exs.forEach(ex=>{
+    const fb = ex.feedback || {};
+    const fallbackFB = defaults[(ex.templateType||'').trim()] || defaults.Fill || {};
+    const feedback = Object.keys(fb).length ? fb : fallbackFB;
 
-      // A) въпрос + Answer: в един ред
-      if (/Answer\s*:/i.test(cur)){
-        const [qRaw, aRaw] = cur.split(/Answer\s*:\s*/i);
-        let prompt = (qRaw || '').trim();
-        let answer = (aRaw || '').trim();
-        if (!prompt && i>0) prompt = String(lines[i-1]||'').trim();
-        if (!prompt || !answer) continue;
+    const raw = Array.isArray(ex.payload?.lines) ? ex.payload.lines.map(x=>String(x)) : [];
 
-        const yesNo = /^(yes|no)\b/i.test(answer);
-        items.push( yesNo ? {
-          kind: 'YesNo',
-          prompt: prompt.replace(/^\d+\.\s*/, ''),
-          answer: /^yes/i.test(answer) ? 'Yes' : 'No',
-          explain: answer,
-          feedback: ex.feedback || defaults.YesNo
-        } : {
-          kind: 'Fill',
-          prompt: prompt.replace(/^\d+\.\s*/, '').replace(/_{2,}/g,'____'),
-          answer: answer.replace(/\.$/,'').trim(),
-          explain: ex.title || '',
-          feedback: ex.feedback || defaults.Fill
-        });
-        continue;
+    // A) редове с разделител \r (bg\ren)
+    raw.forEach(line=>{
+      if (line.includes('\r')){
+        const [q,a] = line.split('\r');
+        const prompt = (q||'').trim();
+        const answer = cleanAnswer(a);
+        if (prompt && answer){
+          const isYN = /^(yes|no)\b/i.test(answer);
+          items.push(isYN ? {
+            kind:'YesNo', prompt, answer:/^yes/i.test(answer)?'Yes':'No', explain:answer, feedback
+          } : {
+            kind:'Fill', prompt:prompt.replace(/_{2,}/g,'____'), answer, explain:ex.title||'', feedback
+          });
+        }
       }
+    });
 
-      // B) въпрос на този ред, отговор на следващия
-      if (/Answer\s*:/i.test(nxt) && !/Answer\s*:/i.test(cur)){
-        const answer = nxt.split(/Answer\s*:\s*/i)[1]?.trim();
-        const prompt = cur.trim();
-        if (!prompt || !answer) continue;
+    // B) класически "… Answer: …" (в един ред)
+    raw.forEach((line,idx)=>{
+      if (/Answer\s*:/i.test(line)){
+        const [qRaw,aRaw] = line.split(/Answer\s*:\s*/i);
+        const q = (qRaw||'').trim() || String(raw[idx-1]||'').trim();
+        const a = cleanAnswer(aRaw);
+        if (q && a){
+          const isYN = /^(yes|no)\b/i.test(a);
+          items.push(isYN ? {
+            kind:'YesNo', prompt:q, answer:/^yes/i.test(a)?'Yes':'No', explain:a, feedback
+          }:{
+            kind:'Fill', prompt:q.replace(/_{2,}/g,'____'), answer:a, explain:ex.title||'', feedback
+          });
+        }
+      }
+    });
 
-        const yesNo = /^(yes|no)\b/i.test(answer);
-        items.push( yesNo ? {
-          kind: 'YesNo',
-          prompt: prompt.replace(/^\d+\.\s*/, ''),
-          answer: /^yes/i.test(answer) ? 'Yes' : 'No',
-          explain: answer,
-          feedback: ex.feedback || defaults.YesNo
-        } : {
-          kind: 'Fill',
-          prompt: prompt.replace(/^\d+\.\s*/, '').replace(/_{2,}/g,'____'),
-          answer: answer.replace(/\.$/,'').trim(),
-          explain: ex.title || '',
-          feedback: ex.feedback || defaults.Fill
-        });
+    // C) текущ ред е prompt с „____“, следващ ред е отговор (без „Answer:“)
+    for (let i=0;i<raw.length-1;i++){
+      const cur = raw[i].trim(), nxt = raw[i+1].trim();
+      if (/_+/.test(cur) && !isInstruction(cur) && !/Answer\s*:/i.test(nxt) && nxt && !/_+/.test(nxt)){
+        items.push({ kind:'Fill', prompt:cur.replace(/^\d+\.\s*/,'').replace(/_{2,}/g,'____'), answer:cleanAnswer(nxt), explain:ex.title||'', feedback });
+      }
+    }
+
+    // D) „Превод: …“ – вземи предходния ред за prompt
+    for (let i=0;i<raw.length;i++){
+      const line = raw[i];
+      if (/^превод\s*:/i.test(line) || /^translation\s*:/i.test(line)){
+        const prev = String(raw[i-1]||'').trim();
+        const ans = cleanAnswer(line.split(/:\s*/)[1]);
+        if (prev && ans && !isInstruction(prev)){
+          items.push({ kind:'Fill', prompt:prev, answer:ans, explain:ex.title||'', feedback });
+        }
+      }
+    }
+
+    // E) „Въпрос:“ / „Отрицание:“ – използвай предишната фраза като база
+    for (let i=0;i<raw.length;i++){
+      const line = raw[i].trim();
+      if (/^въпрос\s*:/i.test(line)){
+        const base = String(raw[i-1]||'').replace(/^\d+\.\s*/,'').trim();
+        const ans = cleanAnswer(line.split(/:\s*/)[1]);
+        if (base && ans && !isInstruction(base)){
+          items.push({ kind:'Fill', prompt:`Make a question: ${base}`, answer:ans, explain:ex.title||'', feedback });
+        }
+      }
+      if (/^отрицание\s*:/i.test(line)){
+        const base = String(raw[i-1]||'').replace(/^\d+\.\s*/,'').trim();
+        const ans = cleanAnswer(line.split(/:\s*/)[1]);
+        if (base && ans && !isInstruction(base)){
+          items.push({ kind:'Fill', prompt:`Make a negative: ${base}`, answer:ans, explain:ex.title||'', feedback });
+        }
       }
     }
   });
