@@ -59,7 +59,7 @@ function normalizeForSpeech(t){
 function toInstructionalSpeech(prompt){
   const hasBlank = /_{1,}/.test(prompt||'');
   const clean = normalizeForSpeech(prompt||'');
-  if (hasBlank) return "Complete the sentence: " + clean.replace(/_{1,}/g, " … ");
+  if (hasBlank) return "Complete the sentence: " + clean.replace(/_{1,}/g, " blank ");
   return clean;
 }
 let preferredVoice = null;
@@ -98,7 +98,7 @@ function smartWrongFeedback(it){
   return "Not quite. Re-check the rule and try again. Say the correct sentence out loud.";
 }
 
-/* --- 2) Helpers: normalize answers --- */
+/* --- 2) Helpers --- */
 function norm(s){
   return String(s||'')
     .toLowerCase()
@@ -106,6 +106,11 @@ function norm(s){
     .replace(/[.,!?;:()]/g,' ')
     .replace(/\s+/g,' ')
     .trim();
+}
+function answerLine(it){
+  const ans = String(it.answer ?? '').trim();
+  const expl = String(it.explain ?? it.explanation ?? '').trim();
+  return expl ? `Answer: ${ans} — ${expl}` : `Answer: ${ans}`;
 }
 
 /* --- 3) Load + expand JSON to items --- */
@@ -134,7 +139,6 @@ async function loadData(level, unit, section){
   const defaults = data.feedbackDefaults || {};
 
   (lesson.exercises || []).forEach((ex, exIdx) => {
-    const template = (ex.templateType||ex.kind||'').toLowerCase();
     const lines = (ex.payload && Array.isArray(ex.payload.lines)) ? ex.payload.lines.slice() : [];
     if (!lines.length){ return; }
 
@@ -250,7 +254,7 @@ function render(blocks){
         const gold = norm(it.answer||'');
         const ok = user && gold && user === gold;
         if (ok){
-          result.textContent = 'Correct!';
+          result.textContent = `Correct! ✓ ${it.answer}`;
           result.className = 'ok';
           speak('Correct! Well done.');
         } else {
@@ -267,9 +271,12 @@ function render(blocks){
 
       const show = document.createElement('button'); show.textContent = 'Show answer';
       show.onclick = () => {
-        answerUI.value = it.answer||'';
-        result.textContent = it.explain||'';
+        // оставяме полето празно; показваме правилния отговор и (ако има) пояснение
+        answerUI.value = '';
+        const line = answerLine(it);
+        result.textContent = line;
         result.className='muted';
+        speak(line);
       };
       controls.appendChild(show);
 
