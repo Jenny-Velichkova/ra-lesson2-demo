@@ -12,6 +12,8 @@
   .pill{font-size:12px;background:#1a2230;border:1px solid #2b3a55;padding:6px 10px;border-radius:999px}
   h1{font-size:18px;margin:0}
   .card{background:#10161f;border:1px solid #223047;border-radius:14px;padding:16px;margin:12px 0;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+  .block-title{font-weight:700;margin:0 0 6px 0}
+  .block-sub{color:#9aa7bd;font-size:13px;margin-bottom:10px}
   .prompt{font-weight:600;margin-bottom:10px}
   .controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
   button{cursor:pointer;border:1px solid #314462;background:#172133;color:#e7e9ee;border-radius:10px;padding:8px 12px}
@@ -40,9 +42,9 @@
 <script>
 /* --- 0) URL params --- */
 const url = new URL(location.href);
-const level   = url.searchParams.get('level')   || 'A1';
-const unit    = url.searchParams.get('unit')    || 'L2';
-const section = url.searchParams.get('section') || 'grammar';
+const level   = (url.searchParams.get('level')   || 'A1').toUpperCase();
+const unit    = (url.searchParams.get('unit')    || 'L2').toUpperCase();
+const section = (url.searchParams.get('section') || 'story').toLowerCase();
 document.getElementById('meta').textContent = `${level} • ${unit} • ${section}`;
 
 /* --- 1) TTS helpers --- */
@@ -81,226 +83,220 @@ function speak(text){
 /* --- 1a) Smart feedback --- */
 function smartWrongFeedback(it){
   const t = (it.prompt || "").toLowerCase();
-  if (/\bhave\b|\bhas\b|have\/has/.test(t)) return "Not quite. With 'I, you, we, they' use 'have'; with 'he, she, it' use 'has'. Try repeating the sentence out loud.";
-  if (t.includes("plural") || /boxes|buses|churches|tomatoes|classes|wishes/.test(t)) return "Not quite. For nouns ending in -x, -s, -sh, -ch, or -o, add '-es'. Say the plural form out loud.";
-  if (/_+/.test(it.prompt || "") && /\b(at|on|in)\b/.test(t)) return "Not quite. Use 'at' for specific places/times (at home, at 5), 'on' for days/dates (on Monday), and 'in' for months/longer periods (in June, in the morning). Try the sentence again.";
-  if ((it.kind||it.templateType||"").toLowerCase() === "yesno") return "Not quite. Use short answers correctly: Yes, he does. / No, he doesn't. Repeat the correct short answer out loud.";
+  if (/\bhave\b|\bhas\b|have\/has/.test(t)) {
+    return "Not quite. With 'I, you, we, they' use 'have'; with 'he, she, it' use 'has'. Try repeating the sentence out loud.";
+  }
+  if (t.includes("plural") || /boxes|buses|churches|tomatoes|classes|wishes/.test(t)) {
+    return "Not quite. For nouns ending in -x, -s, -sh, -ch, or -o, add '-es'. Say the plural form out loud.";
+  }
+  if (/_+/.test(it.prompt || "") && /\b(at|on|in)\b/.test(t)) {
+    return "Not quite. Use 'at' for specific places/times (at home, at 5), 'on' for days/dates (on Monday), and 'in' for months/longer periods (in June, in the morning). Try the sentence again.";
+  }
+  if ((it.kind||it.templateType||"").toLowerCase() === "yesno") {
+    return "Not quite. Use short answers correctly: Yes, he does. / No, he doesn't. Repeat the correct short answer out loud.";
+  }
   return "Not quite. Re-check the rule and try again. Say the correct sentence out loud.";
 }
 
-/* small helpers */
-const isInstruction = (s)=>{
-  const t = (s||'').toLowerCase();
-  return (
-    t.startsWith('translate ') || t.includes('превед') ||
-    t.startsWith('make ') || t.includes('въпросителн') || t.includes('отрицателн') ||
-    t.startsWith('put ') || t.includes('поставете') ||
-    t.includes('learn the new words') || t.includes('новите думи') ||
-    t.includes('use the words') || t.includes('fill the gaps') ||
-    t.includes('study the new words')
-  );
-};
-const cleanAnswer = s => String(s||'').replace(/^["«»*]+|["«»*]+$/g,'').replace(/\.$/,'').trim();
+/* --- 2) Helpers: normalize answers --- */
+function norm(s){
+  return String(s||'')
+    .toLowerCase()
+    .replace(/[“”"‘’']/g,'"')
+    .replace(/[.,!?;:()]/g,' ')
+    .replace(/\s+/g,' ')
+    .trim();
+}
 
-/* --- 2) Load + normalize from JSON (rich parser) --- */
+/* --- 3) Load + expand JSON to items --- */
 async function loadData(level, unit, section){
   const file = section === 'grammar' ? 'data/a1_grammar.json' : 'data/a1.json';
   const res = await fetch(file, { cache: 'no-store' });
   if (!res.ok) throw new Error(`Fetch failed: ${res.status} ${res.statusText}`);
   const data = await res.json();
 
-  const lessons = data.lessons || data[level] || {};
+  const lessons = data.lessons || {};
+  // приемаме L2/L02 и т.н.
+  const key = lessons[unit] ? unit
+            : lessons['L'+String(unit).replace(/^L/i,'')] ? 'L'+String(unit).replace(/^L/i,'')
+            : Object.keys(lessons).find(k => k.toUpperCase()===unit) || null;
 
-  // нормализиране на ключа L2/l02/02
-  const uRaw = String(unit);
-  const n = (uRaw.match(/\d+/) || [''])[0];
-  const candidates = [uRaw,uRaw.toUpperCase(),uRaw.toLowerCase(),'L'+n,'l'+n,'L'+n.padStart(2,'0'),'l'+n.padStart(2,'0')];
-  let lesson = null; for (const k of candidates){ if (lessons[k]) { lesson = lessons[k]; break; } }
-  const exs = Array.isArray(lesson?.exercises) ? lesson.exercises : [];
+  const lesson   = key ? lessons[key] : null;
+  if (!lesson) return {blocks:[], defaults:data.feedbackDefaults||{}};
+
+  // Ако вътре има exercises + payload.lines → правим блокове и items
+  const blocks = [];
   const defaults = data.feedbackDefaults || {};
 
-  const items = [];
+  (lesson.exercises || []).forEach((ex, exIdx) => {
+    const template = (ex.templateType||ex.kind||'').toLowerCase();
+    const lines = (ex.payload && Array.isArray(ex.payload.lines)) ? ex.payload.lines.slice() : [];
+    if (!lines.length){ return; }
 
-  exs.forEach(ex=>{
-    const fb = ex.feedback || {};
-    const fallbackFB = defaults[(ex.templateType||'').trim()] || defaults.Fill || {};
-    const feedback = Object.keys(fb).length ? fb : fallbackFB;
+    // Ще създадем блок с items вътре
+    const block = {
+      title: ex.title || `Exercise ${exIdx+1}`,
+      sub: null,
+      items: []
+    };
 
-    const raw = Array.isArray(ex.payload?.lines) ? ex.payload.lines.map(x=>String(x)) : [];
+    // Първият информативен ред става "sub" (ако изглежда като инструкция)
+    const firstInfo = lines.find(s => /fill|translate|rearrange|подредете|попълнете|преведете/i.test(s));
+    if (firstInfo) block.sub = firstInfo;
 
-    // A) редове с разделител \r (bg\ren)
-    raw.forEach(line=>{
-      if (line.includes('\r')){
-        const [q,a] = line.split('\r');
-        const prompt = (q||'').trim();
-        const answer = cleanAnswer(a);
-        if (prompt && answer){
-          const isYN = /^(yes|no)\b/i.test(answer);
-          items.push(isYN ? {
-            kind:'YesNo', prompt, answer:/^yes/i.test(answer)?'Yes':'No', explain:answer, feedback
-          } : {
-            kind:'Fill', prompt:prompt.replace(/_{2,}/g,'____'), answer, explain:ex.title||'', feedback
-          });
-        }
+    // Case A: Task 1 (промпти + "Answers:" списък)
+    const ansPos = lines.findIndex(s => /^answers\s*:?/i.test(s));
+    if (ansPos !== -1){
+      const prompts = lines.slice(0, ansPos).filter(s => /___/.test(s));
+      const answers = lines.slice(ansPos+1).map(s => s.trim()).filter(Boolean);
+      const n = Math.min(prompts.length, answers.length);
+      for(let i=0;i<n;i++){
+        block.items.push({
+          kind:'Fill',
+          prompt: prompts[i],
+          answer: answers[i],
+          explain: block.sub || ''
+        });
       }
-    });
+      blocks.push(block);
+      return;
+    }
 
-    // B) класически "… Answer: …" (в един ред)
-    raw.forEach((line,idx)=>{
-      if (/Answer\s*:/i.test(line)){
-        const [qRaw,aRaw] = line.split(/Answer\s*:\s*/i);
-        const q = (qRaw||'').trim() || String(raw[idx-1]||'').trim();
-        const a = cleanAnswer(aRaw);
-        if (q && a){
-          const isYN = /^(yes|no)\b/i.test(a);
-          items.push(isYN ? {
-            kind:'YesNo', prompt:q, answer:/^yes/i.test(a)?'Yes':'No', explain:a, feedback
-          }:{
-            kind:'Fill', prompt:q.replace(/_{2,}/g,'____'), answer:a, explain:ex.title||'', feedback
-          });
-        }
-      }
-    });
-
-    // C) текущ ред е prompt с „____“, следващ ред е отговор (без „Answer:“)
-    for (let i=0;i<raw.length-1;i++){
-      const cur = raw[i].trim(), nxt = raw[i+1].trim();
-      if (/_+/.test(cur) && !isInstruction(cur) && !/Answer\s*:/i.test(nxt) && nxt && !/_+/.test(nxt)){
-        items.push({ kind:'Fill', prompt:cur.replace(/^\d+\.\s*/,'').replace(/_{2,}/g,'____'), answer:cleanAnswer(nxt), explain:ex.title||'', feedback });
+    // Case B: Task 3 (въпрос + „Correct Answer:“)
+    // Намираме двойки: [question] -> [Correct Answer: ...]
+    for(let i=0;i<lines.length;i++){
+      const q = lines[i];
+      const mQ = /^(.*\?)\s*(?:\(.*?\))?\s*$/i.exec(q);
+      const next = lines[i+1] || '';
+      const mA = /^\s*(?:correct\s*answer\s*:\s*)(.*)$/i.exec(next);
+      if (mQ && mA){
+        block.items.push({
+          kind:'Fill',
+          prompt: mQ[1],
+          answer: mA[1],
+          explain: block.sub || ''
+        });
+        i++; // прескачаме отговора
+        continue;
       }
     }
 
-    // D) „Превод: …“ – вземи предходния ред за prompt
-    for (let i=0;i<raw.length;i++){
-      const line = raw[i];
-      if (/^превод\s*:/i.test(line) || /^translation\s*:/i.test(line)){
-        const prev = String(raw[i-1]||'').trim();
-        const ans = cleanAnswer(line.split(/:\s*/)[1]);
-        if (prev && ans && !isInstruction(prev)){
-          items.push({ kind:'Fill', prompt:prev, answer:ans, explain:ex.title||'', feedback });
-        }
-      }
-    }
-
-    // E) „Въпрос:“ / „Отрицание:“ – използвай предишната фраза като база
-    for (let i=0;i<raw.length;i++){
-      const line = raw[i].trim();
-      if (/^въпрос\s*:/i.test(line)){
-        const base = String(raw[i-1]||'').replace(/^\d+\.\s*/,'').trim();
-        const ans = cleanAnswer(line.split(/:\s*/)[1]);
-        if (base && ans && !isInstruction(base)){
-          items.push({ kind:'Fill', prompt:`Make a question: ${base}`, answer:ans, explain:ex.title||'', feedback });
-        }
-      }
-      if (/^отрицание\s*:/i.test(line)){
-        const base = String(raw[i-1]||'').replace(/^\d+\.\s*/,'').trim();
-        const ans = cleanAnswer(line.split(/:\s*/)[1]);
-        if (base && ans && !isInstruction(base)){
-          items.push({ kind:'Fill', prompt:`Make a negative: ${base}`, answer:ans, explain:ex.title||'', feedback });
-        }
-      }
+    if (block.items.length){
+      blocks.push(block);
     }
   });
 
-  return items;
+  // Фолбек: ако няма блокове (или работим със „стария“ плосък формат)
+  if (!blocks.length){
+    const flat = Array.isArray(lesson.exercises) ? lesson.exercises : [];
+    blocks.push({
+      title: `${unit} • ${section}`,
+      sub: null,
+      items: flat
+    });
+  }
+
+  // добавяме default feedback, ако липсва
+  blocks.forEach(b=>{
+    b.items.forEach(it=>{
+      if (!it.feedback){
+        const t = (it.kind || it.templateType || 'Fill');
+        if (defaults[t]) it.feedback = defaults[t];
+      }
+    });
+  });
+
+  return {blocks, defaults};
 }
 
-/* --- 3) Render --- */
-function renderItems(items){
+/* --- 4) Render --- */
+function render(blocks){
   const list = document.getElementById('list');
+  list.innerHTML = '';
 
-  if(!items.length){
+  if(!blocks.length){
     list.innerHTML = `<div class="card"><div class="prompt">No items for ${level}/${unit}/${section}.</div>
     <div class="muted">Check URL parameters or dataset.</div></div>`;
     return;
   }
 
-  list.innerHTML = '';
-
-  items.forEach((it, idx) => {
-    const card = document.createElement('div'); card.className = 'card';
-
-    const p = document.createElement('div'); p.className = 'prompt';
-    p.textContent = `${idx+1}. ${it.prompt || ''}`;
-    card.appendChild(p);
-
-    const controls = document.createElement('div'); controls.className = 'controls';
-
-    // 🔊 Listen
-    const listen = document.createElement('button');
-    listen.textContent = '🔊 Listen';
-    listen.onclick = () => speak(toInstructionalSpeech(it.prompt || ''));
-    controls.appendChild(listen);
-
-    let result = document.createElement('div'); result.className='muted';
-
-    const kind = (it.kind || it.templateType || '').toLowerCase();
-
-    if(kind === 'fill'){
-      const answerUI = document.createElement('input');
-      answerUI.type = 'text'; answerUI.placeholder = 'Type your answer…';
-
-      const check = document.createElement('button'); check.textContent = 'Check';
-      check.onclick = () => {
-        const val = (answerUI.value||'').trim().toLowerCase();
-        const ok = val === String(it.answer||'').trim().toLowerCase();
-        if (ok){
-          result.textContent = 'Correct!';
-          result.className = 'ok';
-          speak('Correct! Well done.');
-        } else {
-          const msg = (it.feedback && it.feedback.wrong) ? it.feedback.wrong : smartWrongFeedback(it);
-          result.textContent = msg;
-          result.className = 'bad';
-          speak(msg);
-          if (it.feedback && it.feedback.readCorrectAloud && it.explain){
-            speak(it.explain);
-          }
-        }
-      };
-      controls.append(answerUI, check);
-
-      const show = document.createElement('button'); show.textContent = 'Show answer';
-      show.onclick = () => { answerUI.value = it.answer||''; result.textContent = it.explain||''; result.className='muted'; };
-      controls.appendChild(show);
-
-    } else if(kind === 'yesno'){
-      const yes = document.createElement('button'); yes.textContent = 'Yes';
-      const no  = document.createElement('button'); no.textContent  = 'No';
-
-      const checkYN = (val)=>{
-        const ok = String(val).toLowerCase() === String(it.answer||'').toLowerCase();
-        if (ok){
-          result.textContent = 'Correct!';
-          result.className = 'ok';
-          speak('Correct! Well done.');
-        } else {
-          const msg = (it.feedback && it.feedback.wrong) ? it.feedback.wrong : smartWrongFeedback(it);
-          result.textContent = msg;
-          result.className = 'bad';
-          speak(msg);
-          if (it.feedback && it.feedback.readCorrectAloud && it.explain){
-            speak(it.explain);
-          }
-        }
-      };
-      yes.onclick = ()=>checkYN('Yes'); no.onclick = ()=>checkYN('No');
-      controls.append(yes,no);
-
-      const explain = document.createElement('button'); explain.textContent='Explain';
-      explain.onclick = ()=>{ result.textContent = it.explain||''; result.className='muted'; };
-      controls.appendChild(explain);
+  blocks.forEach((block, bi) => {
+    // Header card for the block
+    const head = document.createElement('div');
+    head.className = 'card';
+    const t = document.createElement('div'); t.className='block-title'; t.textContent = `${bi+1}. ${block.title}`;
+    head.appendChild(t);
+    if (block.sub){
+      const s = document.createElement('div'); s.className='block-sub'; s.textContent = block.sub;
+      head.appendChild(s);
     }
+    list.appendChild(head);
 
-    card.appendChild(controls);
-    card.appendChild(result);
-    list.appendChild(card);
+    // Items
+    block.items.forEach((it, idx) => {
+      const card = document.createElement('div'); card.className = 'card';
+
+      const p = document.createElement('div'); p.className = 'prompt';
+      p.textContent = `${idx+1}. ${it.prompt || ''}`;
+      card.appendChild(p);
+
+      const controls = document.createElement('div'); controls.className = 'controls';
+
+      // 🔊 Listen
+      const listen = document.createElement('button');
+      listen.textContent = '🔊 Listen';
+      listen.onclick = () => speak(toInstructionalSpeech(it.prompt || ''));
+      controls.appendChild(listen);
+
+      let result = document.createElement('div'); result.className='muted';
+
+      const kind = (it.kind || it.templateType || '').toLowerCase();
+
+      // Приемаме „Fill“ с нормализирано сравнение
+      if(kind === 'fill' || !kind){
+        const answerUI = document.createElement('input');
+        answerUI.type = 'text'; answerUI.placeholder = 'Type your answer…';
+
+        const check = document.createElement('button'); check.textContent = 'Check';
+        check.onclick = () => {
+          const user = norm(answerUI.value||'');
+          const gold = norm(it.answer||'');
+          const ok = user && gold && user === gold;
+          if (ok){
+            result.textContent = 'Correct!';
+            result.className = 'ok';
+            speak('Correct! Well done.');
+          } else {
+            const msg = (it.feedback && it.feedback.wrong) ? it.feedback.wrong : smartWrongFeedback(it);
+            result.textContent = msg;
+            result.className = 'bad';
+            speak(msg);
+            if (it.feedback && it.feedback.readCorrectAloud && it.answer){
+              speak(it.answer);
+            }
+          }
+        };
+        controls.append(answerUI, check);
+
+        const show = document.createElement('button'); show.textContent = 'Show answer';
+        show.onclick = () => {
+          answerUI.value = it.answer||'';
+          result.textContent = it.explain||'';
+          result.className='muted';
+        };
+        controls.appendChild(show);
+      }
+
+      card.appendChild(controls);
+      card.appendChild(result);
+      list.appendChild(card);
+    });
   });
 }
 
-// стартираме
+/* --- 5) boot --- */
 loadData(level, unit, section)
-  .then(items => renderItems(items))
+  .then(({blocks}) => render(blocks))
   .catch(err => {
     const list = document.getElementById('list');
     list.innerHTML = `<div class="card"><div class="prompt">Error loading data.</div>
