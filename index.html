@@ -24,30 +24,47 @@
   .muted{color:#9aa7bd;font-size:13px}
   .hr{height:1px;background:#1f2a3d;margin:18px 0}
   .foot{display:flex;gap:8px;align-items:center;justify-content:flex-end}
+  .rec{border-color:#ff7a7a;background:#2a1717}
+  .toggle{display:flex;gap:6px;align-items:center}
 </style>
 </head>
 <body>
 <div class="wrap">
   <div class="head">
     <h1>Interactive Exercises</h1>
-    <div class="pill" id="meta"></div>
+    <div class="toggle">
+      <div class="pill" id="meta"></div>
+      <button id="toggleSpeech" class="pill"></button>
+      <button id="toggleTTS" class="pill"></button>
+    </div>
   </div>
 
   <div id="list"></div>
 
   <div class="hr"></div>
-  <div class="foot muted">Tip: Use the 🔊 button to hear the sentence. Your answers are checked locally.</div>
+  <div class="foot muted">Tip: Click 🎙️ Speak and say the missing word. Answers are checked locally.</div>
 </div>
 
 <script>
-/* --- 0) URL params --- */
+/* --- 0) URL params / toggles --- */
 const url = new URL(location.href);
 const level   = (url.searchParams.get('level')   || 'A1').toUpperCase();
 const unit    = (url.searchParams.get('unit')    || 'L2').toUpperCase();
 const section = (url.searchParams.get('section') || 'story').toLowerCase();
+let speechOn  = url.searchParams.get('speech') !== '0';   // student speaking
+let ttsOn     = url.searchParams.get('tts') === '1';      // robot off by default
 document.getElementById('meta').textContent = `${level} • ${unit} • ${section}`;
+const $btnSpeech = document.getElementById('toggleSpeech');
+const $btnTTS    = document.getElementById('toggleTTS');
+function refreshToggles(){
+  $btnSpeech.textContent = speechOn ? '🎙️ Speech: ON' : '🎙️ Speech: OFF';
+  $btnTTS.textContent    = ttsOn ? '🔊 TTS: ON' : '🔕 TTS: OFF';
+}
+$btnSpeech.onclick = ()=>{ speechOn=!speechOn; refreshToggles(); };
+$btnTTS.onclick    = ()=>{ ttsOn=!ttsOn; refreshToggles(); };
+refreshToggles();
 
-/* --- 1) TTS helpers --- */
+/* --- 1) TTS helpers (kept but OFF by default) --- */
 function normalizeForSpeech(t){
   return String(t)
     .replace(/\([^)]*\)/g, ' ')
@@ -59,23 +76,22 @@ function normalizeForSpeech(t){
 function toInstructionalSpeech(prompt){
   const hasBlank = /_{1,}/.test(prompt||'');
   const clean = normalizeForSpeech(prompt||'');
-  if (hasBlank) return "Complete the sentence: " + clean.replace(/_{1,}/g, " blank ");
+  if (hasBlank) return "Complete the sentence: " + clean.replace(/_{1,}/g, " … ");
   return clean;
 }
 let preferredVoice = null;
 function pickMaleVoice(){
   const voices = window.speechSynthesis.getVoices?.() || [];
-  const byMaleName = voices.find(v => /(male|david|george|guy|daniel)/i.test(v.name));
-  const byLangEN   = voices.find(v => /^en/i.test(v.lang));
-  preferredVoice = byMaleName || byLangEN || voices[0] || null;
+  const en = voices.filter(v => /^en(-|_)/i.test(v.lang));
+  const byMaleName = en.find(v => /(male|david|george|guy|daniel|microsoft|google uk english male)/i.test(v.name));
+  preferredVoice = byMaleName || en[0] || voices[0] || null;
 }
 window.speechSynthesis.onvoiceschanged = pickMaleVoice; pickMaleVoice();
-
-/* Speak only the EN part (text before " / ") */
-function speakEn(text){
+function speak(text){
+  if(!ttsOn) return;
   try{
-    const english = String(text).split(' / ')[0];
-    const u = new SpeechSynthesisUtterance(normalizeForSpeech(english));
+    const u = new SpeechSynthesisUtterance(normalizeForSpeech(text));
+    u.lang = 'en-US';
     if (preferredVoice) u.voice = preferredVoice;
     u.rate = 1.0; u.pitch = 1.0;
     window.speechSynthesis.cancel();
@@ -83,19 +99,13 @@ function speakEn(text){
   }catch{}
 }
 
-/* --- 2) Smart feedback (fallbacks) --- */
+/* --- 1a) Smart feedback --- */
 function smartWrongFeedback(it){
-  const t = (it.prompt || "").toLowerCase();
-  if (/\bhave\b|\bhas\b|have\/has/.test(t)) {
-    return "Not quite. With 'I, you, we, they' use 'have'; with 'he, she, it' use 'has'. / Не точно. За 'I, you, we, they' ползваме 'have', за 'he, she, it' — 'has'.";
-  }
-  if (t.includes("plural") || /boxes|buses|churches|tomatoes|classes|wishes/.test(t)) {
-    return "Not quite. For those plurals add '-es'. / Не точно. За тези мн. числа добавете '-es'.";
-  }
-  return "Not quite. Try again. / Не точно. Опитайте пак.";
+  // generic bilingual fallback
+  return "Not quite. Check the story and try again. / Не точно. Върнете се към историята и опитайте пак.";
 }
 
-/* --- 3) Helpers: normalize answers --- */
+/* --- 2) Helpers: normalize answers --- */
 function norm(s){
   return String(s||'')
     .toLowerCase()
@@ -105,18 +115,26 @@ function norm(s){
     .trim();
 }
 
-/* === NEW: bilingual lines for this STORY block === */
-function storyWrongFeedback(){
-  return "Not quite. Check the story again and try to find the right word. / Не точно. Прегледайте отново историята и опитайте да намерите правилната дума.";
-}
-function storyCorrectFeedback(ans){
-  return `Correct! ✓ ${ans} is right — you understood the story. / Правилно! ✓ ${ans} е верният отговор — разбрали сте историята.`;
-}
-function answerLine(ans){
-  return `Answer: ${ans} / Верен отговор: ${ans}`;
+/* --- 3) Student Speech Recognition --- */
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition || null;
+function startSpeechOnce({onResult, onError}={}){
+  if(!SR){ onError && onError(new Error('SpeechRecognition not supported')); return ()=>{}; }
+  const rec = new SR();
+  rec.lang = 'en-US';
+  rec.continuous = false;
+  rec.interimResults = false;
+  rec.maxAlternatives = 3;
+  rec.onresult = (e)=>{
+    const alts = [];
+    for (let i=0;i<e.results[0].length;i++){ alts.push(e.results[0][i].transcript); }
+    onResult && onResult(alts);
+  };
+  rec.onerror = (e)=> onError && onError(e.error || e);
+  rec.start();
+  return ()=>{ try{ rec.stop(); }catch{} };
 }
 
-/* --- 4) Load + expand JSON to items --- */
+/* --- 4) Load + expand JSON to items (same as преди) --- */
 async function loadData(level, unit, section){
   const file = section === 'grammar' ? 'data/a1_grammar.json' : 'data/a1.json';
   const res = await fetch(file, { cache: 'no-store' });
@@ -124,94 +142,64 @@ async function loadData(level, unit, section){
   const data = await res.json();
 
   const lessons = data.lessons || {};
-  const rawNum = String(unit).replace(/^L/i,'').replace(/^0+/,''); // "2"
-  const num2   = rawNum.padStart(2,'0');                           // "02"
-  const candidates = [
-    unit, unit.toUpperCase(), unit.toLowerCase(),
-    'L'+rawNum, 'l'+rawNum,
-    'L'+num2,  'l'+num2
-  ];
+  const rawNum = String(unit).replace(/^L/i,'').replace(/^0+/,'');
+  const num2   = rawNum.padStart(2,'0');
+  const candidates = [unit, unit.toUpperCase(), unit.toLowerCase(),'L'+rawNum,'l'+rawNum,'L'+num2,'l'+num2];
   const key = candidates.find(k => Object.prototype.hasOwnProperty.call(lessons, k)) || null;
-
   const lesson   = key ? lessons[key] : null;
-  if (!lesson) return {blocks:[]};
+  if (!lesson) return {blocks:[], defaults:data.feedbackDefaults||{}};
 
   const blocks = [];
+  const defaults = data.feedbackDefaults || {};
 
   (lesson.exercises || []).forEach((ex, exIdx) => {
     const lines = (ex.payload && Array.isArray(ex.payload.lines)) ? ex.payload.lines.slice() : [];
     if (!lines.length){ return; }
 
-    const block = {
-      title: ex.title || `Exercise ${exIdx+1}`,
-      sub: null,
-      items: []
-    };
-
-    // Ако в първия ред има инструкция — я слагаме като подзаглавие
+    const block = { title: ex.title || `Exercise ${exIdx+1}`, sub: null, items: [] };
     const firstInfo = lines.find(s => /fill|translate|rearrange|подредете|попълнете|преведете/i.test(s));
     if (firstInfo) block.sub = firstInfo;
 
-    // Task 1: промпти с "Answers:"
     const ansPos = lines.findIndex(s => /^answers\s*:?/i.test(s));
     if (ansPos !== -1){
       const prompts = lines.slice(0, ansPos).filter(s => /___/.test(s));
       const answers = lines.slice(ansPos+1).map(s => s.trim()).filter(Boolean);
       const n = Math.min(prompts.length, answers.length);
       for(let i=0;i<n;i++){
-        block.items.push({
-          kind:'Fill',
-          prompt: prompts[i],
-          answer: answers[i]
-          // ВАЖНО: не слагаме it.explain, за да не виси грешната инструкция под отговора
-        });
+        block.items.push({ kind:'Fill', prompt: prompts[i], answer: answers[i], explain: '', feedback: defaults.Fill || undefined });
       }
       blocks.push(block);
       return;
     }
 
-    // Task 3: Въпрос + "Correct Answer:"
+    // Q + Correct Answer pattern
     for(let i=0;i<lines.length;i++){
       const q = lines[i];
       const mQ = /^(.*\?)\s*(?:\(.*?\))?\s*$/i.exec(q);
       const next = lines[i+1] || '';
       const mA = /^\s*(?:correct\s*answer\s*:\s*)(.*)$/i.exec(next);
       if (mQ && mA){
-        block.items.push({
-          kind:'Fill',
-          prompt: mQ[1],
-          answer: mA[1]
-        });
+        block.items.push({ kind:'Fill', prompt: mQ[1], answer: mA[1], explain: '', feedback: defaults.Fill || undefined });
         i++;
-        continue;
       }
     }
-
-    if (block.items.length){
-      blocks.push(block);
-    }
+    if (block.items.length) blocks.push(block);
   });
 
-  // fallback ако няма блокове
-  if (!blocks.length && Array.isArray(lesson.exercises)){
-    blocks.push({
-      title: `${unit} • ${section}`,
-      sub: null,
-      items: lesson.exercises
-    });
+  if (!blocks.length){
+    const flat = Array.isArray(lesson.exercises) ? lesson.exercises : [];
+    blocks.push({ title: `${unit} • ${section}`, sub: null, items: flat });
   }
-
-  return {blocks};
+  return {blocks, defaults};
 }
 
 /* --- 5) Render --- */
-function render({blocks}){
+function render(blocks){
   const list = document.getElementById('list');
   list.innerHTML = '';
 
-  if(!blocks || !blocks.length){
-    list.innerHTML = `<div class="card"><div class="prompt">No items for ${level}/${unit}/${section}.</div>
-    <div class="muted">Check URL parameters or dataset.</div></div>`;
+  if(!blocks.length){
+    list.innerHTML = `<div class="card"><div class="prompt">No items for ${level}/${unit}/${section}.</div><div class="muted">Check URL parameters or dataset.</div></div>`;
     return;
   }
 
@@ -235,43 +223,74 @@ function render({blocks}){
 
       const controls = document.createElement('div'); controls.className = 'controls';
 
-      // 🔊 Listen
+      // 🔊 (optional) read
       const listen = document.createElement('button');
       listen.textContent = '🔊 Listen';
-      listen.onclick = () => speakEn(toInstructionalSpeech(it.prompt || ''));
+      listen.onclick = () => speak(toInstructionalSpeech(it.prompt || ''));
       controls.appendChild(listen);
 
-      let result = document.createElement('div'); result.className='muted';
-
+      // 📝 typing fallback
       const answerUI = document.createElement('input');
       answerUI.type = 'text'; answerUI.placeholder = 'Type your answer…';
 
       const check = document.createElement('button'); check.textContent = 'Check';
-      check.onclick = () => {
-        const user = norm(answerUI.value||'');
+
+      let result = document.createElement('div'); result.className='muted';
+
+      function evaluate(userRaw, viaSpeech=false){
+        const user = norm(userRaw);
         const gold = norm(it.answer||'');
         const ok = user && gold && user === gold;
         if (ok){
-          const msg = storyCorrectFeedback(it.answer);
-          result.textContent = msg;
+          result.textContent = "Correct! / Вярно!";
           result.className = 'ok';
-          speakEn(msg);
         } else {
-          const msg = storyWrongFeedback();
-          result.textContent = msg;
+          const heard = viaSpeech ? `I heard: "${userRaw}". / Чух: "${userRaw}". ` : "";
+          result.textContent = heard + "Not quite. Check the story and try again. / Не точно. Върнете се към историята и опитайте пак.";
           result.className = 'bad';
-          speakEn(msg);
         }
-      };
+      }
+
+      check.onclick = () => evaluate(answerUI.value||'', false);
       controls.append(answerUI, check);
 
+      // 🎙️ student speaks
+      const mic = document.createElement('button'); mic.textContent = '🎙️ Speak';
+      mic.onclick = () => {
+        if (!speechOn){
+          result.textContent = "Speech is OFF. Toggle it above. / Говорът е изключен. Включете го отгоре.";
+          result.className = 'muted';
+          return;
+        }
+        if (!SR){
+          result.textContent = "Speech recognition not supported in this browser. / Разпознаването на говор не се поддържа в този браузър.";
+          result.className = 'bad';
+          return;
+        }
+        mic.classList.add('rec');
+        result.textContent = "Listening… say the missing word. / Слушам… кажете липсващата дума.";
+        startSpeechOnce({
+          onResult:(alts)=>{
+            mic.classList.remove('rec');
+            // взимаме най-кратката хипотеза (най-често единична дума)
+            const best = alts.sort((a,b)=>a.length-b.length)[0] || alts[0] || '';
+            evaluate(best, true);
+          },
+          onError:(e)=>{
+            mic.classList.remove('rec');
+            result.textContent = "Mic error, please try again. / Проблем с микрофона, опитайте пак.";
+            result.className = 'bad';
+          }
+        });
+      };
+      controls.appendChild(mic);
+
+      // 👁 Show answer (показва само верния отговор)
       const show = document.createElement('button'); show.textContent = 'Show answer';
       show.onclick = () => {
         answerUI.value = '';
-        const msg = answerLine(it.answer||'');
-        result.textContent = msg;
+        result.textContent = `Answer: ${it.answer} / Отговор: ${it.answer}`;
         result.className='muted';
-        speakEn(`The correct answer is ${it.answer||''}`);
       };
       controls.appendChild(show);
 
@@ -284,13 +303,11 @@ function render({blocks}){
 
 /* --- 6) boot --- */
 loadData(level, unit, section)
-  .then(render)
+  .then(({blocks}) => render(blocks))
   .catch(err => {
     const list = document.getElementById('list');
-    list.innerHTML = `<div class="card"><div class="prompt">Error loading data.</div>
-    <div class="muted">${String(err)}</div></div>`;
+    list.innerHTML = `<div class="card"><div class="prompt">Error loading data.</div><div class="muted">${String(err)}</div></div>`;
   });
 </script>
-
 </body>
 </html>
