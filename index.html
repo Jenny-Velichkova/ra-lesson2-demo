@@ -30,9 +30,7 @@
   .listening{border-color:#3a7bd5; box-shadow:0 0 0 2px rgba(58,123,213,.15) inset}
   .wave{width:10px;height:10px;border-radius:999px;background:#4da3ff;display:inline-block;animation:pulse 1.2s infinite ease-in-out;margin-left:6px}
   @keyframes pulse{0%{transform:scale(.9);opacity:.6}50%{transform:scale(1.2);opacity:1}100%{transform:scale(.9);opacity:.6}}
-  .kbd{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:#0b1220;border:1px solid #2a3b57;padding:0 6px;border-radius:6px;font-size:.9em}
-  .banner{background:#161f2c;border:1px solid #2b3b57;color:#cfe2ff;border-radius:12px;padding:10px 12px;margin-top:8px}
-  .banner a{color:#82b5ff;text-decoration:underline}
+  .kbd{font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;background:#0b1220;border:1px solid #2a3b57;padding:0 6px;border-radius:6px;font-size:.9em}
 </style>
 </head>
 <body>
@@ -41,15 +39,12 @@
     <h1>Interactive Exercises</h1>
     <div class="pills">
       <div class="pill" id="meta"></div>
-      <div class="pill" id="pillMic" aria-pressed="false" title="Microphone permission status">Mic: OFF</div>
       <div class="pill" id="pillSpeech" aria-pressed="true">Speech: ON</div>
       <div class="pill" id="pillTTS" aria-pressed="true">TTS: ON</div>
       <div class="pill" id="pillAutoCheck" aria-pressed="false" title="Auto-check after speech">Auto-check: OFF</div>
       <div class="pill" id="pillAutoMic" aria-pressed="true" title="Auto mic after Listen">Auto-mic: ON</div>
     </div>
   </div>
-
-  <div id="micBanner" class="banner" style="display:none"></div>
 
   <div class="card note" id="howto">
     <strong>Как да отговориш / How to answer:</strong><br/>
@@ -70,24 +65,6 @@ const level   = (url.searchParams.get('level')   || 'A1').toUpperCase();
 const unit    = (url.searchParams.get('unit')    || 'L2').toUpperCase();
 const section = (url.searchParams.get('section') || 'story').toLowerCase();
 document.getElementById('meta').textContent = `${level} • ${unit} • ${section}`;
-
-/* --- Browser helpers --- */
-const ua = navigator.userAgent || '';
-function detectBrowser(){
-  if (/Edg\//.test(ua)) return 'edge';
-  if (/Chrome\//.test(ua) && !/Edg\//.test(ua)) return 'chrome';
-  if (/Firefox\//.test(ua)) return 'firefox';
-  if (/Safari\//.test(ua) && !/Chrome\//.test(ua)) return 'safari';
-  return 'other';
-}
-function micHelpURL(){
-  const b = detectBrowser();
-  if (b==='chrome')  return 'chrome://settings/content/microphone';
-  if (b==='edge')    return 'edge://settings/content/microphone';
-  if (b==='firefox') return 'about:preferences#privacy';
-  if (b==='safari')  return 'https://support.apple.com/guide/safari/change-websites-settings-ibrw7c0ba8fe/mac';
-  return 'https://support.google.com/chrome/answer/2693767';
-}
 
 /* --- Global toggles (with localStorage) --- */
 const store = {
@@ -116,10 +93,16 @@ syncPills();
 
 /* --- 1) TTS helpers --- */
 function normalizeForSpeech(t){
-  return String(t).replace(/\([^)]*\)/g,' ').replace(/→/g,' to ').replace(/[•◆◦■\-–—]/g,' ').replace(/\s{2,}/g,' ').trim();
+  return String(t)
+    .replace(/\([^)]*\)/g, ' ')
+    .replace(/→/g, ' to ')
+    .replace(/[•◆◦■\-–—]/g, ' ')
+    .replace(/\s{2,}/g, ' ')
+    .trim();
 }
 function toInstructionalSpeech(prompt){
-  const hasBlank = /_{1,}/.test(prompt||''); const clean = normalizeForSpeech(prompt||'');
+  const hasBlank = /_{1,}/.test(prompt||'');
+  const clean = normalizeForSpeech(prompt||'');
   if (hasBlank) return "Complete the sentence: " + clean.replace(/_{1,}/g, " … ");
   return clean;
 }
@@ -146,126 +129,87 @@ function say(text, onend){
 /* --- 1a) Smart feedback --- */
 function smartWrongFeedback(it){
   const t = (it.prompt || "").toLowerCase();
-  if (/\bhave\b|\bhas\b|have\/has/.test(t)) return "Not quite. With 'I, you, we, they' use 'have'; with 'he, she, it' use 'has'. Try repeating the sentence out loud.";
-  if (t.includes("plural") || /boxes|buses|churches|tomatoes|classes|wishes/.test(t)) return "Not quite. For nouns ending in -x, -s, -sh, -ch, or -o, add '-es'. Say the plural form out loud.";
-  if (/_+/.test(it.prompt || "") && /\b(at|on|in)\b/.test(t)) return "Not quite. Use 'at' for specific places/times (at home, at 5), 'on' for days/dates (on Monday), and 'in' for months/longer periods (in June, in the morning). Try the sentence again.";
-  if ((it.kind||it.templateType||"").toLowerCase() === "yesno") return "Not quite. Use short answers correctly: Yes, he does. / No, he doesn't. Repeat the correct short answer out loud.";
+  if (/\bhave\b|\bhas\b|have\/has/.test(t)) {
+    return "Not quite. With 'I, you, we, they' use 'have'; with 'he, she, it' use 'has'. Try repeating the sentence out loud.";
+  }
+  if (t.includes("plural") || /boxes|buses|churches|tomatoes|classes|wishes/.test(t)) {
+    return "Not quite. For nouns ending in -x, -s, -sh, -ch, or -o, add '-es'. Say the plural form out loud.";
+  }
+  if (/_+/.test(it.prompt || "") && /\b(at|on|in)\b/.test(t)) {
+    return "Not quite. Use 'at' for specific places/times (at home, at 5), 'on' for days/dates (on Monday), and 'in' for months/longer periods (in June, in the morning). Try the sentence again.";
+  }
+  if ((it.kind||it.templateType||"").toLowerCase() === "yesno") {
+    return "Not quite. Use short answers correctly: Yes, he does. / No, he doesn't. Repeat the correct short answer out loud.";
+  }
   return "Not quite. Check the story and try again. / Не точно. Върнете се към историята и опитайте пак.";
 }
 
-/* --- 2) Helpers: normalize answers --- */
-function norm(s){
-  return String(s||'').toLowerCase().replace(/[“”"‘’']/g,'"').replace(/[.,!?;:()]/g,' ').replace(/\s+/g,' ').trim();
-}
-
-/* --- 3) Mic permission & ASR helpers --- */
-const Recog = window.SpeechRecognition || window.webkitSpeechRecognition;
-
-async function getMicPermissionState(){
-  // default: unknown
-  let state = 'unknown';
-  if (navigator.permissions?.query){
-    try{
-      const st = await navigator.permissions.query({ name: 'microphone' });
-      state = st.state; // 'granted' | 'denied' | 'prompt'
-      st.onchange = ()=>updateMicUI(st.state);
-    }catch{}
-  }
-  return state;
-}
-
-function updateMicUI(state){
-  const pill = document.getElementById('pillMic');
-  const banner = document.getElementById('micBanner');
-  const help = micHelpURL();
-
-  if (state==='granted'){
-    pill.setAttribute('aria-pressed','true');
-    pill.textContent = 'Mic: ON';
-    pill.title = 'Microphone allowed';
-    banner.style.display = 'none';
-  } else {
-    pill.setAttribute('aria-pressed','false');
-    pill.textContent = 'Mic: OFF';
-    const b = detectBrowser();
-    const msgUnavailable = (!Recog)
-      ? `Гласовият вход не е наличен в този браузър. Използвайте Chrome или Edge.
-         / Speech input is unavailable in this browser. Please use Chrome or Edge.`
-      : `Микрофонът е изключен или блокиран. Разрешете достъп и презаредете страницата.
-         / Microphone is off or blocked. Allow access and reload.`;
-
-    pill.title = 'Click to request mic access';
-    banner.innerHTML = `
-      <strong>Microphone help</strong> • ${msgUnavailable}
-      <br/>Open settings: <a href="${help}" target="_blank" rel="noopener">mic settings</a>
-      &nbsp;|&nbsp; <button id="btnAskMic" style="margin-left:4px">Enable mic</button>
-    `;
-    banner.style.display = 'block';
-    const btn = document.getElementById('btnAskMic');
-    if (btn){
-      btn.onclick = async ()=>{
-        try{
-          const s = await navigator.mediaDevices.getUserMedia({ audio: true });
-          s.getTracks().forEach(t=>t.stop());
-          updateMicUI('granted');
-        }catch{
-          updateMicUI('denied');
-        }
-      };
-    }
-  }
-}
-
-async function initMicUI(){
-  const state = await getMicPermissionState();
-  updateMicUI(state);
-  document.getElementById('pillMic').onclick = async ()=>{
-    try{
-      const s = await navigator.mediaDevices.getUserMedia({ audio: true });
-      s.getTracks().forEach(t=>t.stop());
-      updateMicUI('granted');
-    }catch{
-      updateMicUI('denied');
-    }
+/* --- 2) Normalize + translit (BG->LAT) --- */
+// Minimal BG->LAT for single words
+function translitBgWord(w){
+  const map = {
+    'а':'a','б':'b','в':'v','г':'g','д':'d','е':'e','ж':'zh','з':'z','и':'i','й':'y','к':'k',
+    'л':'l','м':'m','н':'n','о':'o','п':'p','р':'r','с':'s','т':'t','у':'u','ф':'f','х':'h',
+    'ц':'ts','ч':'ch','ш':'sh','щ':'sht','ъ':'a','ь':'','ю':'yu','я':'ya',
+    'А':'a','Б':'b','В':'v','Г':'g','Д':'d','Е':'e','Ж':'zh','З':'z','И':'i','Й':'y','К':'k',
+    'Л':'l','М':'m','Н':'n','О':'o','П':'p','Р':'r','С':'s','Т':'t','У':'u','Ф':'f','Х':'h',
+    'Ц':'ts','Ч':'ch','Ш':'sh','Щ':'sht','Ъ':'a','Ь':'','Ю':'yu','Я':'ya'
   };
+  let out = '';
+  for (const ch of w) out += (map[ch] ?? ch);
+  // tiny fixes: boks->box, … (end-of-word heuristics)
+  out = out.replace(/ks\b/, 'x');
+  out = out.replace(/ts\b/, 'c');
+  return out;
 }
-initMicUI();
+function normWord(s){
+  return String(s||'').toLowerCase()
+    .replace(/[“”"‘’']/g,'"')
+    .replace(/[.,!?;:()]/g,' ')
+    .replace(/\s+/g,' ')
+    .trim();
+}
+function normalizeForMatch(s){
+  const base = normWord(s);
+  if (/[а-яА-Я]/.test(base)) return translitBgWord(base);
+  return base;
+}
 
+/* --- 3) ASR (speech-to-text) --- */
+const Recog = window.SpeechRecognition || window.webkitSpeechRecognition;
 function startRecognitionFor(input, resultEl){
-  if(!speechEnabled){
-    resultEl.textContent = "Speech input is turned off. / Гласовият вход е изключен.";
-    resultEl.className='muted'; return null;
-  }
-  if(!Recog){
-    resultEl.textContent = "Speech input unavailable on this browser. Try Chrome or Edge. / Гласовият вход не е наличен в този браузър. Използвайте Chrome или Edge.";
+  if(!speechEnabled || !Recog){
+    resultEl.textContent = "Speech input unavailable on this browser. / Говорният вход не е наличен в този браузър.";
     resultEl.className='muted'; return null;
   }
   stopRecognition();
   const r = new Recog();
-  // Fallback към en-US, но ще приемаме „бокс“ като box (виж нормализатора от по-рано)
-  r.lang = 'bg-BG';
+  r.lang = 'bg-BG';                 // слушаме български, ученикът казва „бокс“
   r.interimResults = false;
   r.maxAlternatives = 1;
-
   input.classList.add('listening');
   resultEl.className='muted';
   resultEl.innerHTML = `Listening… <span class="wave"></span>`;
-
   r.onresult = (e)=>{
-    const raw = (e.results?.[0]?.[0]?.transcript || '').trim();
-    const heard = raw || '';
+    const heard = (e.results?.[0]?.[0]?.transcript || '').trim();
     if (heard) {
-      // показваме чутото; не пипаме тук нормализацията, само визуализация
-      input.value = heard;
-      resultEl.textContent = `Heard: “${heard}”. Press Check. / Чуто: „${heard}“. Натисни Check.`;
+      // ако е кирилица → покажи и латиницата
+      if (/[а-яА-Я]/.test(heard)) {
+        const lat = translitBgWord(heard);
+        input.value = lat;
+        resultEl.textContent = `Heard: “${heard}” → ${lat}. Press Check. / Чуто: „${heard}“ → ${lat}. Натисни Check.`;
+      } else {
+        input.value = heard;
+        resultEl.textContent = `Heard: “${heard}”. Press Check. / Чуто: „${heard}“. Натисни Check.`;
+      }
       if (autoCheck) {
         setTimeout(()=> {
           const btn = input.parentElement.querySelector('button[data-role="check"]');
           btn?.click();
-        }, 400);
+        }, 500);
       }
     } else {
-      resultEl.textContent = "I didn’t catch that. Say the word clearly or type it. / Не те чух. Кажи думата ясно или я напиши.";
+      resultEl.textContent = "I didn’t catch that. Try again. / Не те чух. Опитай пак.";
     }
   };
   r.onspeechend = ()=> r.stop();
@@ -297,7 +241,7 @@ async function loadData(level, unit, section){
   const data = await res.json();
 
   const lessons = data.lessons || {};
-  const rawNum = String(unit).replace(/^L/i,'').replace(/^0+/,'');
+  const rawNum = String(unit).replace(/^L/i,'').replace(/^0+/, '');
   const num2   = rawNum.padStart(2,'0');
   const candidates = [unit, unit.toUpperCase(), unit.toLowerCase(), 'L'+rawNum, 'l'+rawNum, 'L'+num2, 'l'+num2];
   const key = candidates.find(k => Object.prototype.hasOwnProperty.call(lessons, k)) || null;
@@ -386,7 +330,9 @@ function render(blocks){
       answerUI.addEventListener('input', ()=>{ userTyped = true; stopRecognition(); });
 
       const check = document.createElement('button'); check.textContent = 'Check'; check.dataset.role = 'check';
+
       const speakBtn = document.createElement('button'); speakBtn.textContent = '🎙️ Speak';
+
       const show = document.createElement('button'); show.textContent = 'Show answer';
 
       let result = document.createElement('div'); result.className='muted';
@@ -397,12 +343,13 @@ function render(blocks){
           if (autoMicAfterListen && !userTyped) startRecognitionFor(answerUI, result);
         });
       };
+
       speakBtn.onclick = ()=> startRecognitionFor(answerUI, result);
 
       check.onclick = () => {
         stopRecognition();
-        const user = norm(answerUI.value||'');
-        const gold = norm(it.answer||'');
+        const user = normalizeForMatch(answerUI.value||'');
+        const gold = normalizeForMatch(it.answer||'');
         const ok = user && gold && user === gold;
         if (ok){
           result.textContent = 'Correct! Well done. / Вярно! Браво.';
@@ -429,7 +376,7 @@ function render(blocks){
       card.appendChild(result);
       list.appendChild(card);
 
-      // keyboard shortcuts
+      // keyboard shortcuts for this card
       card.addEventListener('keydown', (e)=>{
         if (e.key==='L' || e.key==='l'){ e.preventDefault(); listen.click(); }
         if (e.key==='S' || e.key==='s'){ e.preventDefault(); speakBtn.click(); }
