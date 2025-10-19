@@ -153,15 +153,37 @@ function cyrToLatBG(s){
 }
 function asciiOnly(s){ return s.normalize('NFD').replace(/[\u0300-\u036f]/g,''); }
 function norm(s){
+  // 1) базова нормализация
   let t = String(s||'').toLowerCase();
-  t = cyrToLatBG(t);                // кирилица → латиница
-  t = asciiOnly(t);
+
+  // 2) кирилица → латиница (българска)
+  t = cyrToLatBG(t);
+
+  // 3) махаме диакритики, пунктуация → интервали
+  t = t.normalize('NFD').replace(/[\u0300-\u036f]/g,'');
   t = t.replace(/[“”"‘’']/g,'"')
        .replace(/[^a-z0-9\s]/g,' ')
        .replace(/\s+/g,' ')
        .trim();
-  return t;
+
+  // 4) целеви корекции (лексикон)
+  const lex = {
+    'boks':'box',        // бокс → box
+    'foks':'fox',        // фокс → fox (ако се появи)
+    'siks':'six',        // сикс → six
+    'miks':'mix'         // микс → mix
+  };
+
+  // 5) работим по токени, за да не чупим дълги думи: ks -> x само в края на кратки думи
+  const fixed = t.split(' ').map(w=>{
+    if (lex[w]) return lex[w];
+    if (w.length <= 5) return w.replace(/ks$/,'x'); // напр. boks -> box
+    return w;
+  }).join(' ');
+
+  return fixed;
 }
+
 // допускане за 1 грешка
 function lev1(a,b){
   if (a===b) return true;
