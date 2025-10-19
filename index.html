@@ -43,6 +43,7 @@
       <div class="pill" id="pillTTS" aria-pressed="true">TTS: ON</div>
       <div class="pill" id="pillAutoCheck" aria-pressed="false" title="Auto-check after speech">Auto-check: OFF</div>
       <div class="pill" id="pillAutoMic" aria-pressed="true" title="Auto mic after Listen">Auto-mic: ON</div>
+      <div class="pill" id="pillASRLang" aria-pressed="true" title="ASR language">ASR: BG</div>
     </div>
   </div>
 
@@ -71,40 +72,39 @@ const store = {
   get(k, def){ try{ const v=localStorage.getItem(k); return v===null?def:JSON.parse(v);}catch{ return def; } },
   set(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch{} }
 };
-let speechEnabled   = store.get('speechEnabled', true);   // voice input feature
-let ttsEnabled      = store.get('ttsEnabled', true);      // TTS speak
-let autoCheck       = store.get('autoCheck', false);      // auto check after speech
-let autoMicAfterListen = store.get('autoMicAfterListen', true); // start mic after Listen
+let speechEnabled   = store.get('speechEnabled', true);
+let ttsEnabled      = store.get('ttsEnabled', true);
+let autoCheck       = store.get('autoCheck', false);
+let autoMicAfterListen = store.get('autoMicAfterListen', true);
+let asrLang         = store.get('asrLang', 'bg-BG'); // <-- BG по подразбиране
+
 function syncPills(){
   const pS = document.getElementById('pillSpeech');
   const pT = document.getElementById('pillTTS');
   const pA = document.getElementById('pillAutoCheck');
   const pM = document.getElementById('pillAutoMic');
+  const pL = document.getElementById('pillASRLang');
   pS.setAttribute('aria-pressed', String(speechEnabled)); pS.textContent = `Speech: ${speechEnabled?'ON':'OFF'}`;
   pT.setAttribute('aria-pressed', String(ttsEnabled));    pT.textContent = `TTS: ${ttsEnabled?'ON':'OFF'}`;
   pA.setAttribute('aria-pressed', String(autoCheck));     pA.textContent = `Auto-check: ${autoCheck?'ON':'OFF'}`;
   pM.setAttribute('aria-pressed', String(autoMicAfterListen)); pM.textContent = `Auto-mic: ${autoMicAfterListen?'ON':'OFF'}`;
+  pL.setAttribute('aria-pressed', String(asrLang==='bg-BG')); pL.textContent = `ASR: ${asrLang==='bg-BG'?'BG':'EN'}`;
 }
 document.getElementById('pillSpeech').onclick   = ()=>{ speechEnabled=!speechEnabled; store.set('speechEnabled', speechEnabled); syncPills(); };
 document.getElementById('pillTTS').onclick      = ()=>{ ttsEnabled=!ttsEnabled; store.set('ttsEnabled', ttsEnabled); syncPills(); };
 document.getElementById('pillAutoCheck').onclick= ()=>{ autoCheck=!autoCheck; store.set('autoCheck', autoCheck); syncPills(); };
 document.getElementById('pillAutoMic').onclick  = ()=>{ autoMicAfterListen=!autoMicAfterListen; store.set('autoMicAfterListen', autoMicAfterListen); syncPills(); };
+document.getElementById('pillASRLang').onclick  = ()=>{ asrLang = (asrLang==='bg-BG')?'en-US':'bg-BG'; store.set('asrLang', asrLang); syncPills(); };
 syncPills();
 
 /* --- 1) TTS helpers --- */
 function normalizeForSpeech(t){
-  return String(t)
-    .replace(/\([^)]*\)/g, ' ')
-    .replace(/→/g, ' to ')
-    .replace(/[•◆◦■\-–—]/g, ' ')
-    .replace(/\s{2,}/g, ' ')
-    .trim();
+  return String(t).replace(/\([^)]*\)/g,' ').replace(/→/g,' to ').replace(/[•◆◦■\-–—]/g,' ').replace(/\s{2,}/g,' ').trim();
 }
 function toInstructionalSpeech(prompt){
   const hasBlank = /_{1,}/.test(prompt||'');
   const clean = normalizeForSpeech(prompt||'');
-  if (hasBlank) return "Complete the sentence: " + clean.replace(/_{1,}/g, " … ");
-  return clean;
+  return hasBlank ? ("Complete the sentence: " + clean.replace(/_{1,}/g, " … ")) : clean;
 }
 let preferredVoice = null;
 function pickMaleVoice(){
@@ -141,42 +141,65 @@ function smartWrongFeedback(it){
   if ((it.kind||it.templateType||"").toLowerCase() === "yesno") {
     return "Not quite. Use short answers correctly: Yes, he does. / No, he doesn't. Repeat the correct short answer out loud.";
   }
-  return "Not quite. Check the story and try again. / Не точно. Върнете се към историята и опитайте пак.";
+  return "Not quite. Check the story and try again. / Не точно. Върни се към историята и опитай пак.";
 }
 
-/* --- 2) Helpers: normalize answers --- */
+/* --- 2) Normalization + transliteration --- */
+function cyrToLatBG(s){
+  const map = { 'а':'a','б':'b','в':'v','г':'g','д':'d','е':'e','ж':'zh','з':'z','и':'i','й':'y',
+    'к':'k','л':'l','м':'m','н':'n','о':'o','п':'p','р':'r','с':'s','т':'t','у':'u','ф':'f','х':'h',
+    'ц':'ts','ч':'ch','ш':'sh','щ':'sht','ъ':'a','ь':'','ю':'yu','я':'ya','ё':'yo' };
+  return String(s||'').replace(/[А-ЯЁа-яё]/g, ch => map[ch.toLowerCase()] ?? ch);
+}
+function asciiOnly(s){ return s.normalize('NFD').replace(/[\u0300-\u036f]/g,''); }
 function norm(s){
-  return String(s||'')
-    .toLowerCase()
-    .replace(/[“”"‘’']/g,'"')
-    .replace(/[.,!?;:()]/g,' ')
-    .replace(/\s+/g,' ')
-    .trim();
+  let t = String(s||'').toLowerCase();
+  t = cyrToLatBG(t);                // кирилица → латиница
+  t = asciiOnly(t);
+  t = t.replace(/[“”"‘’']/g,'"')
+       .replace(/[^a-z0-9\s]/g,' ')
+       .replace(/\s+/g,' ')
+       .trim();
+  return t;
+}
+// допускане за 1 грешка
+function lev1(a,b){
+  if (a===b) return true;
+  if (Math.abs(a.length-b.length)>1) return false;
+  if (a.length===b.length){
+    let d=0; for(let i=0;i<a.length;i++) if(a[i]!==b[i]) d++;
+    return d<=1;
+  }
+  if (a.length>b.length) [a,b]=[b,a];
+  let i=0,j=0,d=0;
+  while(i<a.length && j<b.length){
+    if(a[i]===b[j]){i++;j++;} else { d++; j++; if(d>1) return false; }
+  }
+  return true;
 }
 
 /* --- 3) ASR (speech-to-text) helpers --- */
 const Recog = window.SpeechRecognition || window.webkitSpeechRecognition;
 function startRecognitionFor(input, resultEl){
   if(!speechEnabled || !Recog){ resultEl.textContent = "Speech input unavailable on this browser."; resultEl.className='muted'; return null; }
-  stopRecognition(); // stop any previous
+  stopRecognition();
   const r = new Recog();
-  r.lang = 'en-US';
+  r.lang = asrLang;                // <-- BG или EN
   r.interimResults = false;
   r.maxAlternatives = 1;
   input.classList.add('listening');
   resultEl.className='muted';
   resultEl.innerHTML = `Listening… <span class="wave"></span>`;
   r.onresult = (e)=>{
-    const txt = (e.results?.[0]?.[0]?.transcript || '').trim();
-    if (txt) {
-      input.value = txt;
-      resultEl.textContent = `Heard: “${txt}”. Press Check. / Чуто: „${txt}“. Натисни Check.`;
-      if (autoCheck) {
-        setTimeout(()=> {
-          const btn = input.parentElement.querySelector('button[data-role="check"]');
-          btn?.click();
-        }, 500);
-      }
+    const heard = (e.results?.[0]?.[0]?.transcript || '').trim();
+    if (heard){
+      const translit = norm(heard);   // напр. "бокс" → "box"
+      input.value = translit;         // попълваме нормализираното за коректна проверка
+      resultEl.textContent = `Heard: “${heard}” → ${translit}. Press Check. / Чуто: „${heard}“ → ${translit}. Натисни Check.`;
+      if (autoCheck) setTimeout(()=>{
+        const btn = input.parentElement.querySelector('button[data-role="check"]');
+        btn?.click();
+      }, 250);
     } else {
       resultEl.textContent = "I didn’t catch that. Try again. / Не те чух. Опитай пак.";
     }
@@ -188,7 +211,7 @@ function startRecognitionFor(input, resultEl){
       resultEl.textContent = "I didn’t catch that. Say the word clearly or type it. / Не те чух. Кажи думата ясно или я напиши.";
     }
   };
-  r.onerror = ()=> {
+  r.onerror = ()=>{
     input.classList.remove('listening');
     resultEl.textContent = "Microphone error. Check permissions. / Проблем с микрофона – позволи достъп.";
   };
@@ -319,7 +342,7 @@ function render(blocks){
         stopRecognition();
         const user = norm(answerUI.value||'');
         const gold = norm(it.answer||'');
-        const ok = user && gold && user === gold;
+        const ok = !!user && (user===gold || lev1(user,gold)); // допускаме 1 грешка
         if (ok){
           result.textContent = 'Correct! Well done. / Вярно! Браво.';
           result.className = 'ok';
@@ -334,7 +357,7 @@ function render(blocks){
 
       show.onclick = () => {
         stopRecognition();
-        answerUI.value = it.answer||'';
+        answerUI.value = norm(it.answer||'');
         result.textContent = `Answer: ${it.answer||''}`;
         result.className='muted';
         if (ttsEnabled && it.answer) say(`Answer: ${it.answer}`);
@@ -352,7 +375,7 @@ function render(blocks){
         if (e.key==='Enter'){ e.preventDefault(); check.click(); }
         if (e.key==='Escape'){ e.preventDefault(); stopRecognition(); }
       });
-      card.tabIndex = 0; // enable key events
+      card.tabIndex = 0;
     });
   });
 }
