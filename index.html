@@ -30,7 +30,9 @@
   .listening{border-color:#3a7bd5; box-shadow:0 0 0 2px rgba(58,123,213,.15) inset}
   .wave{width:10px;height:10px;border-radius:999px;background:#4da3ff;display:inline-block;animation:pulse 1.2s infinite ease-in-out;margin-left:6px}
   @keyframes pulse{0%{transform:scale(.9);opacity:.6}50%{transform:scale(1.2);opacity:1}100%{transform:scale(.9);opacity:.6}}
-  .kbd{font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;background:#0b1220;border:1px solid #2a3b57;padding:0 6px;border-radius:6px;font-size:.9em}
+  .kbd{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:#0b1220;border:1px solid #2a3b57;padding:0 6px;border-radius:6px;font-size:.9em}
+  .banner{background:#161f2c;border:1px solid #2b3b57;color:#cfe2ff;border-radius:12px;padding:10px 12px;margin-top:8px}
+  .banner a{color:#82b5ff;text-decoration:underline}
 </style>
 </head>
 <body>
@@ -39,13 +41,15 @@
     <h1>Interactive Exercises</h1>
     <div class="pills">
       <div class="pill" id="meta"></div>
+      <div class="pill" id="pillMic" aria-pressed="false" title="Microphone permission status">Mic: OFF</div>
       <div class="pill" id="pillSpeech" aria-pressed="true">Speech: ON</div>
       <div class="pill" id="pillTTS" aria-pressed="true">TTS: ON</div>
       <div class="pill" id="pillAutoCheck" aria-pressed="false" title="Auto-check after speech">Auto-check: OFF</div>
       <div class="pill" id="pillAutoMic" aria-pressed="true" title="Auto mic after Listen">Auto-mic: ON</div>
-      <div class="pill" id="pillASRLang" aria-pressed="true" title="ASR language">ASR: BG</div>
     </div>
   </div>
+
+  <div id="micBanner" class="banner" style="display:none"></div>
 
   <div class="card note" id="howto">
     <strong>Как да отговориш / How to answer:</strong><br/>
@@ -67,6 +71,24 @@ const unit    = (url.searchParams.get('unit')    || 'L2').toUpperCase();
 const section = (url.searchParams.get('section') || 'story').toLowerCase();
 document.getElementById('meta').textContent = `${level} • ${unit} • ${section}`;
 
+/* --- Browser helpers --- */
+const ua = navigator.userAgent || '';
+function detectBrowser(){
+  if (/Edg\//.test(ua)) return 'edge';
+  if (/Chrome\//.test(ua) && !/Edg\//.test(ua)) return 'chrome';
+  if (/Firefox\//.test(ua)) return 'firefox';
+  if (/Safari\//.test(ua) && !/Chrome\//.test(ua)) return 'safari';
+  return 'other';
+}
+function micHelpURL(){
+  const b = detectBrowser();
+  if (b==='chrome')  return 'chrome://settings/content/microphone';
+  if (b==='edge')    return 'edge://settings/content/microphone';
+  if (b==='firefox') return 'about:preferences#privacy';
+  if (b==='safari')  return 'https://support.apple.com/guide/safari/change-websites-settings-ibrw7c0ba8fe/mac';
+  return 'https://support.google.com/chrome/answer/2693767';
+}
+
 /* --- Global toggles (with localStorage) --- */
 const store = {
   get(k, def){ try{ const v=localStorage.getItem(k); return v===null?def:JSON.parse(v);}catch{ return def; } },
@@ -76,25 +98,20 @@ let speechEnabled   = store.get('speechEnabled', true);
 let ttsEnabled      = store.get('ttsEnabled', true);
 let autoCheck       = store.get('autoCheck', false);
 let autoMicAfterListen = store.get('autoMicAfterListen', true);
-let asrLang         = store.get('asrLang', 'bg-BG'); // <-- BG по подразбиране
-
 function syncPills(){
   const pS = document.getElementById('pillSpeech');
   const pT = document.getElementById('pillTTS');
   const pA = document.getElementById('pillAutoCheck');
   const pM = document.getElementById('pillAutoMic');
-  const pL = document.getElementById('pillASRLang');
   pS.setAttribute('aria-pressed', String(speechEnabled)); pS.textContent = `Speech: ${speechEnabled?'ON':'OFF'}`;
   pT.setAttribute('aria-pressed', String(ttsEnabled));    pT.textContent = `TTS: ${ttsEnabled?'ON':'OFF'}`;
   pA.setAttribute('aria-pressed', String(autoCheck));     pA.textContent = `Auto-check: ${autoCheck?'ON':'OFF'}`;
   pM.setAttribute('aria-pressed', String(autoMicAfterListen)); pM.textContent = `Auto-mic: ${autoMicAfterListen?'ON':'OFF'}`;
-  pL.setAttribute('aria-pressed', String(asrLang==='bg-BG')); pL.textContent = `ASR: ${asrLang==='bg-BG'?'BG':'EN'}`;
 }
 document.getElementById('pillSpeech').onclick   = ()=>{ speechEnabled=!speechEnabled; store.set('speechEnabled', speechEnabled); syncPills(); };
 document.getElementById('pillTTS').onclick      = ()=>{ ttsEnabled=!ttsEnabled; store.set('ttsEnabled', ttsEnabled); syncPills(); };
 document.getElementById('pillAutoCheck').onclick= ()=>{ autoCheck=!autoCheck; store.set('autoCheck', autoCheck); syncPills(); };
 document.getElementById('pillAutoMic').onclick  = ()=>{ autoMicAfterListen=!autoMicAfterListen; store.set('autoMicAfterListen', autoMicAfterListen); syncPills(); };
-document.getElementById('pillASRLang').onclick  = ()=>{ asrLang = (asrLang==='bg-BG')?'en-US':'bg-BG'; store.set('asrLang', asrLang); syncPills(); };
 syncPills();
 
 /* --- 1) TTS helpers --- */
@@ -102,9 +119,9 @@ function normalizeForSpeech(t){
   return String(t).replace(/\([^)]*\)/g,' ').replace(/→/g,' to ').replace(/[•◆◦■\-–—]/g,' ').replace(/\s{2,}/g,' ').trim();
 }
 function toInstructionalSpeech(prompt){
-  const hasBlank = /_{1,}/.test(prompt||'');
-  const clean = normalizeForSpeech(prompt||'');
-  return hasBlank ? ("Complete the sentence: " + clean.replace(/_{1,}/g, " … ")) : clean;
+  const hasBlank = /_{1,}/.test(prompt||''); const clean = normalizeForSpeech(prompt||'');
+  if (hasBlank) return "Complete the sentence: " + clean.replace(/_{1,}/g, " … ");
+  return clean;
 }
 let preferredVoice = null;
 function pickMaleVoice(){
@@ -129,101 +146,126 @@ function say(text, onend){
 /* --- 1a) Smart feedback --- */
 function smartWrongFeedback(it){
   const t = (it.prompt || "").toLowerCase();
-  if (/\bhave\b|\bhas\b|have\/has/.test(t)) {
-    return "Not quite. With 'I, you, we, they' use 'have'; with 'he, she, it' use 'has'. Try repeating the sentence out loud.";
-  }
-  if (t.includes("plural") || /boxes|buses|churches|tomatoes|classes|wishes/.test(t)) {
-    return "Not quite. For nouns ending in -x, -s, -sh, -ch, or -o, add '-es'. Say the plural form out loud.";
-  }
-  if (/_+/.test(it.prompt || "") && /\b(at|on|in)\b/.test(t)) {
-    return "Not quite. Use 'at' for specific places/times (at home, at 5), 'on' for days/dates (on Monday), and 'in' for months/longer periods (in June, in the morning). Try the sentence again.";
-  }
-  if ((it.kind||it.templateType||"").toLowerCase() === "yesno") {
-    return "Not quite. Use short answers correctly: Yes, he does. / No, he doesn't. Repeat the correct short answer out loud.";
-  }
-  return "Not quite. Check the story and try again. / Не точно. Върни се към историята и опитай пак.";
+  if (/\bhave\b|\bhas\b|have\/has/.test(t)) return "Not quite. With 'I, you, we, they' use 'have'; with 'he, she, it' use 'has'. Try repeating the sentence out loud.";
+  if (t.includes("plural") || /boxes|buses|churches|tomatoes|classes|wishes/.test(t)) return "Not quite. For nouns ending in -x, -s, -sh, -ch, or -o, add '-es'. Say the plural form out loud.";
+  if (/_+/.test(it.prompt || "") && /\b(at|on|in)\b/.test(t)) return "Not quite. Use 'at' for specific places/times (at home, at 5), 'on' for days/dates (on Monday), and 'in' for months/longer periods (in June, in the morning). Try the sentence again.";
+  if ((it.kind||it.templateType||"").toLowerCase() === "yesno") return "Not quite. Use short answers correctly: Yes, he does. / No, he doesn't. Repeat the correct short answer out loud.";
+  return "Not quite. Check the story and try again. / Не точно. Върнете се към историята и опитайте пак.";
 }
 
-/* --- 2) Normalization + transliteration --- */
-function cyrToLatBG(s){
-  const map = { 'а':'a','б':'b','в':'v','г':'g','д':'d','е':'e','ж':'zh','з':'z','и':'i','й':'y',
-    'к':'k','л':'l','м':'m','н':'n','о':'o','п':'p','р':'r','с':'s','т':'t','у':'u','ф':'f','х':'h',
-    'ц':'ts','ч':'ch','ш':'sh','щ':'sht','ъ':'a','ь':'','ю':'yu','я':'ya','ё':'yo' };
-  return String(s||'').replace(/[А-ЯЁа-яё]/g, ch => map[ch.toLowerCase()] ?? ch);
-}
-function asciiOnly(s){ return s.normalize('NFD').replace(/[\u0300-\u036f]/g,''); }
+/* --- 2) Helpers: normalize answers --- */
 function norm(s){
-  // 1) базова нормализация
-  let t = String(s||'').toLowerCase();
-
-  // 2) кирилица → латиница (българска)
-  t = cyrToLatBG(t);
-
-  // 3) махаме диакритики, пунктуация → интервали
-  t = t.normalize('NFD').replace(/[\u0300-\u036f]/g,'');
-  t = t.replace(/[“”"‘’']/g,'"')
-       .replace(/[^a-z0-9\s]/g,' ')
-       .replace(/\s+/g,' ')
-       .trim();
-
-  // 4) целеви корекции (лексикон)
-  const lex = {
-    'boks':'box',        // бокс → box
-    'foks':'fox',        // фокс → fox (ако се появи)
-    'siks':'six',        // сикс → six
-    'miks':'mix'         // микс → mix
-  };
-
-  // 5) работим по токени, за да не чупим дълги думи: ks -> x само в края на кратки думи
-  const fixed = t.split(' ').map(w=>{
-    if (lex[w]) return lex[w];
-    if (w.length <= 5) return w.replace(/ks$/,'x'); // напр. boks -> box
-    return w;
-  }).join(' ');
-
-  return fixed;
+  return String(s||'').toLowerCase().replace(/[“”"‘’']/g,'"').replace(/[.,!?;:()]/g,' ').replace(/\s+/g,' ').trim();
 }
 
-// допускане за 1 грешка
-function lev1(a,b){
-  if (a===b) return true;
-  if (Math.abs(a.length-b.length)>1) return false;
-  if (a.length===b.length){
-    let d=0; for(let i=0;i<a.length;i++) if(a[i]!==b[i]) d++;
-    return d<=1;
-  }
-  if (a.length>b.length) [a,b]=[b,a];
-  let i=0,j=0,d=0;
-  while(i<a.length && j<b.length){
-    if(a[i]===b[j]){i++;j++;} else { d++; j++; if(d>1) return false; }
-  }
-  return true;
-}
-
-/* --- 3) ASR (speech-to-text) helpers --- */
+/* --- 3) Mic permission & ASR helpers --- */
 const Recog = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+async function getMicPermissionState(){
+  // default: unknown
+  let state = 'unknown';
+  if (navigator.permissions?.query){
+    try{
+      const st = await navigator.permissions.query({ name: 'microphone' });
+      state = st.state; // 'granted' | 'denied' | 'prompt'
+      st.onchange = ()=>updateMicUI(st.state);
+    }catch{}
+  }
+  return state;
+}
+
+function updateMicUI(state){
+  const pill = document.getElementById('pillMic');
+  const banner = document.getElementById('micBanner');
+  const help = micHelpURL();
+
+  if (state==='granted'){
+    pill.setAttribute('aria-pressed','true');
+    pill.textContent = 'Mic: ON';
+    pill.title = 'Microphone allowed';
+    banner.style.display = 'none';
+  } else {
+    pill.setAttribute('aria-pressed','false');
+    pill.textContent = 'Mic: OFF';
+    const b = detectBrowser();
+    const msgUnavailable = (!Recog)
+      ? `Гласовият вход не е наличен в този браузър. Използвайте Chrome или Edge.
+         / Speech input is unavailable in this browser. Please use Chrome or Edge.`
+      : `Микрофонът е изключен или блокиран. Разрешете достъп и презаредете страницата.
+         / Microphone is off or blocked. Allow access and reload.`;
+
+    pill.title = 'Click to request mic access';
+    banner.innerHTML = `
+      <strong>Microphone help</strong> • ${msgUnavailable}
+      <br/>Open settings: <a href="${help}" target="_blank" rel="noopener">mic settings</a>
+      &nbsp;|&nbsp; <button id="btnAskMic" style="margin-left:4px">Enable mic</button>
+    `;
+    banner.style.display = 'block';
+    const btn = document.getElementById('btnAskMic');
+    if (btn){
+      btn.onclick = async ()=>{
+        try{
+          const s = await navigator.mediaDevices.getUserMedia({ audio: true });
+          s.getTracks().forEach(t=>t.stop());
+          updateMicUI('granted');
+        }catch{
+          updateMicUI('denied');
+        }
+      };
+    }
+  }
+}
+
+async function initMicUI(){
+  const state = await getMicPermissionState();
+  updateMicUI(state);
+  document.getElementById('pillMic').onclick = async ()=>{
+    try{
+      const s = await navigator.mediaDevices.getUserMedia({ audio: true });
+      s.getTracks().forEach(t=>t.stop());
+      updateMicUI('granted');
+    }catch{
+      updateMicUI('denied');
+    }
+  };
+}
+initMicUI();
+
 function startRecognitionFor(input, resultEl){
-  if(!speechEnabled || !Recog){ resultEl.textContent = "Speech input unavailable on this browser."; resultEl.className='muted'; return null; }
+  if(!speechEnabled){
+    resultEl.textContent = "Speech input is turned off. / Гласовият вход е изключен.";
+    resultEl.className='muted'; return null;
+  }
+  if(!Recog){
+    resultEl.textContent = "Speech input unavailable on this browser. Try Chrome or Edge. / Гласовият вход не е наличен в този браузър. Използвайте Chrome или Edge.";
+    resultEl.className='muted'; return null;
+  }
   stopRecognition();
   const r = new Recog();
-  r.lang = asrLang;                // <-- BG или EN
+  // Fallback към en-US, но ще приемаме „бокс“ като box (виж нормализатора от по-рано)
+  r.lang = 'bg-BG';
   r.interimResults = false;
   r.maxAlternatives = 1;
+
   input.classList.add('listening');
   resultEl.className='muted';
   resultEl.innerHTML = `Listening… <span class="wave"></span>`;
+
   r.onresult = (e)=>{
-    const heard = (e.results?.[0]?.[0]?.transcript || '').trim();
-    if (heard){
-      const translit = norm(heard);   // напр. "бокс" → "box"
-      input.value = translit;         // попълваме нормализираното за коректна проверка
-      resultEl.textContent = `Heard: “${heard}” → ${translit}. Press Check. / Чуто: „${heard}“ → ${translit}. Натисни Check.`;
-      if (autoCheck) setTimeout(()=>{
-        const btn = input.parentElement.querySelector('button[data-role="check"]');
-        btn?.click();
-      }, 250);
+    const raw = (e.results?.[0]?.[0]?.transcript || '').trim();
+    const heard = raw || '';
+    if (heard) {
+      // показваме чутото; не пипаме тук нормализацията, само визуализация
+      input.value = heard;
+      resultEl.textContent = `Heard: “${heard}”. Press Check. / Чуто: „${heard}“. Натисни Check.`;
+      if (autoCheck) {
+        setTimeout(()=> {
+          const btn = input.parentElement.querySelector('button[data-role="check"]');
+          btn?.click();
+        }, 400);
+      }
     } else {
-      resultEl.textContent = "I didn’t catch that. Try again. / Не те чух. Опитай пак.";
+      resultEl.textContent = "I didn’t catch that. Say the word clearly or type it. / Не те чух. Кажи думата ясно или я напиши.";
     }
   };
   r.onspeechend = ()=> r.stop();
@@ -344,9 +386,7 @@ function render(blocks){
       answerUI.addEventListener('input', ()=>{ userTyped = true; stopRecognition(); });
 
       const check = document.createElement('button'); check.textContent = 'Check'; check.dataset.role = 'check';
-
       const speakBtn = document.createElement('button'); speakBtn.textContent = '🎙️ Speak';
-
       const show = document.createElement('button'); show.textContent = 'Show answer';
 
       let result = document.createElement('div'); result.className='muted';
@@ -357,14 +397,13 @@ function render(blocks){
           if (autoMicAfterListen && !userTyped) startRecognitionFor(answerUI, result);
         });
       };
-
       speakBtn.onclick = ()=> startRecognitionFor(answerUI, result);
 
       check.onclick = () => {
         stopRecognition();
         const user = norm(answerUI.value||'');
         const gold = norm(it.answer||'');
-        const ok = !!user && (user===gold || lev1(user,gold)); // допускаме 1 грешка
+        const ok = user && gold && user === gold;
         if (ok){
           result.textContent = 'Correct! Well done. / Вярно! Браво.';
           result.className = 'ok';
@@ -379,7 +418,7 @@ function render(blocks){
 
       show.onclick = () => {
         stopRecognition();
-        answerUI.value = norm(it.answer||'');
+        answerUI.value = it.answer||'';
         result.textContent = `Answer: ${it.answer||''}`;
         result.className='muted';
         if (ttsEnabled && it.answer) say(`Answer: ${it.answer}`);
@@ -390,7 +429,7 @@ function render(blocks){
       card.appendChild(result);
       list.appendChild(card);
 
-      // keyboard shortcuts for this card
+      // keyboard shortcuts
       card.addEventListener('keydown', (e)=>{
         if (e.key==='L' || e.key==='l'){ e.preventDefault(); listen.click(); }
         if (e.key==='S' || e.key==='s'){ e.preventDefault(); speakBtn.click(); }
