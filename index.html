@@ -9,45 +9,48 @@
   body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:#0b0e12;color:#e7e9ee;margin:0;padding:16px;}
   .wrap{max-width:var(--w);margin:0 auto;}
   .head{display:flex;gap:8px;align-items:center;justify-content:space-between;margin-bottom:12px}
-  .pill{font-size:12px;background:#1a2230;border:1px solid #2b3a55;padding:6px 10px;border-radius:999px;user-select:none}
-  .pill.toggle{cursor:pointer}
+  .pills{display:flex;gap:6px;flex-wrap:wrap}
+  .pill{font-size:12px;background:#1a2230;border:1px solid #2b3a55;padding:6px 10px;border-radius:999px;cursor:pointer;user-select:none}
+  .pill[aria-pressed="true"]{background:#142034;border-color:#3b5a8f}
   h1{font-size:18px;margin:0}
   .card{background:#10161f;border:1px solid #223047;border-radius:14px;padding:16px;margin:12px 0;box-shadow:0 2px 10px rgba(0,0,0,.25)}
   .block-title{font-weight:700;margin:0 0 6px 0}
   .block-sub{color:#9aa7bd;font-size:13px;margin-bottom:10px}
   .prompt{font-weight:600;margin-bottom:10px}
-  .controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+  .controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;align-items:center}
   button{cursor:pointer;border:1px solid #314462;background:#172133;color:#e7e9ee;border-radius:10px;padding:8px 12px}
   button:hover{background:#1e2a40}
   input[type="text"]{width:100%;max-width:420px;background:#0e131b;border:1px solid #32445f;color:#fff;border-radius:10px;padding:8px 10px}
   .ok{color:#6ee7a8}
   .bad{color:#fca5a5}
   .muted{color:#9aa7bd;font-size:13px}
+  .note{font-size:13px;color:#c9d6f2}
   .hr{height:1px;background:#1f2a3d;margin:18px 0}
   .foot{display:flex;gap:8px;align-items:center;justify-content:flex-end}
-  .status{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-  .notice{font-size:13px;color:#eab308}
-  .caption{font-size:12px;color:#9aa7bd;margin-top:4px}
-  .instructions{background:#0f1420;border:1px dashed #314462;padding:10px;border-radius:12px;margin-top:8px;color:#c6d3eb;font-size:13px}
+  .listening{border-color:#3a7bd5; box-shadow:0 0 0 2px rgba(58,123,213,.15) inset}
+  .wave{width:10px;height:10px;border-radius:999px;background:#4da3ff;display:inline-block;animation:pulse 1.2s infinite ease-in-out;margin-left:6px}
+  @keyframes pulse{0%{transform:scale(.9);opacity:.6}50%{transform:scale(1.2);opacity:1}100%{transform:scale(.9);opacity:.6}}
+  .kbd{font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;background:#0b1220;border:1px solid #2a3b57;padding:0 6px;border-radius:6px;font-size:.9em}
 </style>
 </head>
 <body>
 <div class="wrap">
   <div class="head">
     <h1>Interactive Exercises</h1>
-    <div class="status">
+    <div class="pills">
       <div class="pill" id="meta"></div>
-      <div class="pill toggle" id="pillSpeech" title="Toggle microphone">Speech: ON</div>
-      <div class="pill toggle" id="pillTTS" title="Toggle text-to-speech">TTS: ON</div>
+      <div class="pill" id="pillSpeech" aria-pressed="true">Speech: ON</div>
+      <div class="pill" id="pillTTS" aria-pressed="true">TTS: ON</div>
+      <div class="pill" id="pillAutoCheck" aria-pressed="false" title="Auto-check after speech">Auto-check: OFF</div>
+      <div class="pill" id="pillAutoMic" aria-pressed="true" title="Auto mic after Listen">Auto-mic: ON</div>
     </div>
   </div>
 
-  <div class="instructions">
-    <strong>Инструкции:</strong> 🎧 Изслушайте изречението. 🎙️ Произнесете липсващата дума или я напишете.
-    ✅ Натиснете „Check“, за да проверите.  
-    <em>Instructions (EN):</em> Listen, say the missing word (or type it), then press “Check”.
+  <div class="card note" id="howto">
+    <strong>Как да отговориш / How to answer:</strong><br/>
+    Натисни <span class="kbd">Listen</span> и след като чуеш изречението, кажи липсващата дума. Думата ще се изпише в полето – можеш да я редактираш, после натисни <span class="kbd">Check</span>.<br/>
+    If you prefer typing, just write the word instead. <span class="kbd">L</span>=Listen, <span class="kbd">S</span>=Speak, <span class="kbd">Enter</span>=Check, <span class="kbd">Esc</span>=Stop.
   </div>
-  <div id="micCaption" class="caption"></div>
 
   <div id="list"></div>
 
@@ -63,9 +66,30 @@ const unit    = (url.searchParams.get('unit')    || 'L2').toUpperCase();
 const section = (url.searchParams.get('section') || 'story').toLowerCase();
 document.getElementById('meta').textContent = `${level} • ${unit} • ${section}`;
 
-/* --- Feature switches (default ON) --- */
-let speechOn = true; // mic
-let ttsOn    = true; // TTS
+/* --- Global toggles (with localStorage) --- */
+const store = {
+  get(k, def){ try{ const v=localStorage.getItem(k); return v===null?def:JSON.parse(v);}catch{ return def; } },
+  set(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch{} }
+};
+let speechEnabled   = store.get('speechEnabled', true);   // voice input feature
+let ttsEnabled      = store.get('ttsEnabled', true);      // TTS speak
+let autoCheck       = store.get('autoCheck', false);      // auto check after speech
+let autoMicAfterListen = store.get('autoMicAfterListen', true); // start mic after Listen
+function syncPills(){
+  const pS = document.getElementById('pillSpeech');
+  const pT = document.getElementById('pillTTS');
+  const pA = document.getElementById('pillAutoCheck');
+  const pM = document.getElementById('pillAutoMic');
+  pS.setAttribute('aria-pressed', String(speechEnabled)); pS.textContent = `Speech: ${speechEnabled?'ON':'OFF'}`;
+  pT.setAttribute('aria-pressed', String(ttsEnabled));    pT.textContent = `TTS: ${ttsEnabled?'ON':'OFF'}`;
+  pA.setAttribute('aria-pressed', String(autoCheck));     pA.textContent = `Auto-check: ${autoCheck?'ON':'OFF'}`;
+  pM.setAttribute('aria-pressed', String(autoMicAfterListen)); pM.textContent = `Auto-mic: ${autoMicAfterListen?'ON':'OFF'}`;
+}
+document.getElementById('pillSpeech').onclick   = ()=>{ speechEnabled=!speechEnabled; store.set('speechEnabled', speechEnabled); syncPills(); };
+document.getElementById('pillTTS').onclick      = ()=>{ ttsEnabled=!ttsEnabled; store.set('ttsEnabled', ttsEnabled); syncPills(); };
+document.getElementById('pillAutoCheck').onclick= ()=>{ autoCheck=!autoCheck; store.set('autoCheck', autoCheck); syncPills(); };
+document.getElementById('pillAutoMic').onclick  = ()=>{ autoMicAfterListen=!autoMicAfterListen; store.set('autoMicAfterListen', autoMicAfterListen); syncPills(); };
+syncPills();
 
 /* --- 1) TTS helpers --- */
 function normalizeForSpeech(t){
@@ -90,19 +114,33 @@ function pickMaleVoice(){
   preferredVoice = byMaleName || byLangEN || voices[0] || null;
 }
 window.speechSynthesis.onvoiceschanged = pickMaleVoice; pickMaleVoice();
-function speak(text){
-  if (!ttsOn) return;
+function say(text, onend){
+  if(!ttsEnabled) { onend && setTimeout(onend, 400); return; }
   try{
     const u = new SpeechSynthesisUtterance(normalizeForSpeech(text));
     if (preferredVoice) u.voice = preferredVoice;
     u.rate = 1.0; u.pitch = 1.0;
+    if (onend) u.onend = onend;
     window.speechSynthesis.cancel();
     window.speechSynthesis.speak(u);
-  }catch{}
+  }catch{ onend && setTimeout(onend, 400); }
 }
 
 /* --- 1a) Smart feedback --- */
-function smartWrongFeedback(){
+function smartWrongFeedback(it){
+  const t = (it.prompt || "").toLowerCase();
+  if (/\bhave\b|\bhas\b|have\/has/.test(t)) {
+    return "Not quite. With 'I, you, we, they' use 'have'; with 'he, she, it' use 'has'. Try repeating the sentence out loud.";
+  }
+  if (t.includes("plural") || /boxes|buses|churches|tomatoes|classes|wishes/.test(t)) {
+    return "Not quite. For nouns ending in -x, -s, -sh, -ch, or -o, add '-es'. Say the plural form out loud.";
+  }
+  if (/_+/.test(it.prompt || "") && /\b(at|on|in)\b/.test(t)) {
+    return "Not quite. Use 'at' for specific places/times (at home, at 5), 'on' for days/dates (on Monday), and 'in' for months/longer periods (in June, in the morning). Try the sentence again.";
+  }
+  if ((it.kind||it.templateType||"").toLowerCase() === "yesno") {
+    return "Not quite. Use short answers correctly: Yes, he does. / No, he doesn't. Repeat the correct short answer out loud.";
+  }
   return "Not quite. Check the story and try again. / Не точно. Върнете се към историята и опитайте пак.";
 }
 
@@ -116,7 +154,55 @@ function norm(s){
     .trim();
 }
 
-/* --- 3) Load + expand JSON to items --- */
+/* --- 3) ASR (speech-to-text) helpers --- */
+const Recog = window.SpeechRecognition || window.webkitSpeechRecognition;
+function startRecognitionFor(input, resultEl){
+  if(!speechEnabled || !Recog){ resultEl.textContent = "Speech input unavailable on this browser."; resultEl.className='muted'; return null; }
+  stopRecognition(); // stop any previous
+  const r = new Recog();
+  r.lang = 'en-US';
+  r.interimResults = false;
+  r.maxAlternatives = 1;
+  input.classList.add('listening');
+  resultEl.className='muted';
+  resultEl.innerHTML = `Listening… <span class="wave"></span>`;
+  r.onresult = (e)=>{
+    const txt = (e.results?.[0]?.[0]?.transcript || '').trim();
+    if (txt) {
+      input.value = txt;
+      resultEl.textContent = `Heard: “${txt}”. Press Check. / Чуто: „${txt}“. Натисни Check.`;
+      if (autoCheck) {
+        setTimeout(()=> {
+          const btn = input.parentElement.querySelector('button[data-role="check"]');
+          btn?.click();
+        }, 500);
+      }
+    } else {
+      resultEl.textContent = "I didn’t catch that. Try again. / Не те чух. Опитай пак.";
+    }
+  };
+  r.onspeechend = ()=> r.stop();
+  r.onend = ()=>{
+    input.classList.remove('listening');
+    if(!input.value){
+      resultEl.textContent = "I didn’t catch that. Say the word clearly or type it. / Не те чух. Кажи думата ясно или я напиши.";
+    }
+  };
+  r.onerror = ()=> {
+    input.classList.remove('listening');
+    resultEl.textContent = "Microphone error. Check permissions. / Проблем с микрофона – позволи достъп.";
+  };
+  try{ r.start(); }catch{}
+  window.__activeRecog = r;
+  return r;
+}
+function stopRecognition(){
+  const r = window.__activeRecog;
+  if (r) { try{ r.stop(); }catch{} }
+  window.__activeRecog = null;
+}
+
+/* --- 4) Load + expand JSON to items --- */
 async function loadData(level, unit, section){
   const file = section === 'grammar' ? 'data/a1_grammar.json' : 'data/a1.json';
   const res = await fetch(file, { cache: 'no-store' });
@@ -126,7 +212,7 @@ async function loadData(level, unit, section){
   const lessons = data.lessons || {};
   const rawNum = String(unit).replace(/^L/i,'').replace(/^0+/,'');
   const num2   = rawNum.padStart(2,'0');
-  const candidates = [unit, unit.toUpperCase(), unit.toLowerCase(),'L'+rawNum,'l'+rawNum,'L'+num2,'l'+num2];
+  const candidates = [unit, unit.toUpperCase(), unit.toLowerCase(), 'L'+rawNum, 'l'+rawNum, 'L'+num2, 'l'+num2];
   const key = candidates.find(k => Object.prototype.hasOwnProperty.call(lessons, k)) || null;
 
   const lesson   = key ? lessons[key] : null;
@@ -137,7 +223,7 @@ async function loadData(level, unit, section){
 
   (lesson.exercises || []).forEach((ex, exIdx) => {
     const lines = (ex.payload && Array.isArray(ex.payload.lines)) ? ex.payload.lines.slice() : [];
-    if (!lines.length) return;
+    if (!lines.length){ return; }
 
     const block = { title: ex.title || `Exercise ${exIdx+1}`, sub: null, items: [] };
     const firstInfo = lines.find(s => /fill|translate|rearrange|подредете|попълнете|преведете/i.test(s));
@@ -149,24 +235,21 @@ async function loadData(level, unit, section){
       const answers = lines.slice(ansPos+1).map(s => s.trim()).filter(Boolean);
       const n = Math.min(prompts.length, answers.length);
       for(let i=0;i<n;i++){
-        block.items.push({ kind:'Fill', prompt: prompts[i], answer: answers[i], explain: block.sub || '' });
+        block.items.push({ kind:'Fill', prompt: prompts[i], answer: answers[i], explain: block.sub || '', feedback: defaults.Fill || undefined });
       }
-      blocks.push(block);
-      return;
+      blocks.push(block); return;
     }
-
-    // Q + "Correct Answer:"
     for(let i=0;i<lines.length;i++){
       const q = lines[i];
       const mQ = /^(.*\?)\s*(?:\(.*?\))?\s*$/i.exec(q);
       const next = lines[i+1] || '';
       const mA = /^\s*(?:correct\s*answer\s*:\s*)(.*)$/i.exec(next);
       if (mQ && mA){
-        block.items.push({ kind:'Fill', prompt: mQ[1], answer: mA[1], explain: block.sub || '' });
+        block.items.push({ kind:'Fill', prompt: mQ[1], answer: mA[1], explain: block.sub || '', feedback: defaults.Fill || undefined });
         i++;
       }
     }
-    if (block.items.length) blocks.push(block);
+    if (block.items.length){ blocks.push(block); }
   });
 
   if (!blocks.length){
@@ -176,20 +259,10 @@ async function loadData(level, unit, section){
   return {blocks, defaults};
 }
 
-/* --- 4) Render --- */
-let allInputs = [];
-let activeInput = null;
-
-function setActiveInput(inp){
-  activeInput = inp || null;
-  if (activeInput) activeInput.focus();
-}
-
+/* --- 5) Render --- */
 function render(blocks){
   const list = document.getElementById('list');
   list.innerHTML = '';
-  allInputs = [];
-  activeInput = null;
 
   if(!blocks.length){
     list.innerHTML = `<div class="card"><div class="prompt">No items for ${level}/${unit}/${section}.</div>
@@ -219,134 +292,74 @@ function render(blocks){
 
       const listen = document.createElement('button');
       listen.textContent = '🔊 Listen';
-      listen.onclick = () => speak(toInstructionalSpeech(it.prompt || ''));
-      controls.appendChild(listen);
+
+      const answerUI = document.createElement('input');
+      answerUI.type = 'text'; answerUI.placeholder = 'Say or type your answer…';
+      let userTyped = false;
+      answerUI.addEventListener('input', ()=>{ userTyped = true; stopRecognition(); });
+
+      const check = document.createElement('button'); check.textContent = 'Check'; check.dataset.role = 'check';
+
+      const speakBtn = document.createElement('button'); speakBtn.textContent = '🎙️ Speak';
+
+      const show = document.createElement('button'); show.textContent = 'Show answer';
 
       let result = document.createElement('div'); result.className='muted';
 
-      const answerUI = document.createElement('input');
-      answerUI.type = 'text'; answerUI.placeholder = 'Say or type your answer… / Кажете или напишете отговора…';
-      answerUI.addEventListener('focus', () => setActiveInput(answerUI));
-      if (!activeInput) setActiveInput(answerUI); // първото поле става активно по подразбиране
-      allInputs.push(answerUI);
+      listen.onclick = () => {
+        userTyped = false;
+        say(toInstructionalSpeech(it.prompt || ''), ()=>{
+          if (autoMicAfterListen && !userTyped) startRecognitionFor(answerUI, result);
+        });
+      };
 
-      const check = document.createElement('button'); check.textContent = 'Check';
+      speakBtn.onclick = ()=> startRecognitionFor(answerUI, result);
+
       check.onclick = () => {
+        stopRecognition();
         const user = norm(answerUI.value||'');
         const gold = norm(it.answer||'');
         const ok = user && gold && user === gold;
         if (ok){
-          result.textContent = 'Correct! / Вярно!';
+          result.textContent = 'Correct! Well done. / Вярно! Браво.';
           result.className = 'ok';
-          speak('Correct! Well done.');
+          if (ttsEnabled) say('Correct! Well done.');
         } else {
-          const msg = smartWrongFeedback();
+          const msg = (it.feedback && it.feedback.wrong) ? it.feedback.wrong : smartWrongFeedback(it);
           result.textContent = msg;
           result.className = 'bad';
-          speak('Not quite. Check the story and try again.');
+          if (ttsEnabled) say('Not quite. Check the story and try again.');
         }
       };
-      controls.append(answerUI, check);
 
-      // Опционален локален Speak-бутон – фокусира съответното поле
-      const micBtn = document.createElement('button'); micBtn.textContent = '🎙️ Speak';
-      micBtn.onclick = () => setActiveInput(answerUI);
-      controls.appendChild(micBtn);
-
-      const show = document.createElement('button'); show.textContent = 'Show answer';
       show.onclick = () => {
-        result.textContent = `Correct answer: ${it.answer||''} / Верният отговор е: ${it.answer||''}.`;
+        stopRecognition();
+        answerUI.value = it.answer||'';
+        result.textContent = `Answer: ${it.answer||''}`;
         result.className='muted';
-        speak(`Correct answer: ${normalizeForSpeech(it.answer||'')}`);
+        if (ttsEnabled && it.answer) say(`Answer: ${it.answer}`);
       };
-      controls.appendChild(show);
 
+      controls.append(listen, answerUI, check, speakBtn, show);
       card.appendChild(controls);
       card.appendChild(result);
       list.appendChild(card);
+
+      // keyboard shortcuts for this card
+      card.addEventListener('keydown', (e)=>{
+        if (e.key==='L' || e.key==='l'){ e.preventDefault(); listen.click(); }
+        if (e.key==='S' || e.key==='s'){ e.preventDefault(); speakBtn.click(); }
+        if (e.key==='Enter'){ e.preventDefault(); check.click(); }
+        if (e.key==='Escape'){ e.preventDefault(); stopRecognition(); }
+      });
+      card.tabIndex = 0; // enable key events
     });
   });
 }
 
-/* --- 5) Speech Recognition (global, auto ON) --- */
-const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition || null;
-let recognizer = null;
-let micCaptionEl = document.getElementById('micCaption');
-
-function extractKeyword(text){
-  // Взимаме последната „чиста“ дума
-  const words = String(text||'').toLowerCase().match(/[a-z]+(?:'[a-z]+)?/g);
-  if (!words || !words.length) return '';
-  return words[words.length-1];
-}
-
-function startRecognizer(){
-  if (!SpeechRec){ micCaptionEl.innerHTML = '⚠️ Speech recognition is not supported in this browser. / Разпознаването на реч не се поддържа в този браузър.'; return; }
-  if (recognizer) return;
-  recognizer = new SpeechRec();
-  recognizer.lang = 'en-US';
-  recognizer.interimResults = true;
-  recognizer.continuous = true;
-
-  recognizer.onresult = (ev)=>{
-    let transcript = '';
-    for (let i = ev.resultIndex; i < ev.results.length; i++){
-      transcript += ev.results[i][0].transcript;
-    }
-    micCaptionEl.textContent = `🎙️ Heard: ${transcript}`;
-    if (!speechOn) return;
-    const word = extractKeyword(transcript);
-    if (word && activeInput){
-      activeInput.value = word;
-    }
-  };
-  recognizer.onend = ()=>{
-    // Поддържаме го активен, ако е ON
-    if (speechOn){ try{ recognizer.start(); }catch{} }
-  };
-  recognizer.onerror = (e)=>{
-    micCaptionEl.innerHTML = `⚠️ Mic error: ${e.error}. If permission was denied, enable the microphone in the browser settings. / Разрешете достъп до микрофона в настройките на браузъра.`;
-  };
-
-  try {
-    recognizer.start();
-    micCaptionEl.textContent = '🎙️ Listening… Say the missing word. / Слушам… Кажете липсващата дума.';
-  } catch(e){
-    micCaptionEl.innerHTML = 'Click “Speech: OFF” to turn it ON. / Щракнете „Speech: OFF“, за да го включите.';
-  }
-}
-
-function stopRecognizer(){
-  if (recognizer){
-    try{ recognizer.stop(); }catch{}
-    recognizer = null;
-  }
-}
-
-/* --- 6) Toggles --- */
-const pillSpeech = document.getElementById('pillSpeech');
-const pillTTS    = document.getElementById('pillTTS');
-
-function refreshPills(){
-  pillSpeech.textContent = `Speech: ${speechOn ? 'ON' : 'OFF'}`;
-  pillTTS.textContent    = `TTS: ${ttsOn ? 'ON' : 'OFF'}`;
-}
-pillSpeech.onclick = ()=>{
-  speechOn = !speechOn;
-  refreshPills();
-  if (speechOn) startRecognizer(); else { stopRecognizer(); micCaptionEl.textContent = '🎙️ Speech OFF'; }
-};
-pillTTS.onclick = ()=>{ ttsOn = !ttsOn; refreshPills(); };
-
-refreshPills();
-
-/* --- 7) Boot --- */
+/* --- 6) boot --- */
 loadData(level, unit, section)
-  .then(({blocks}) => {
-    render(blocks);
-    // стартираме микрофона автоматично
-    startRecognizer();
-  })
+  .then(({blocks}) => render(blocks))
   .catch(err => {
     const list = document.getElementById('list');
     list.innerHTML = `<div class="card"><div class="prompt">Error loading data.</div>
