@@ -9,7 +9,8 @@
   body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:#0b0e12;color:#e7e9ee;margin:0;padding:16px;}
   .wrap{max-width:var(--w);margin:0 auto;}
   .head{display:flex;gap:8px;align-items:center;justify-content:space-between;margin-bottom:12px}
-  .pill{font-size:12px;background:#1a2230;border:1px solid #2b3a55;padding:6px 10px;border-radius:999px}
+  .pill{font-size:12px;background:#1a2230;border:1px solid #2b3a55;padding:6px 10px;border-radius:999px;user-select:none}
+  .pill.toggle{cursor:pointer}
   h1{font-size:18px;margin:0}
   .card{background:#10161f;border:1px solid #223047;border-radius:14px;padding:16px;margin:12px 0;box-shadow:0 2px 10px rgba(0,0,0,.25)}
   .block-title{font-weight:700;margin:0 0 6px 0}
@@ -24,47 +25,49 @@
   .muted{color:#9aa7bd;font-size:13px}
   .hr{height:1px;background:#1f2a3d;margin:18px 0}
   .foot{display:flex;gap:8px;align-items:center;justify-content:flex-end}
-  .rec{border-color:#ff7a7a;background:#2a1717}
-  .toggle{display:flex;gap:6px;align-items:center}
+  .status{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .notice{font-size:13px;color:#eab308}
+  .caption{font-size:12px;color:#9aa7bd;margin-top:4px}
+  .instructions{background:#0f1420;border:1px dashed #314462;padding:10px;border-radius:12px;margin-top:8px;color:#c6d3eb;font-size:13px}
 </style>
 </head>
 <body>
 <div class="wrap">
   <div class="head">
     <h1>Interactive Exercises</h1>
-    <div class="toggle">
+    <div class="status">
       <div class="pill" id="meta"></div>
-      <button id="toggleSpeech" class="pill"></button>
-      <button id="toggleTTS" class="pill"></button>
+      <div class="pill toggle" id="pillSpeech" title="Toggle microphone">Speech: ON</div>
+      <div class="pill toggle" id="pillTTS" title="Toggle text-to-speech">TTS: ON</div>
     </div>
   </div>
+
+  <div class="instructions">
+    <strong>Инструкции:</strong> 🎧 Изслушайте изречението. 🎙️ Произнесете липсващата дума или я напишете.
+    ✅ Натиснете „Check“, за да проверите.  
+    <em>Instructions (EN):</em> Listen, say the missing word (or type it), then press “Check”.
+  </div>
+  <div id="micCaption" class="caption"></div>
 
   <div id="list"></div>
 
   <div class="hr"></div>
-  <div class="foot muted">Tip: Click 🎙️ Speak and say the missing word. Answers are checked locally.</div>
+  <div class="foot muted">Tip: Use the 🔊 button to hear the sentence. Your answers are checked locally.</div>
 </div>
 
 <script>
-/* --- 0) URL params / toggles --- */
+/* --- 0) URL params --- */
 const url = new URL(location.href);
 const level   = (url.searchParams.get('level')   || 'A1').toUpperCase();
 const unit    = (url.searchParams.get('unit')    || 'L2').toUpperCase();
 const section = (url.searchParams.get('section') || 'story').toLowerCase();
-let speechOn  = url.searchParams.get('speech') !== '0';   // student speaking
-let ttsOn     = url.searchParams.get('tts') === '1';      // robot off by default
 document.getElementById('meta').textContent = `${level} • ${unit} • ${section}`;
-const $btnSpeech = document.getElementById('toggleSpeech');
-const $btnTTS    = document.getElementById('toggleTTS');
-function refreshToggles(){
-  $btnSpeech.textContent = speechOn ? '🎙️ Speech: ON' : '🎙️ Speech: OFF';
-  $btnTTS.textContent    = ttsOn ? '🔊 TTS: ON' : '🔕 TTS: OFF';
-}
-$btnSpeech.onclick = ()=>{ speechOn=!speechOn; refreshToggles(); };
-$btnTTS.onclick    = ()=>{ ttsOn=!ttsOn; refreshToggles(); };
-refreshToggles();
 
-/* --- 1) TTS helpers (kept but OFF by default) --- */
+/* --- Feature switches (default ON) --- */
+let speechOn = true; // mic
+let ttsOn    = true; // TTS
+
+/* --- 1) TTS helpers --- */
 function normalizeForSpeech(t){
   return String(t)
     .replace(/\([^)]*\)/g, ' ')
@@ -82,16 +85,15 @@ function toInstructionalSpeech(prompt){
 let preferredVoice = null;
 function pickMaleVoice(){
   const voices = window.speechSynthesis.getVoices?.() || [];
-  const en = voices.filter(v => /^en(-|_)/i.test(v.lang));
-  const byMaleName = en.find(v => /(male|david|george|guy|daniel|microsoft|google uk english male)/i.test(v.name));
-  preferredVoice = byMaleName || en[0] || voices[0] || null;
+  const byMaleName = voices.find(v => /(male|david|george|guy|daniel|microsoft|google uk english male)/i.test(v.name));
+  const byLangEN   = voices.find(v => /^en(-|_)/i.test(v.lang));
+  preferredVoice = byMaleName || byLangEN || voices[0] || null;
 }
 window.speechSynthesis.onvoiceschanged = pickMaleVoice; pickMaleVoice();
 function speak(text){
-  if(!ttsOn) return;
+  if (!ttsOn) return;
   try{
     const u = new SpeechSynthesisUtterance(normalizeForSpeech(text));
-    u.lang = 'en-US';
     if (preferredVoice) u.voice = preferredVoice;
     u.rate = 1.0; u.pitch = 1.0;
     window.speechSynthesis.cancel();
@@ -100,8 +102,7 @@ function speak(text){
 }
 
 /* --- 1a) Smart feedback --- */
-function smartWrongFeedback(it){
-  // generic bilingual fallback
+function smartWrongFeedback(){
   return "Not quite. Check the story and try again. / Не точно. Върнете се към историята и опитайте пак.";
 }
 
@@ -115,26 +116,7 @@ function norm(s){
     .trim();
 }
 
-/* --- 3) Student Speech Recognition --- */
-const SR = window.SpeechRecognition || window.webkitSpeechRecognition || null;
-function startSpeechOnce({onResult, onError}={}){
-  if(!SR){ onError && onError(new Error('SpeechRecognition not supported')); return ()=>{}; }
-  const rec = new SR();
-  rec.lang = 'en-US';
-  rec.continuous = false;
-  rec.interimResults = false;
-  rec.maxAlternatives = 3;
-  rec.onresult = (e)=>{
-    const alts = [];
-    for (let i=0;i<e.results[0].length;i++){ alts.push(e.results[0][i].transcript); }
-    onResult && onResult(alts);
-  };
-  rec.onerror = (e)=> onError && onError(e.error || e);
-  rec.start();
-  return ()=>{ try{ rec.stop(); }catch{} };
-}
-
-/* --- 4) Load + expand JSON to items (same as преди) --- */
+/* --- 3) Load + expand JSON to items --- */
 async function loadData(level, unit, section){
   const file = section === 'grammar' ? 'data/a1_grammar.json' : 'data/a1.json';
   const res = await fetch(file, { cache: 'no-store' });
@@ -146,6 +128,7 @@ async function loadData(level, unit, section){
   const num2   = rawNum.padStart(2,'0');
   const candidates = [unit, unit.toUpperCase(), unit.toLowerCase(),'L'+rawNum,'l'+rawNum,'L'+num2,'l'+num2];
   const key = candidates.find(k => Object.prototype.hasOwnProperty.call(lessons, k)) || null;
+
   const lesson   = key ? lessons[key] : null;
   if (!lesson) return {blocks:[], defaults:data.feedbackDefaults||{}};
 
@@ -154,7 +137,7 @@ async function loadData(level, unit, section){
 
   (lesson.exercises || []).forEach((ex, exIdx) => {
     const lines = (ex.payload && Array.isArray(ex.payload.lines)) ? ex.payload.lines.slice() : [];
-    if (!lines.length){ return; }
+    if (!lines.length) return;
 
     const block = { title: ex.title || `Exercise ${exIdx+1}`, sub: null, items: [] };
     const firstInfo = lines.find(s => /fill|translate|rearrange|подредете|попълнете|преведете/i.test(s));
@@ -166,20 +149,20 @@ async function loadData(level, unit, section){
       const answers = lines.slice(ansPos+1).map(s => s.trim()).filter(Boolean);
       const n = Math.min(prompts.length, answers.length);
       for(let i=0;i<n;i++){
-        block.items.push({ kind:'Fill', prompt: prompts[i], answer: answers[i], explain: '', feedback: defaults.Fill || undefined });
+        block.items.push({ kind:'Fill', prompt: prompts[i], answer: answers[i], explain: block.sub || '' });
       }
       blocks.push(block);
       return;
     }
 
-    // Q + Correct Answer pattern
+    // Q + "Correct Answer:"
     for(let i=0;i<lines.length;i++){
       const q = lines[i];
       const mQ = /^(.*\?)\s*(?:\(.*?\))?\s*$/i.exec(q);
       const next = lines[i+1] || '';
       const mA = /^\s*(?:correct\s*answer\s*:\s*)(.*)$/i.exec(next);
       if (mQ && mA){
-        block.items.push({ kind:'Fill', prompt: mQ[1], answer: mA[1], explain: '', feedback: defaults.Fill || undefined });
+        block.items.push({ kind:'Fill', prompt: mQ[1], answer: mA[1], explain: block.sub || '' });
         i++;
       }
     }
@@ -193,13 +176,24 @@ async function loadData(level, unit, section){
   return {blocks, defaults};
 }
 
-/* --- 5) Render --- */
+/* --- 4) Render --- */
+let allInputs = [];
+let activeInput = null;
+
+function setActiveInput(inp){
+  activeInput = inp || null;
+  if (activeInput) activeInput.focus();
+}
+
 function render(blocks){
   const list = document.getElementById('list');
   list.innerHTML = '';
+  allInputs = [];
+  activeInput = null;
 
   if(!blocks.length){
-    list.innerHTML = `<div class="card"><div class="prompt">No items for ${level}/${unit}/${section}.</div><div class="muted">Check URL parameters or dataset.</div></div>`;
+    list.innerHTML = `<div class="card"><div class="prompt">No items for ${level}/${unit}/${section}.</div>
+    <div class="muted">Check URL parameters or dataset.</div></div>`;
     return;
   }
 
@@ -223,74 +217,47 @@ function render(blocks){
 
       const controls = document.createElement('div'); controls.className = 'controls';
 
-      // 🔊 (optional) read
       const listen = document.createElement('button');
       listen.textContent = '🔊 Listen';
       listen.onclick = () => speak(toInstructionalSpeech(it.prompt || ''));
       controls.appendChild(listen);
 
-      // 📝 typing fallback
-      const answerUI = document.createElement('input');
-      answerUI.type = 'text'; answerUI.placeholder = 'Type your answer…';
-
-      const check = document.createElement('button'); check.textContent = 'Check';
-
       let result = document.createElement('div'); result.className='muted';
 
-      function evaluate(userRaw, viaSpeech=false){
-        const user = norm(userRaw);
+      const answerUI = document.createElement('input');
+      answerUI.type = 'text'; answerUI.placeholder = 'Say or type your answer… / Кажете или напишете отговора…';
+      answerUI.addEventListener('focus', () => setActiveInput(answerUI));
+      if (!activeInput) setActiveInput(answerUI); // първото поле става активно по подразбиране
+      allInputs.push(answerUI);
+
+      const check = document.createElement('button'); check.textContent = 'Check';
+      check.onclick = () => {
+        const user = norm(answerUI.value||'');
         const gold = norm(it.answer||'');
         const ok = user && gold && user === gold;
         if (ok){
-          result.textContent = "Correct! / Вярно!";
+          result.textContent = 'Correct! / Вярно!';
           result.className = 'ok';
+          speak('Correct! Well done.');
         } else {
-          const heard = viaSpeech ? `I heard: "${userRaw}". / Чух: "${userRaw}". ` : "";
-          result.textContent = heard + "Not quite. Check the story and try again. / Не точно. Върнете се към историята и опитайте пак.";
+          const msg = smartWrongFeedback();
+          result.textContent = msg;
           result.className = 'bad';
+          speak('Not quite. Check the story and try again.');
         }
-      }
-
-      check.onclick = () => evaluate(answerUI.value||'', false);
+      };
       controls.append(answerUI, check);
 
-      // 🎙️ student speaks
-      const mic = document.createElement('button'); mic.textContent = '🎙️ Speak';
-      mic.onclick = () => {
-        if (!speechOn){
-          result.textContent = "Speech is OFF. Toggle it above. / Говорът е изключен. Включете го отгоре.";
-          result.className = 'muted';
-          return;
-        }
-        if (!SR){
-          result.textContent = "Speech recognition not supported in this browser. / Разпознаването на говор не се поддържа в този браузър.";
-          result.className = 'bad';
-          return;
-        }
-        mic.classList.add('rec');
-        result.textContent = "Listening… say the missing word. / Слушам… кажете липсващата дума.";
-        startSpeechOnce({
-          onResult:(alts)=>{
-            mic.classList.remove('rec');
-            // взимаме най-кратката хипотеза (най-често единична дума)
-            const best = alts.sort((a,b)=>a.length-b.length)[0] || alts[0] || '';
-            evaluate(best, true);
-          },
-          onError:(e)=>{
-            mic.classList.remove('rec');
-            result.textContent = "Mic error, please try again. / Проблем с микрофона, опитайте пак.";
-            result.className = 'bad';
-          }
-        });
-      };
-      controls.appendChild(mic);
+      // Опционален локален Speak-бутон – фокусира съответното поле
+      const micBtn = document.createElement('button'); micBtn.textContent = '🎙️ Speak';
+      micBtn.onclick = () => setActiveInput(answerUI);
+      controls.appendChild(micBtn);
 
-      // 👁 Show answer (показва само верния отговор)
       const show = document.createElement('button'); show.textContent = 'Show answer';
       show.onclick = () => {
-        answerUI.value = '';
-        result.textContent = `Answer: ${it.answer} / Отговор: ${it.answer}`;
+        result.textContent = `Correct answer: ${it.answer||''} / Верният отговор е: ${it.answer||''}.`;
         result.className='muted';
+        speak(`Correct answer: ${normalizeForSpeech(it.answer||'')}`);
       };
       controls.appendChild(show);
 
@@ -301,12 +268,89 @@ function render(blocks){
   });
 }
 
-/* --- 6) boot --- */
+/* --- 5) Speech Recognition (global, auto ON) --- */
+const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition || null;
+let recognizer = null;
+let micCaptionEl = document.getElementById('micCaption');
+
+function extractKeyword(text){
+  // Взимаме последната „чиста“ дума
+  const words = String(text||'').toLowerCase().match(/[a-z]+(?:'[a-z]+)?/g);
+  if (!words || !words.length) return '';
+  return words[words.length-1];
+}
+
+function startRecognizer(){
+  if (!SpeechRec){ micCaptionEl.innerHTML = '⚠️ Speech recognition is not supported in this browser. / Разпознаването на реч не се поддържа в този браузър.'; return; }
+  if (recognizer) return;
+  recognizer = new SpeechRec();
+  recognizer.lang = 'en-US';
+  recognizer.interimResults = true;
+  recognizer.continuous = true;
+
+  recognizer.onresult = (ev)=>{
+    let transcript = '';
+    for (let i = ev.resultIndex; i < ev.results.length; i++){
+      transcript += ev.results[i][0].transcript;
+    }
+    micCaptionEl.textContent = `🎙️ Heard: ${transcript}`;
+    if (!speechOn) return;
+    const word = extractKeyword(transcript);
+    if (word && activeInput){
+      activeInput.value = word;
+    }
+  };
+  recognizer.onend = ()=>{
+    // Поддържаме го активен, ако е ON
+    if (speechOn){ try{ recognizer.start(); }catch{} }
+  };
+  recognizer.onerror = (e)=>{
+    micCaptionEl.innerHTML = `⚠️ Mic error: ${e.error}. If permission was denied, enable the microphone in the browser settings. / Разрешете достъп до микрофона в настройките на браузъра.`;
+  };
+
+  try {
+    recognizer.start();
+    micCaptionEl.textContent = '🎙️ Listening… Say the missing word. / Слушам… Кажете липсващата дума.';
+  } catch(e){
+    micCaptionEl.innerHTML = 'Click “Speech: OFF” to turn it ON. / Щракнете „Speech: OFF“, за да го включите.';
+  }
+}
+
+function stopRecognizer(){
+  if (recognizer){
+    try{ recognizer.stop(); }catch{}
+    recognizer = null;
+  }
+}
+
+/* --- 6) Toggles --- */
+const pillSpeech = document.getElementById('pillSpeech');
+const pillTTS    = document.getElementById('pillTTS');
+
+function refreshPills(){
+  pillSpeech.textContent = `Speech: ${speechOn ? 'ON' : 'OFF'}`;
+  pillTTS.textContent    = `TTS: ${ttsOn ? 'ON' : 'OFF'}`;
+}
+pillSpeech.onclick = ()=>{
+  speechOn = !speechOn;
+  refreshPills();
+  if (speechOn) startRecognizer(); else { stopRecognizer(); micCaptionEl.textContent = '🎙️ Speech OFF'; }
+};
+pillTTS.onclick = ()=>{ ttsOn = !ttsOn; refreshPills(); };
+
+refreshPills();
+
+/* --- 7) Boot --- */
 loadData(level, unit, section)
-  .then(({blocks}) => render(blocks))
+  .then(({blocks}) => {
+    render(blocks);
+    // стартираме микрофона автоматично
+    startRecognizer();
+  })
   .catch(err => {
     const list = document.getElementById('list');
-    list.innerHTML = `<div class="card"><div class="prompt">Error loading data.</div><div class="muted">${String(err)}</div></div>`;
+    list.innerHTML = `<div class="card"><div class="prompt">Error loading data.</div>
+    <div class="muted">${String(err)}</div></div>`;
   });
 </script>
 </body>
