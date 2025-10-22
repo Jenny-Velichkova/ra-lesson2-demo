@@ -1,0 +1,115 @@
+{
+  "courseId": "a1",
+  "lessons": {
+    "l02": {
+      "lessonId": "l02",
+      "title": "Lesson 02",
+      "videoUrl": null,
+      "exercises": [
+        {
+          "exerciseId": "ex_l02_fill_01",
+          "templateType": "Fill",
+          "title": "Fill in the blanks based on the story / Попълнете пропуснатите думи според историята.",
+          "payload": {
+            "lines": [
+              "Lily has a ________.",
+              "Inside the box, Lily finds a ________.",
+              "Lily says, \"This is my new ________.\"",
+              "Lily's mother says, \"This is a ________.\"",
+              "Lily smiles because she has a ________.",
+              "Lily picks up the ________.",
+              "\"This is not a ________,\" says Lily.",
+              "Lily opens the ________.",
+              "Answers:",
+              "box",
+              "ball",
+              "toy",
+              "doll",
+              "toy",
+              "doll",
+              "ball",
+              "box"
+            ]
+          },
+          "feedback": {
+            "wrong": "Not quite. Use the target form for this task. Try repeating the full correct sentence out loud.",
+            "readCorrectAloud": true
+          }
+        },
+        {
+          "exerciseId": "ex_l02_reorder_01",
+          "templateType": "Reorder",
+          "title": "Rearrange the sentences to match the story / Подредете изреченията според историята.",
+          "payload": {
+            "lines": [
+              "\"This is my new toy!\"",
+              "Lily finds a doll.",
+              "Lily opens the box.",
+              "Lily asks, \"What is this?\"",
+              "Lily's mother says, \"This is a doll.\"",
+              "Lily picks up the doll.",
+              "Lily's mother says, \"This is a ball.\"",
+              "Correct order:",
+              "Lily opens the box.",
+              "Lily asks, \"What is this?\"",
+              "Lily's mother says, \"This is a ball.\"",
+              "Lily asks, \"What is this?\"",
+              "Lily's mother says, \"This is a doll.\"",
+              "Lily picks up the doll.",
+              "Lily says, \"This is my new toy!\""
+            ]
+          },
+          "feedback": {
+            "wrong": "Not quite. Try to match the story sequence. Read the story once more and try again.",
+            "readCorrectAloud": false
+          }
+        },
+        {
+          "exerciseId": "ex_l02_yesno_01",
+          "templateType": "YesNo",
+          "title": "Short answers (Yes/No + sentence) / Кратки отговори (Да/Не + изречение).",
+          "payload": {
+            "lines": [
+              "Is this a box? (toy)\rStudent Answer: ___\rCorrect Answer: No, it isn’t. This is a toy.",
+              "Is this a ball? (ball)\rStudent Answer: ___\rCorrect Answer: Yes, it is. This is a ball.",
+              "Is this a doll? (ring)\rStudent Answer: ___\rCorrect Answer: No, it isn’t. This is a ring.",
+              "Is this a car? (bike)\rStudent Answer: ___\rCorrect Answer: No, it isn’t. This is a bike.",
+              "Is this a chair? (chair)\rStudent Answer: ___\rCorrect Answer: Yes, it is. This is a chair.",
+              "Is this milk? (water)\rStudent Answer: ___\rCorrect Answer: No, it isn’t. This is water.",
+              "Is this bread? (bread)\rStudent Answer: ___\rCorrect Answer: Yes, it is. This is bread.",
+              "Is this a cake? (cake)\rStudent Answer: ___\rCorrect Answer: Yes, it is. This is a cake.",
+              "Is this a book? (apple)\rStudent Answer: ___\rCorrect Answer: No, it isn’t. This is an apple.",
+              "Is this a toy? (doll)\rStudent Answer: ___\rCorrect Answer: No, it isn’t. This is a doll.",
+              "Is this a bike? (bike)\rStudent Answer: ___\rCorrect Answer: Yes, it is. This is a bike.",
+              "Is this an apple? (ball)\rStudent Answer: ___\rCorrect Answer: No, it isn’t. This is a ball.",
+              "Is this water? (water)\rStudent Answer: ___\rCorrect Answer: Yes, it is. This is water.",
+              "Is this a ring? (chair)\rStudent Answer: ___\rCorrect Answer: No, it isn’t. This is a chair."
+            ]
+          },
+          "feedback": {
+            "wrong": "Not quite. Re-check the rule, then try again. Now say the correct sentence out loud.",
+            "readCorrectAloud": true
+          }
+        }
+      ]
+    }
+  },
+  "feedbackDefaults": {
+    "Fill": {
+      "wrong": "Not quite. Use the target form for this task. Try repeating the full correct sentence out loud.",
+      "readCorrectAloud": true
+    },
+    "YesNo": {
+      "wrong": "Not quite. Re-check the rule, then try again. Now say the correct sentence out loud.",
+      "readCorrectAloud": true
+    },
+    "Reorder": {
+      "wrong": "Not quite. Try to match the story sequence. Read the story once more and try again.",
+      "readCorrectAloud": false
+    },
+    "Pronunciation": {
+      "wrong": "Almost there. Listen once more and repeat clearly.",
+      "readCorrectAloud": true
+    }
+  }
+}
