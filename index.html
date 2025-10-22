@@ -260,28 +260,56 @@ async function loadData(level, unit, section){
     const firstInfo = lines.find(s => /fill|translate|rearrange|подредете|попълнете|преведете/i.test(s));
     if (firstInfo) block.sub = firstInfo;
 
-    const ansPos = lines.findIndex(s => /^answers\s*:?/i.test(s));
-    if (ansPos !== -1){
-      const prompts = lines.slice(0, ansPos).filter(s => /___/.test(s));
-      const answers = lines.slice(ansPos+1).map(s => s.trim()).filter(Boolean);
-      const n = Math.min(prompts.length, answers.length);
-      for(let i=0;i<n;i++){
-        block.items.push({ kind:'Fill', prompt: prompts[i], answer: answers[i], explain: block.sub || '', feedback: defaults.Fill || undefined });
-      }
-      blocks.push(block); return;
-    }
-    for(let i=0;i<lines.length;i++){
-      const q = lines[i];
-      const mQ = /^(.*\?)\s*(?:\(.*?\))?\s*$/i.exec(q);
-      const next = lines[i+1] || '';
-      const mA = /^\s*(?:correct\s*answer\s*:\s*)(.*)$/i.exec(next);
-      if (mQ && mA){
-        block.items.push({ kind:'Fill', prompt: mQ[1], answer: mA[1], explain: block.sub || '', feedback: defaults.Fill || undefined });
-        i++;
-      }
-    }
-    if (block.items.length){ blocks.push(block); }
-  });
+    // хелпър за определяне на типа
+const getKind = (declared, answer) => {
+  const t = (declared || '').toLowerCase();
+  if (t === 'short_answer_yesno' || t === 'yesno') return 'YesNo';
+  if (t === 'reorder') return 'Reorder';
+  const a = String(answer || '').trim().toLowerCase();
+  if (['yes','no','да','не'].includes(a)) return 'YesNo';
+  return 'Fill';
+};
+
+const ansPos = lines.findIndex(s => /^answers\s*:?/i.test(s));
+if (ansPos !== -1){
+  const prompts = lines.slice(0, ansPos).filter(s => /___/.test(s));
+  const answers = lines.slice(ansPos+1).map(s => s.trim()).filter(Boolean);
+  const n = Math.min(prompts.length, answers.length);
+  for (let i = 0; i < n; i++){
+    const kind = getKind(block.type || block.templateType || (block.meta && block.meta.type), answers[i]);
+    block.items.push({
+      kind,
+      prompt: prompts[i],
+      answer: answers[i],
+      explain: block.sub || '',
+      feedback: (defaults && (defaults[kind] || defaults.Fill)) || undefined,
+      acceptable: block.acceptable || []
+    });
+  }
+  blocks.push(block);
+  return;
+}
+
+for (let i = 0; i < lines.length; i++){
+  const q = lines[i];
+  const mQ = /^(.*\?)\s*(?:\(.*?\))?\s*$/i.exec(q);
+  const next = lines[i+1] || '';
+  const mA = /^\s*(?:correct\s*answer\s*:\s*)(.*)$/i.exec(next);
+  if (mQ && mA){
+    const kind = getKind(block.type || block.templateType || (block.meta && block.meta.type), mA[1]);
+    block.items.push({
+      kind,
+      prompt: mQ[1],
+      answer: mA[1],
+      explain: block.sub || '',
+      feedback: (defaults && (defaults[kind] || defaults.Fill)) || undefined,
+      acceptable: block.acceptable || []
+    });
+    i++;
+  }
+}
+
+if (block.items.length){ blocks.push(block); }
 
   if (!blocks.length){
     const flat = Array.isArray(lesson.exercises) ? lesson.exercises : [];
