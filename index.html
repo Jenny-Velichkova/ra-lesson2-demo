@@ -59,12 +59,33 @@
 </div>
 
 <script>
-/* --- 0) URL params --- */
+/* --- 0) URL params + file resolver --- */
 const url = new URL(location.href);
 const level   = (url.searchParams.get('level')   || 'A1').toUpperCase();
 const unit    = (url.searchParams.get('unit')    || 'L2').toUpperCase();
 const section = (url.searchParams.get('section') || 'story').toLowerCase();
+const typeParam = (url.searchParams.get('type')  || '').toLowerCase(); // 'fill' | 'yesno' | 'reorder'
 document.getElementById('meta').textContent = `${level} • ${unit} • ${section}`;
+
+// автоматично намиране на файла по стария стил URL-и
+let resolvedFile = url.searchParams.get('file');
+if (!resolvedFile) {
+  const m = /^L?(\d+)/i.exec(unit);
+  const unit2 = m ? String(m[1]).padStart(2, '0') : '01';
+  const lvl = level.toLowerCase();
+
+  if (section === 'grammar') {
+    resolvedFile = 'data/a1_grammar.json';
+  } else if (section === 'story') {
+    resolvedFile = `data/${lvl}.lesson${unit2}.full.json`; // напр. data/a1.lesson02.full.json
+  } else {
+    resolvedFile = 'data/a1.json'; // fallback
+  }
+}
+
+// GH Pages е статичен → AI feedback само локално
+const IS_LOCAL = ['localhost','127.0.0.1'].includes(location.hostname);
+const API_BASE = IS_LOCAL ? 'http://127.0.0.1:3000' : '';
 
 /* --- Global toggles (with localStorage) --- */
 const store = {
@@ -145,7 +166,6 @@ function smartWrongFeedback(it){
 }
 
 /* --- 2) Normalize + translit (BG->LAT) --- */
-// Minimal BG->LAT for single words
 function translitBgWord(w){
   const map = {
     'а':'a','б':'b','в':'v','г':'g','д':'d','е':'e','ж':'zh','з':'z','и':'i','й':'y','к':'k',
@@ -157,8 +177,7 @@ function translitBgWord(w){
   };
   let out = '';
   for (const ch of w) out += (map[ch] ?? ch);
-  // tiny fixes: boks->box, … (end-of-word heuristics)
-  out = out.replace(/ks\b/, 'x');
+  out = out.replace(/ks\b/, 'x'); // tiny fixes
   out = out.replace(/ts\b/, 'c');
   return out;
 }
@@ -184,7 +203,7 @@ function startRecognitionFor(input, resultEl){
   }
   stopRecognition();
   const r = new Recog();
-  r.lang = 'bg-BG';                 // слушаме български, ученикът казва „бокс“
+  r.lang = 'bg-BG';
   r.interimResults = false;
   r.maxAlternatives = 1;
   input.classList.add('listening');
@@ -193,7 +212,6 @@ function startRecognitionFor(input, resultEl){
   r.onresult = (e)=>{
     const heard = (e.results?.[0]?.[0]?.transcript || '').trim();
     if (heard) {
-      // ако е кирилица → покажи и латиницата
       if (/[а-яА-Я]/.test(heard)) {
         const lat = translitBgWord(heard);
         input.value = lat;
@@ -234,12 +252,37 @@ function stopRecognition(){
 }
 
 /* --- 4) Load + expand JSON to items --- */
-async function loadData(level, unit, section){
-  const file = section === 'grammar' ? 'data/a1_grammar.json' : 'data/a1.json';
+async function loadData(level, unit, section, file, typeParam){
   const res = await fetch(file, { cache: 'no-store' });
   if (!res.ok) throw new Error(`Fetch failed: ${res.status} ${res.statusText}`);
   const data = await res.json();
 
+  const blocks = [];
+  const defaults = data.feedbackDefaults || {};
+
+  // A) Нов еднофайлов формат: { title, sub?, items:[] }
+  if (Array.isArray(data.items)) {
+    let items = data.items.slice();
+
+    if (typeParam) {
+      items = items.filter(it => {
+        const k = (it.kind || it.templateType || '').toLowerCase();
+        if (typeParam === 'fill')    return k === 'fill';
+        if (typeParam === 'yesno')   return k === 'yesno';
+        if (typeParam === 'reorder') return k === 'reorder';
+        return true;
+      });
+    }
+
+    blocks.push({
+      title: data.title || `${level} ${unit} • ${section}`,
+      sub: data.sub || null,
+      items
+    });
+    return { blocks, defaults };
+  }
+
+  // B) Стар курс формат
   const lessons = data.lessons || {};
   const rawNum = String(unit).replace(/^L/i,'').replace(/^0+/, '');
   const num2   = rawNum.padStart(2,'0');
@@ -247,10 +290,7 @@ async function loadData(level, unit, section){
   const key = candidates.find(k => Object.prototype.hasOwnProperty.call(lessons, k)) || null;
 
   const lesson   = key ? lessons[key] : null;
-  if (!lesson) return {blocks:[], defaults:data.feedbackDefaults||{}};
-
-  const blocks = [];
-  const defaults = data.feedbackDefaults || {};
+  if (!lesson) return {blocks:[], defaults};
 
   (lesson.exercises || []).forEach((ex, exIdx) => {
     const lines = (ex.payload && Array.isArray(ex.payload.lines)) ? ex.payload.lines.slice() : [];
@@ -261,55 +301,61 @@ async function loadData(level, unit, section){
     if (firstInfo) block.sub = firstInfo;
 
     // хелпър за определяне на типа
-const getKind = (declared, answer) => {
-  const t = (declared || '').toLowerCase();
-  if (t === 'short_answer_yesno' || t === 'yesno') return 'YesNo';
-  if (t === 'reorder') return 'Reorder';
-  const a = String(answer || '').trim().toLowerCase();
-  if (['yes','no','да','не'].includes(a)) return 'YesNo';
-  return 'Fill';
-};
+    const getKind = (declared, answer) => {
+      const t = (declared || '').toLowerCase();
+      if (t === 'short_answer_yesno' || t === 'yesno') return 'YesNo';
+      if (t === 'reorder') return 'Reorder';
+      const a = String(answer || '').trim().toLowerCase();
+      if (['yes','no','да','не'].includes(a)) return 'YesNo';
+      return 'Fill';
+    };
 
-const ansPos = lines.findIndex(s => /^answers\s*:?/i.test(s));
-if (ansPos !== -1){
-  const prompts = lines.slice(0, ansPos).filter(s => /___/.test(s));
-  const answers = lines.slice(ansPos+1).map(s => s.trim()).filter(Boolean);
-  const n = Math.min(prompts.length, answers.length);
-  for (let i = 0; i < n; i++){
-    const kind = getKind(block.type || block.templateType || (block.meta && block.meta.type), answers[i]);
-    block.items.push({
-      kind,
-      prompt: prompts[i],
-      answer: answers[i],
-      explain: block.sub || '',
-      feedback: (defaults && (defaults[kind] || defaults.Fill)) || undefined,
-      acceptable: block.acceptable || []
-    });
-  }
-  blocks.push(block);
-  return;
-}
+    const ansPos = lines.findIndex(s => /^answers\s*:?/i.test(s));
+    if (ansPos !== -1){
+      const prompts = lines.slice(0, ansPos).filter(s => /___/.test(s));
+      const answers = lines.slice(ansPos+1).map(s => s.trim()).filter(Boolean);
+      const n = Math.min(prompts.length, answers.length);
+      for (let i = 0; i < n; i++){
+        const kind = getKind(block.type || block.templateType || (block.meta && block.meta.type), answers[i]);
+        block.items.push({
+          kind,
+          prompt: prompts[i],
+          answer: answers[i],
+          explain: block.sub || '',
+          feedback: (defaults && (defaults[kind] || defaults.Fill)) || undefined,
+          acceptable: block.acceptable || []
+        });
+      }
+      if (!typeParam || block.items.some(it => (it.kind||'').toLowerCase()===typeParam)) {
+        blocks.push(block);
+      }
+      return;
+    }
 
-for (let i = 0; i < lines.length; i++){
-  const q = lines[i];
-  const mQ = /^(.*\?)\s*(?:\(.*?\))?\s*$/i.exec(q);
-  const next = lines[i+1] || '';
-  const mA = /^\s*(?:correct\s*answer\s*:\s*)(.*)$/i.exec(next);
-  if (mQ && mA){
-    const kind = getKind(block.type || block.templateType || (block.meta && block.meta.type), mA[1]);
-    block.items.push({
-      kind,
-      prompt: mQ[1],
-      answer: mA[1],
-      explain: block.sub || '',
-      feedback: (defaults && (defaults[kind] || defaults.Fill)) || undefined,
-      acceptable: block.acceptable || []
-    });
-    i++;
-  }
-}
+    for (let i = 0; i < lines.length; i++){
+      const q = lines[i];
+      const mQ = /^(.*\?)\s*(?:\(.*?\))?\s*$/i.exec(q);
+      const next = lines[i+1] || '';
+      const mA = /^\s*(?:correct\s*answer\s*:\s*)(.*)$/i.exec(next);
+      if (mQ && mA){
+        const kind = getKind(block.type || block.templateType || (block.meta && block.meta.type), mA[1]);
+        block.items.push({
+          kind,
+          prompt: mQ[1],
+          answer: mA[1],
+          explain: block.sub || '',
+          feedback: (defaults && (defaults[kind] || defaults.Fill)) || undefined,
+          acceptable: block.acceptable || []
+        });
+        i++;
+      }
+    }
 
-if (block.items.length){ blocks.push(block); }
+    if (typeParam) {
+      block.items = block.items.filter(it => (it.kind||'').toLowerCase() === typeParam);
+    }
+    if (block.items.length){ blocks.push(block); }
+  });
 
   if (!blocks.length){
     const flat = Array.isArray(lesson.exercises) ? lesson.exercises : [];
@@ -375,72 +421,64 @@ function render(blocks){
       speakBtn.onclick = ()=> startRecognitionFor(answerUI, result);
 
       check.onclick = () => {
-  stopRecognition();
+        stopRecognition();
 
-  // 1) Вземаме суровия и нормализирания отговор
-  const rawUser = (answerUI.value || '');
-  const user = normalizeForMatch(rawUser);
-  const gold = normalizeForMatch(it.answer || '');
+        const rawUser = (answerUI.value || '');
+        const user = normalizeForMatch(rawUser);
+        const gold = normalizeForMatch(it.answer || '');
 
-  // 2) Алтернативи (ако dataset е подал acceptable)
-  const acc = Array.isArray(it.acceptable) ? it.acceptable.map(normalizeForMatch) : [];
+        const acc = Array.isArray(it.acceptable) ? it.acceptable.map(normalizeForMatch) : [];
+        let ok = Boolean(user) && (user === gold || acc.includes(user));
 
-  // 3) Точно съвпадение или някоя от алтернативите
-  let ok = Boolean(user) && (user === gold || acc.includes(user));
-
-  // 4) Частично съвпадение в % за текстови отговори
-  let pct = 0;
-  if (!ok && user && gold) {
-    const u = user.split(/\s+/).filter(Boolean);
-    const g = gold.split(/\s+/).filter(Boolean);
-    const inter = u.filter(w => g.includes(w)).length;
-    pct = Math.round((inter / Math.max(g.length, 1)) * 100);
-  }
-
-  // 5) Почисти предишен AI feedback (ако има)
-  const oldAI = card.querySelector('.ai-feedback');
-  if (oldAI) oldAI.remove();
-
-  // 6) Показване на резултат
-  if (ok) {
-    result.textContent = 'Correct! Well done. / Вярно! Браво.';
-    result.className = 'ok';
-    if (ttsEnabled) say('Correct! Well done.');
-  } else {
-    const baseMsg = (it.feedback && (it.feedback.wrong || it.feedback.try)) 
-      ? (it.feedback.wrong || it.feedback.try) 
-      : smartWrongFeedback(it);
-
-    result.textContent = pct ? `${baseMsg} (${pct}%)` : baseMsg;
-    result.className = 'bad';
-    if (ttsEnabled) say('Not quite. Check the story and try again.');
-
-    // 7) 🔥 AI фийдбек от backend-а – показваме го под локалния, само при грешка
-    if (rawUser.trim()) {
-      fetch('/api/feedback', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          prompt: it.prompt,
-          userAnswer: rawUser,          // суровият текст
-          correctAnswer: it.answer,     // златният отговор
-          kind: it.kind || 'Fill'       // за контекст (YesNo/Fill/Reorder)
-        })
-      })
-      .then(r => r.ok ? r.json() : null)
-      .then(data => {
-        if (data && data.feedback) {
-          const ai = document.createElement('div');
-          ai.className = 'note ai-feedback';
-          ai.textContent = data.feedback;
-          result.insertAdjacentElement('afterend', ai);
+        let pct = 0;
+        if (!ok && user && gold) {
+          const u = user.split(/\s+/).filter(Boolean);
+          const g = gold.split(/\s+/).filter(Boolean);
+          const inter = u.filter(w => g.includes(w)).length;
+          pct = Math.round((inter / Math.max(g.length, 1)) * 100);
         }
-      })
-      .catch(() => { /* тихо при офлайн/грешка */ });
-    }
-  }
-};
 
+        const oldAI = card.querySelector('.ai-feedback');
+        if (oldAI) oldAI.remove();
+
+        if (ok) {
+          result.textContent = 'Correct! Well done. / Вярно! Браво.';
+          result.className = 'ok';
+          if (ttsEnabled) say('Correct! Well done.');
+        } else {
+          const baseMsg = (it.feedback && (it.feedback.wrong || it.feedback.try)) 
+            ? (it.feedback.wrong || it.feedback.try) 
+            : smartWrongFeedback(it);
+
+          result.textContent = pct ? `${baseMsg} (${pct}%)` : baseMsg;
+          result.className = 'bad';
+          if (ttsEnabled) say('Not quite. Check the story and try again.');
+
+          // AI feedback само при локален тест (GH Pages е статичен)
+          if (rawUser.trim() && IS_LOCAL) {
+            fetch(`${API_BASE}/api/feedback`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                prompt: it.prompt,
+                userAnswer: rawUser,
+                correctAnswer: it.answer,
+                kind: it.kind || 'Fill'
+              })
+            })
+            .then(r => r.ok ? r.json() : null)
+            .then(data => {
+              if (data && data.feedback) {
+                const ai = document.createElement('div');
+                ai.className = 'note ai-feedback';
+                ai.textContent = data.feedback;
+                result.insertAdjacentElement('afterend', ai);
+              }
+            })
+            .catch(()=>{});
+          }
+        }
+      };
 
       show.onclick = () => {
         stopRecognition();
@@ -468,7 +506,7 @@ function render(blocks){
 }
 
 /* --- 6) boot --- */
-loadData(level, unit, section)
+loadData(level, unit, section, resolvedFile, typeParam)
   .then(({blocks}) => render(blocks))
   .catch(err => {
     const list = document.getElementById('list');
