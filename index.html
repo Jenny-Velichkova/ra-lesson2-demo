@@ -375,21 +375,72 @@ function render(blocks){
       speakBtn.onclick = ()=> startRecognitionFor(answerUI, result);
 
       check.onclick = () => {
-        stopRecognition();
-        const user = normalizeForMatch(answerUI.value||'');
-        const gold = normalizeForMatch(it.answer||'');
-        const ok = user && gold && user === gold;
-        if (ok){
-          result.textContent = 'Correct! Well done. / Вярно! Браво.';
-          result.className = 'ok';
-          if (ttsEnabled) say('Correct! Well done.');
-        } else {
-          const msg = (it.feedback && it.feedback.wrong) ? it.feedback.wrong : smartWrongFeedback(it);
-          result.textContent = msg;
-          result.className = 'bad';
-          if (ttsEnabled) say('Not quite. Check the story and try again.');
+  stopRecognition();
+
+  // 1) Вземаме суровия и нормализирания отговор
+  const rawUser = (answerUI.value || '');
+  const user = normalizeForMatch(rawUser);
+  const gold = normalizeForMatch(it.answer || '');
+
+  // 2) Алтернативи (ако dataset е подал acceptable)
+  const acc = Array.isArray(it.acceptable) ? it.acceptable.map(normalizeForMatch) : [];
+
+  // 3) Точно съвпадение или някоя от алтернативите
+  let ok = Boolean(user) && (user === gold || acc.includes(user));
+
+  // 4) Частично съвпадение в % за текстови отговори
+  let pct = 0;
+  if (!ok && user && gold) {
+    const u = user.split(/\s+/).filter(Boolean);
+    const g = gold.split(/\s+/).filter(Boolean);
+    const inter = u.filter(w => g.includes(w)).length;
+    pct = Math.round((inter / Math.max(g.length, 1)) * 100);
+  }
+
+  // 5) Почисти предишен AI feedback (ако има)
+  const oldAI = card.querySelector('.ai-feedback');
+  if (oldAI) oldAI.remove();
+
+  // 6) Показване на резултат
+  if (ok) {
+    result.textContent = 'Correct! Well done. / Вярно! Браво.';
+    result.className = 'ok';
+    if (ttsEnabled) say('Correct! Well done.');
+  } else {
+    const baseMsg = (it.feedback && (it.feedback.wrong || it.feedback.try)) 
+      ? (it.feedback.wrong || it.feedback.try) 
+      : smartWrongFeedback(it);
+
+    result.textContent = pct ? `${baseMsg} (${pct}%)` : baseMsg;
+    result.className = 'bad';
+    if (ttsEnabled) say('Not quite. Check the story and try again.');
+
+    // 7) 🔥 AI фийдбек от backend-а – показваме го под локалния, само при грешка
+    if (rawUser.trim()) {
+      fetch('/api/feedback', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          prompt: it.prompt,
+          userAnswer: rawUser,          // суровият текст
+          correctAnswer: it.answer,     // златният отговор
+          kind: it.kind || 'Fill'       // за контекст (YesNo/Fill/Reorder)
+        })
+      })
+      .then(r => r.ok ? r.json() : null)
+      .then(data => {
+        if (data && data.feedback) {
+          const ai = document.createElement('div');
+          ai.className = 'note ai-feedback';
+          ai.textContent = data.feedback;
+          result.insertAdjacentElement('afterend', ai);
         }
-      };
+      })
+      .catch(() => { /* тихо при офлайн/грешка */ });
+    }
+  }
+};
+
 
       show.onclick = () => {
         stopRecognition();
