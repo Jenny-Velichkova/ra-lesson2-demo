@@ -1,0 +1,239 @@
+{
+  "feedbackDefaults": {},
+  "lessons": {
+    "L35": {
+      "exercises": [
+        {
+          "title": "QA",
+          "items": [
+            {
+              "kind": "Fill",
+              "prompt": "She __________ (study) for three hours before the exam.?",
+              "answer": "She had been studying for three hours before the exam."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "They __________ (play) football for two hours before it started to rain.?",
+              "answer": "They had been playing football for two hours before it started to rain."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "I __________ (work) on the project all week before the deadline.?",
+              "answer": "I had been working on the project all week before the deadline."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "He __________ (wait) for his friend for an hour before he arrived.?",
+              "answer": "He had been waiting for his friend for an hour before he arrived."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "We __________ (live) in that city for five years before moving.?",
+              "answer": "We had been living in that city for five years before moving."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "The children __________ (play) outside until it got dark.?",
+              "answer": "The children had been playing outside until it got dark."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "She __________ (read) the book for a month before finishing it.?",
+              "answer": "She had been reading the book for a month before finishing it."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "They __________ (travel) across Europe for a month before returning home.?",
+              "answer": "They had been travelling across Europe for a month before returning home."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "He __________ (practice) the piano for two hours before the concert.?",
+              "answer": "He had been practising the piano for two hours before the concert."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "I __________ (clean) the house all morning before the guests arrived.?",
+              "answer": "I had been cleaning the house all morning before the guests arrived."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "We __________ (discuss) the plan for weeks before making a decision.?",
+              "answer": "We had been discussing the plan for weeks before making a decision."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "She __________ (exercise) regularly for six months before the competition.?",
+              "answer": "She had been exercising regularly for six months before the competition."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "They __________ (watch) the movie for an hour before it ended.?",
+              "answer": "They had been watching the movie for an hour before it ended."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "He __________ (cook) dinner for two hours before they sat down to eat.?",
+              "answer": "He had been cooking dinner for two hours before they sat down to eat."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "I __________ (paint) the room for a week before it was finished.?",
+              "answer": "I had been painting the room for a week before it was finished."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "not / for / she / study / the test / before / had / it / cancelled.?",
+              "answer": "She had not been studying for the test before it was cancelled."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "play / they / not / outside / when / it / started / to rain / had.?",
+              "answer": "They had not been playing outside when it started to rain."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "project / I / the / not / work / on / before / had / the meeting.?",
+              "answer": "I had not been working on the project before the meeting."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "long / he / not / wait / before / she / had / arrived.?",
+              "answer": "He had not been waiting long before she arrived."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "house / we / that / not / in / live / for / very long / had / before / moved.?",
+              "answer": "We had not been living in that house for very long before we moved."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "not / the children / outside / when / had / play / it / started / to rain.?",
+              "answer": "The children had not been playing outside when it started to rain."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "book / she / not / the / read / before / had / the discussion.?",
+              "answer": "She had not been reading the book before the discussion."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "travel / they / not / for / long / before / had / found / a place.?",
+              "answer": "They had not been travelling for long before they found a place."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "guitar / he / not / practice / before / had / the performance.?",
+              "answer": "He had not been practising the guitar before the performance."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "kitchen / I / not / clean / before / had / the guests / arrived.?",
+              "answer": "I had not been cleaning the kitchen before the guests arrived."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "had / you / study / before / the exam / been / ?",
+              "answer": "Had you been studying before the exam?"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "they / play / football / before / it / started / to rain / had / ?",
+              "answer": "Had they been playing football before it started to rain?"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "I / work / on / the project / before / the deadline / had / ?",
+              "answer": "Had I been working on the project before the deadline?"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "he / wait / long / before / she / arrived / had / ?",
+              "answer": "Had he been waiting long before she arrived?"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "we / live / in that city / before / moved / had / ?",
+              "answer": "Had we been living in that city before we moved?"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "the children / play / outside / before / it / got dark / had / ?",
+              "answer": "Had the children been playing outside before it got dark?"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "she / read / the book / before / the discussion / had / ?",
+              "answer": "Had she been reading the book before the discussion?"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "they / travel / for long / before / they / reached / their destination / had / ?",
+              "answer": "Had they been travelling for long before they reached their destination?"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "he / practice / the piano / before / the concert / had / ?",
+              "answer": "Had he been practising the piano before the concert?"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "I / clean / the house / before / the guests / arrived / had / ?",
+              "answer": "Had I been cleaning the house before the guests arrived?"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "Тя беше учила за изпита преди да започне.?",
+              "answer": "She had been studying for the exam before it started."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "Те бяха играли футбол преди да завали дъжд.?",
+              "answer": "They had been playing football before it started to rain."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "Аз бях работил по проекта преди крайния срок.?",
+              "answer": "I had been working on the project before the deadline."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "Той беше чакал дълго преди да пристигне.?",
+              "answer": "He had been waiting for a long time before he arrived."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "Ние бяхме живели в този град преди да се преместим.?",
+              "answer": "We had been living in that city before we moved."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "Децата бяха играли навън преди да се стъмни.?",
+              "answer": "The children had been playing outside before it got dark."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "Тя беше чела книгата преди обсъждането.?",
+              "answer": "She had been reading the book before the discussion."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "Те бяха пътували дълго преди да стигнат до дестинацията.?",
+              "answer": "They had been travelling for a long time before they reached their destination."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "Той беше практикувал пиано преди концерта.?",
+              "answer": "He had been practising the piano before the concert."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "Аз бях чистил къщата преди гостите да пристигнат.?",
+              "answer": "I had been cleaning the house before the guests arrived."
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,136 @@
+{
+  "title": "L37 • story",
+  "intro": "Lesson 37 A Quiet Life\nWhen Mr. Finch retired, he bought a small cottage in a seaside village. The cottage was built in fifteen, eighty-eight but was in very good condition. Mr Finch was looking forward to a quiet life, but in the summer holidays, he got a shock. Hundreds of tourists came to the seaside village. Mr. Finch's cottage was the most interesting building in the village, and many of the tourists came to see it. From morning till night, there were tourists outside the cottage. They kept looking through windows and many of them even went into Mr. Finch's garden. This was too much for Mr. Finch. He decided to drive the unwelcome visitors away, so he put a notice in the window. The notice said: \"If you want to satisfy your curiosity, come in and look around. Price: ten pence.\" Mr. Finch was sure that the visitors would stop coming, but he was wrong. The number of visitors increased, and Mr Finch spent every day showing them around his cottage. \"I came here to retire, not to work as a guide,\" he complained. In the end, he sold the cottage and bought a small, modern house. It is an uninteresting little place, and no one wants to see it. But it is certainly quiet and peaceful!\n(speak the words) - и трите упражнения",
+  "items": [
+    {
+      "kind": "YesNo",
+      "prompt": "Had Mr Finch retired?",
+      "answer": "Yes, he had."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "He had bought a small cottage in a seaside village, hadn't he?",
+      "answer": "Yes, he had."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "Was the cottage quiet and peaceful in the summer holidays?",
+      "answer": "No, it was not."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "Didn't the tourists want to see Mr Finch's cottage?",
+      "answer": "Yes, they did."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "Mr Finch didn't like tourists, did he?",
+      "answer": "No, he didn't."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "Could Mr Finch stop the visitors from coming?",
+      "answer": "No, he couldn't."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "Does Mr Finch want to work as a guide?",
+      "answer": "No, he doesn't."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "He sold his cottage, didn't he?",
+      "answer": "Yes, he did."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "He's bought а modern house, hasn't he?",
+      "answer": "Yes, he has."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "Who retired to a seaside village?",
+      "answer": "Mr Finch retired to a seaside village."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "Who wants a quiet life?",
+      "answer": "Mr Finch wants a quiet life."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "Who wanted to see Mr Finch's cottage?",
+      "answer": "The tourists wanted to see Mr Finch's cottage."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "Who has sold the cottage and bought a modern house?",
+      "answer": "Mr Finch has sold the cottage and bought a modern house."
+    },
+    {
+      "kind": "Choice",
+      "prompt": "Had Mr Finch retired or had he gone on holiday?",
+      "answer": "Mr Finch had retired but he hadn't gone on holiday."
+    },
+    {
+      "kind": "Choice",
+      "prompt": "Did he buy an old cottage or a modern one?",
+      "answer": "He bought an old cottage but he didn't buy a modern one."
+    },
+    {
+      "kind": "Choice",
+      "prompt": "Did a lot of tourists come to see Mr Finch's cottage or did only a few come to see it?",
+      "answer": "A lot of tourists came to see Mr Finch's cottage but not only a few of them came."
+    },
+    {
+      "kind": "Choice",
+      "prompt": "Did Mr Finch put a notice on the window or on the door?",
+      "answer": "Mr Finch put a notice on the window but he didn't put one on the door."
+    },
+    {
+      "kind": "Choice",
+      "prompt": "Did the number of tourists increase or decrease?",
+      "answer": "The number of tourists increased but it didn't decrease."
+    },
+    {
+      "kind": "Choice",
+      "prompt": "Did Mr Finch continue to live in his cottage or did he sell it?",
+      "answer": "Mr Finch sold it but he didn't continue to live in his cottage."
+    },
+    {
+      "kind": "Choice",
+      "prompt": "Has he bought another old cottage or has he bought a modern house?",
+      "answer": "He has bought a modern house but he hasn't bought another old cottage."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "Why had Mr Finch bought it?",
+      "answer": "Mr Finch bought it because he was looking forward to a quiet life."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "Where was the cottage?",
+      "answer": "The cottage was in a seaside village."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "Why didn't Mr Finch like living there?",
+      "answer": "Mr Finch didn't like living there because hundreds of tourists kept coming to see his cottage."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "What did Mr Finch do with the cottage?",
+      "answer": "Mr Finch sold the cottage."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "What did he buy?",
+      "answer": "He bought a small, modern house."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "Why is he pleased with his small modern house?",
+      "answer": "He is pleased with his small modern house because it is quiet and peaceful."
+    }
+  ]
+}

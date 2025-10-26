@@ -1,0 +1,11 @@
+{
+  "title": "L53 • story",
+  "intro": "It Makes a Change\nMr. and Mrs. Howard recently moved to a new house. The garden had been so neglected that they decided to employ a gardener. One day, when her husband was at work, Mrs. Howard asked a local gardener to come and see the garden. After the man had been over the place thoroughly, Mrs. Howard went out to speak to him.\n\"How does it look?\" she asked.\n\"It's been terribly neglected, Mrs. Howard,\" the gardener said. \"Those rose bushes need pruning. The lawn needs cutting and the hedges need trimming. And as you can see, the whole garden's full of weeds.\"\n\"When can you begin work?\" Mrs. Howard asked.\n\"Not until next week, Mrs. Howard,\" the gardener said. \"I'm very busy.\"\n\"Can't you start on Saturday?\" Mrs. Howard asked.\n\"I'm afraid not,\" the gardener replied. \"I never work during the week-end. I need a change after working in gardens all the week.\"\n\"I'm sure you do,\" Mrs. Howard said. \"Everyone should have a hobby. What do you do in your spare time?\"\n\"I've got a garden of my own,\" the man said. \"I'm only free to work in it during the week-end.\"\n(speak the words)",
+  "items": [
+    {
+      "kind": "YesNo",
+      "prompt": "The lawn does need cutting, doesn’t it?",
+      "answer": "Yes, it does"
+    }
+  ]
+}

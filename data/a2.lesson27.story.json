@@ -1,0 +1,111 @@
+{
+  "title": "L27 • story",
+  "intro": "The horse couldn't sing\n\"Did you enjoy the opera last night?\" Fred asked.\n\"Very much,\" I answered.\n\"I must go, too,\" Fred said. \"Was it a good performance?\"\n\"I don't know,\" I answered.\n\"But you saw it, didn't you?\"\n\"Well, I only saw half of it.\"\n\"Did you leave before the end of the performance?\" Fred asked.\n\"Yes and no,\" I answered.\n\"What do you mean, 'yes and no'?\" Fred asked.\n\"Well,\" I said, \"everyone left before the end.\"\n\"Then you didn't enjoy it,\" Fred said.\n\"No, I enjoyed it very much,\" I answered.\n\"Then why did everyone leave before the end?\"\nI laughed and said, \"It was very funny really. There were two live horses in the opera. The singers led them carefully across the stage a few times. But in the second act, one of the horses jumped off the stage and ran around the theatre. It refused to go back. Then the curtain came down and we all had to leave.\"\n\"Perhaps the horse couldn't sing,\" Fred suggested.",
+  "items": [
+    {
+      "kind": "YesNo",
+      "prompt": "Did you go to the opera last night?",
+      "answer": "Yes, I did."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "Does Fred want to go to the opera too?",
+      "answer": "Yes, he said he must go too."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "Didn't Fred ask you if you enjoyed the performance?",
+      "answer": "Yes, he did."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "Did you see the whole opera?",
+      "answer": "No, I only saw half of it."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "You left before the end of the performance, didn't you?",
+      "answer": "Yes, I did."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "Were you the only person who left before the end of the performance?",
+      "answer": "No, everyone left before the end."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "Were there two live horses in the opera?",
+      "answer": "Yes, there were."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "Did one of the horses jump off the stage?",
+      "answer": "Yes, it did."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "It ran around the theatre, didn't it?",
+      "answer": "Yes, it did."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "Did you all have to leave the theatre?",
+      "answer": "Yes, we all had to leave."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "You couldn't stay at the theatre, could you?",
+      "answer": "No, we couldn't."
+    },
+    {
+      "kind": "Choice",
+      "prompt": "Did you go to the opera or to a concert?",
+      "answer": "I went to the opera but I didn't go to a concert."
+    },
+    {
+      "kind": "Choice",
+      "prompt": "Did you see the whole opera or did you only see half of it?",
+      "answer": "I only saw half of it but I didn't see the whole opera."
+    },
+    {
+      "kind": "Choice",
+      "prompt": "Did a horse jump off the stage in the first act or in the second act?",
+      "answer": "It jumped off the stage in the second act but It didn't jump off the stage in the first act."
+    },
+    {
+      "kind": "Choice",
+      "prompt": "Did the horse run around the theatre or did it go back on the stage?",
+      "answer": "It ran around the theatre but it didn't go back on the stage."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "Did the performance come to an end or did it continue?",
+      "answer": "The performance came to an end and it didn't continue."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "When did you go to the opera?",
+      "answer": "I went to the opera last night."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "How much of the opera did you see?",
+      "answer": "I saw half of the opera."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "How many horses were taking part in the opera?",
+      "answer": "Two horses were taking part in the opera."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "What did one of the horses do?",
+      "answer": "One of the horses jumped off the stage and ran around the theatre."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "In which act did this happen?",
+      "answer": "This happened in the second act."
+    }
+  ]
+}

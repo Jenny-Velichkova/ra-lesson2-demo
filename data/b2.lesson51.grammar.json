@@ -1,0 +1,20 @@
+{
+  "feedbackDefaults": {},
+  "lessons": {
+    "L51": {
+      "exercises": [
+        {
+          "title": "MCQ",
+          "items": [
+            {
+              "kind": "MCQ",
+              "prompt": "The new words / новите думи (flush cards with audio / speak the words if possible)",
+              "options": [],
+              "answer": null
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

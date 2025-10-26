@@ -1,0 +1,111 @@
+{
+  "title": "L17 • story",
+  "intro": "The daily news\nMr. Green went to the newsagent and bought his morning newspaper.\n\"Good morning, Joe,\" Mr. Green said.\n\"Good morning, Mr. Green,\" Joe answered. \"The Daily News?\"\n\"Yes, please,\" Mr. Green said. \"Is there any news today?\"\n\"No, there isn't any news today,\" Joe answered. \"There was another murder yesterday. Some thieves robbed a bank. And some workmen went on strike at a factory.\"\n\"Is that all, Joe?\" Mr. Green asked.\n\"That's all, Mr. Green. The same things happen every day. Only the names and addresses change.\"\n\"Will it rain tomorrow, Joe?\" Mr. Green asked.\n\"Yes, it will, Mr. Green,\" Joe answered. \"The paper says 'Rain tomorrow'.\"\n\"The weather doesn't change,\" Mr. Green said.\n\"You're right, Mr. Green,\" Joe answered. \"Rain yesterday, rain today, and rain tomorrow.\"\nMr. Green picked up his newspaper and looked at it. \"Why do we read newspapers, Joe?\" he asked.\n\"It passes the time,\" Joe answered, \"and it keeps me in business.\"",
+  "items": [
+    {
+      "kind": "YesNo",
+      "prompt": "Didn't Mr. Green go to the newsagent's?",
+      "answer": "Yes, he did."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "Did he buy a newspaper?",
+      "answer": "Yes, he did."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "Did he buy any cigarettes?",
+      "answer": "No, he didn't."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "Is there any news today?",
+      "answer": "No, there isn't."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "Was there another murder yesterday?",
+      "answer": "Yes, there was."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "Didn't some workmen go on strike?",
+      "answer": "Yes, they did."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "Don't the same things happen every day?",
+      "answer": "Yes, they do."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "Will it rain tomorrow?",
+      "answer": "Yes, it will."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "Will the weather change?",
+      "answer": "No, it won't."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "Didn't it rain yesterday?",
+      "answer": "Yes, it did."
+    },
+    {
+      "kind": "Choice",
+      "prompt": "Did Mr. Green go to the newsagent's or to the chemist's?",
+      "answer": "Mr. Green didn't go to the chemist's but he went to the newsagents."
+    },
+    {
+      "kind": "Choice",
+      "prompt": "Did he buy a newspaper or some cigarettes?",
+      "answer": "He didn't buy any cigarettes but he bought a newspaper."
+    },
+    {
+      "kind": "Choice",
+      "prompt": "Does Mr. Green read the Daily News or the Daily Tribune?",
+      "answer": "Mr Green doesn't read the Daily Tribune but he reads the Daily News."
+    },
+    {
+      "kind": "Choice",
+      "prompt": "Was there a murder yesterday or the day before yesterday?",
+      "answer": "There was not a murder the day before yesterday but there was a murder yesterday."
+    },
+    {
+      "kind": "Choice",
+      "prompt": "Does Mr. Green sell newspapers or does Joe sell them?",
+      "answer": "Mr Green doesn't sell them but Joe sells them."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "Where did Mr. Green go?",
+      "answer": "Mr Green went to the newsagent's."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "What did he buy?",
+      "answer": "He bought a newspaper."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "What is the name of the newspaper?",
+      "answer": "The name of the newspaper is The Daily News."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "When did the workmen go on strike?",
+      "answer": "The workmen went on strike yesterday."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "What does the newspaper say about the weather?",
+      "answer": "The newspaper says: \"Rain tomorrow.\""
+    },
+    {
+      "kind": "Fill",
+      "prompt": "Why do we read newspapers?",
+      "answer": "We read newspapers to pass the time and to keep Joe in business."
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "feedbackDefaults": {},
+  "lessons": {
+    "L48": {
+      "exercises": [
+        {
+          "title": "MCQ",
+          "items": [
+            {
+              "kind": "MCQ",
+              "prompt": "Translation / превод (speak the words)",
+              "options": [],
+              "answer": null
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

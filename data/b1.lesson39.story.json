@@ -1,0 +1,136 @@
+{
+  "title": "L39 • story",
+  "intro": "A Spanish Holiday\nWhen Alec returned to work last Monday, Bob asked him how he had spent his holiday.\n\"You went to Spain, didn't you?\" Bob asked.\n\"That's right,\" Alec answered. \"Three weeks in the sun, and now I've got a year's work ahead of me. Still, I must say I enjoyed myself. I went swimming every day, and I even saw a bullfight.\"\n\"Did you?\" Bob said. \"How was it?\"\n\"Very funny, really,\" Alec answered.\n\"I've never thought of a bullfight as being funny,\" Bob remarked.\n\"Well, this one was,\" Alec replied. \"The bullfighter was a showman. He arrived at the ring in a helicopter. The helicopter circled around the ring a few times, and then the bullfighter landed by parachute. He landed almost in the middle of the ring, just a few yards away from the bull. He was dressed in a splendid costume.\"\n\"That must have been very impressive,\" Bob said.\n\"I suppose it was,\" Alec answered. \"The trouble was that the poor man didn't know much about bullfighting. The bull went after him before he even managed to get his parachute off. He spent most of his time in the air!\"\n(speak the words) - и трите упражнения",
+  "items": [
+    {
+      "kind": "YesNo",
+      "prompt": "Didn't Alec return to work last Monday?",
+      "answer": "Yes, he did."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "He had been on holiday, hadn't he?",
+      "answer": "Yes, he had."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "Hadn't he been to Spain?",
+      "answer": "Yes, he had."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "He had been there for three weeks, hadn't he?",
+      "answer": "Yes, he had."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "He did enjoy himself, didn't he?",
+      "answer": "Yes, he did."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "Did he see a bullfight?",
+      "answer": "Yes, he did."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "Was the bullfight funny?",
+      "answer": "Yes, it was."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "The bullfighter was a showman, wasn't he?",
+      "answer": "Yes, it was."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "He wasn't a very good bullfighter, was he?",
+      "answer": "No, he wasn't."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "Who returned to work last Monday?",
+      "answer": "Alec returned to work last Monday."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "Who had been to Spain?",
+      "answer": "Alec had been to Spain."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "Who thought the bullfight was funny?",
+      "answer": "Alec thought the bullfight was funny."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "Who arrived at the ring in a helicopter?",
+      "answer": "The bullfighter arrived at the ring in a helicopter."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "Had Alec been on holiday or had he been abroad on business?",
+      "answer": "Alec had been on holiday."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "Had Alec been to Spain or Jamaica?",
+      "answer": "Alec had been to Spain."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "Did Alec stay in Spain for three weeks or for three months?",
+      "answer": "Alec stayed in Spain for three weeks."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "Did the bullfighter arrive at the ring in an aeroplane or a helicopter?",
+      "answer": "The bullfighter arrived at the ring in a helicopter."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "Was the man a good bullfighter, or was he just a showman?",
+      "answer": "He was just a showman."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "When did Alec return to work?",
+      "answer": "Alec returned to work last Monday."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "Where had Alec been?",
+      "answer": "Alec had been to Spain."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "How long had Alec spent there?",
+      "answer": "Alec had spent three weeks there."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "What did Alec see in Spain?",
+      "answer": "Alec saw a bullfight in Spain."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "How did he find the bullfight?",
+      "answer": "He found the bullfight very funny."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "Why did Alec call the bullfighter a showman?",
+      "answer": "Alec called the bullfighter a showman because he arrived at the ring in a helicopter, parachuted into the ring, and was dressed in a splendid costume."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "How was the bullfighter dressed?",
+      "answer": "The bullfighter was dressed in a splendid costume."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "What happened to the bullfighter?",
+      "answer": "The bullfighter was chased by the bull before he even managed to get his parachute off. He spent most of his time in the air."
+    }
+  ]
+}

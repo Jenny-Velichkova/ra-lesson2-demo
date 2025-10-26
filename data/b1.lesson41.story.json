@@ -1,0 +1,131 @@
+{
+  "title": "L41 • story",
+  "intro": "A Message From Nowhere\nThe Robinsons were expecting guests for dinner. The guests, who were all colleagues of Mr. Robinson, were due to arrive at six-thirty. It was a quarter past seven but they still hadn't appeared.\n\"I wonder what has happened to them,\" Mrs. Robinson asked her husband. \"Did you tell them how to get here?\"\n\"Of course I did,\" Mr. Robinson replied. \"I sent them detailed instructions and enclosed a sketch map.\"\n\"Perhaps they had an accident,\" Mrs. Robinson suggested. \"Were they coming by car?\"\n\"As far as I know,\" Mr. Robinson said.\nSuddenly the telephone rang and Mrs Robinson ran to answer it.\n\"Bill!\" she called. \"You're wanted on the phone!\"\nMr. Robinson picked up the receiver.\n\"Is that you, Bill?\" a voice said. \"I'm sorry we're late. We've lost our way. We took a wrong turn about ten miles back. I'm ringing from a public call box in a small village.\"\n\"What's the name of the village?\" Mr. Robinson asked.\n\"That's the trouble,\" the voice said. \"We don't know. This village doesn't seem to be marked on the map.\"\n(speak the words) - и трите упражнения",
+  "items": [
+    {
+      "kind": "YesNo",
+      "prompt": "Weren't the Robinsons expecting guests for dinner?",
+      "answer": "Yes, they were."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "The guests were  Mr Robinson's colleagues, weren't they?",
+      "answer": "Yes, they were."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "Had they arrived on time?",
+      "answer": "No, they had not."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "Didn't Mr. Robinson send them detailed instructions?",
+      "answer": "Yes, he did."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "He enclosed a sketch map too, didn't he?",
+      "answer": "Yes, he did."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "The guests were coming by car, weren't they?",
+      "answer": "Yes, they were."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "Did the telephone ring?",
+      "answer": "Yes, it did."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "Is Mr Robinson wanted on the phone?",
+      "answer": "Yes, he was."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "Were the guests ringing from a small village?",
+      "answer": "Yes, they were."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "They don't know the name of the village, do they?",
+      "answer": "No, they don't."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "Who was expecting visitors?",
+      "answer": "The Robinsons were expecting visitors."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "Who sent them detailed information and a sketch map?",
+      "answer": "Mr. Robinson sent them detailed information and a sketch map."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "Who answered the telephone?",
+      "answer": "Mrs. Robinson answered the telephone."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "Who is wanted on the phone?",
+      "answer": "Mr Robinson is wanted on the phone."
+    },
+    {
+      "kind": "Choice",
+      "prompt": "Were the Robinsons expecting guests for dinner or for lunch?",
+      "answer": "The Robinsons were expecting guests for dinner but they weren't expecting guests for lunch."
+    },
+    {
+      "kind": "Choice",
+      "prompt": "Were the guests due to arrive at six-thirty or at eight-thirty?",
+      "answer": "The guests were due to arrive at six-thirty but they were not due to arrive at eight-thirty."
+    },
+    {
+      "kind": "Choice",
+      "prompt": "Were they coming by car or by train?",
+      "answer": "They were coming by car but they weren't coming by train."
+    },
+    {
+      "kind": "Choice",
+      "prompt": "Is Mr. Robinson wanted on the phone or is his wife wanted on the phone?",
+      "answer": "Mr. Robinson is wanted on the phone but his wife isn't wanted on the phone."
+    },
+    {
+      "kind": "Choice",
+      "prompt": "Were the guests ringing from a small village or a large town?",
+      "answer": "The guests were ringing from a small village but they weren't ringing from a large town."
+    },
+    {
+      "kind": "Choice",
+      "prompt": "Were they ringing from a public call box or a private house?",
+      "answer": "They were ringing from a public call-box but they weren't ringing from a private house."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "When were the guests due to arrive?",
+      "answer": "The guests were due to arrive at six-thirty."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "What information had Mr Robinson sent them?",
+      "answer": "Mr. Robinson sent them detailed instructions and a sketch map."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "Why was Mrs Robinson worried?",
+      "answer": "Mrs. Robinson was worried because the guests had not arrived and it was already a quarter past seven."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "Why were the guests late?",
+      "answer": "The guests were late because they had lost their way and took a wrong turn about ten miles back."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "Why didn't they know the name of the village?",
+      "answer": "They didn't know the name of the village because it did not seem to be marked on the map."
+    }
+  ]
+}

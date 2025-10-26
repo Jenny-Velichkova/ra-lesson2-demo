@@ -1,0 +1,121 @@
+{
+  "title": "L20 • story",
+  "intro": "At the Hotel\n\"We want a room on the first floor,\" I said.\n\"Certainly, sir,\" the hotel manager answered.\n\"Have you a room with a private bathroom?\" I asked.\n\"Yes, sir,\" the hotel manager said. \"Here are the keys to number twenty-one.\"\nI took the keys, and my wife and I went upstairs.\nWe unlocked the door of room twenty-one and went into the room.\nWe shut the door and put our cases on the floor.\n\"Listen!\" my wife said. \"There's a man in this room. He's singing.\"\n\"You're right!\" I said. \"He's in the bathroom!\"\nI knocked at the door of the bathroom. The singing stopped.\n\"Who is it?\" a voice said.\n\"This is our room,\" I answered. \"What are you doing here?\"\n\"Your room!\" the voice answered angrily. \"This is my room. Please go away. I'm taking a bath.\"\n\"I'll call the manager,\" my wife said.\nJust then, the door opened, and the manager came in.\n\"I'm very sorry,\" he said. \"I made a mistake. Your room is next door. Here are the keys to number twenty-two.\"",
+  "items": [
+    {
+      "kind": "YesNo",
+      "prompt": "Do you want a room on the first floor?",
+      "answer": "Yes, I do."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "Is there a room with a private bathroom?",
+      "answer": "Yes, there is."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "Did the manager give you the keys?",
+      "answer": "Yes, he did."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "Didn't you go upstairs?",
+      "answer": "Yes, we did."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "Did you go into room twenty-one?",
+      "answer": "Yes, we did."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "Is there a man in the bathroom?",
+      "answer": "Yes, there is."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "Will your wife call the manager?",
+      "answer": "Yes, she will."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "Wasn't the manager sorry?",
+      "answer": "Yes, he was."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "Didn't the manager make a mistake?",
+      "answer": "Yes, he did."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "Is your room next door?",
+      "answer": "Yes, it is."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "Did the manager give you the keys to number twenty-two?",
+      "answer": "Yes, he did."
+    },
+    {
+      "kind": "Choice",
+      "prompt": "Do you want a room on the first floor or on the ground floor?",
+      "answer": "I want a room on the first floor but I don't want a room on the ground floor."
+    },
+    {
+      "kind": "Choice",
+      "prompt": "Did the manager give you the keys to room twenty-one or room twenty-two?",
+      "answer": "He gave me the keys for room 21 but he didn't give me the keys for room 22."
+    },
+    {
+      "kind": "Choice",
+      "prompt": "Did you and your wife go upstairs or did you stay downstairs?",
+      "answer": "We went upstairs but we didn't stay downstairs."
+    },
+    {
+      "kind": "Choice",
+      "prompt": "Is the stranger in the bathroom or in the bedroom?",
+      "answer": "The stranger is in the bathroom but the stranger is not in the bedroom."
+    },
+    {
+      "kind": "Choice",
+      "prompt": "Is this your room or is it the stranger's room?",
+      "answer": "It is the stranger's room but it isn't our room."
+    },
+    {
+      "kind": "Choice",
+      "prompt": "Will your wife call the manager or will you call him?",
+      "answer": "My wife will call the manager but I will not call the manager."
+    },
+    {
+      "kind": "Choice",
+      "prompt": "Did the manager come upstairs or did your wife go downstairs?",
+      "answer": "The manager came upstairs but my wife didn't go downstairs."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "Which keys did the manager give you?",
+      "answer": "The keys to room twenty-two."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "Where did you and your wife go?",
+      "answer": "We went upstairs to room twenty-one."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "Whose room was this?",
+      "answer": "It was the stranger's room."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "What is the stranger doing in the bathroom?",
+      "answer": "He is taking a bath."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "Why is the hotel manager sorry?",
+      "answer": "Because he made a mistake and gave us the wrong room keys."
+    }
+  ]
+}

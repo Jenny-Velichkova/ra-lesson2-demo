@@ -1,0 +1,111 @@
+{
+  "title": "L31 • story",
+  "intro": "First Flight\nFive tourists were walking slowly across the airfield where a very small aircraft was waiting for them. The plane was used on local flights and had only two engines.\nThe passengers got into the plane and sat down.\n\"Fasten your seatbelts, please,\" the air hostess said.\nAn old lady turned to the air hostess. \"Please help me with this belt,\" she asked. \"I have never been on an aeroplane before and I feel rather nervous.\"\n\"Don't worry,\" the air hostess said kindly. \"These planes are the safest in the world.\"\nThen the hostess went around with a tray of sweets. She offered a sweet to each of the passengers.\n\"Take one of these,\" she said to the old lady. \"It will help you to swallow.\"\nSuddenly, the plane began to shake and rattle. It moved quickly down the runway and slowly climbed into the air. When the plane was in the air, the hostess went to the old lady again. \"Didn't the sweet help you to swallow?\" she asked.\n\"No, I'm afraid it didn't,\" the old lady answered. \"But it took my mind off the plane. May I have another one, please?\"\n(speak the words) - и трите упражнения",
+  "items": [
+    {
+      "kind": "YesNo",
+      "prompt": "Was the plane used for local flights?",
+      "answer": "Yes, it was."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "It had only two engines, didn't it?",
+      "answer": "Yes, it had."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "Did the passengers fasten their seatbelts?",
+      "answer": "Yes, they did."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "The old lady has never been on a plane before, has she?",
+      "answer": "No, she has not."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "Doesn't she feel rather nervous?",
+      "answer": "Yes, she does."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "Didn't the hostess give some sweets to the passengers?",
+      "answer": "Yes, she did."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "Will the old lady accept a sweet?",
+      "answer": "Yes, she will."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "The plane took off, didn't it?",
+      "answer": "Yes, it did."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "Didn't the sweet help to the old lady to swallow?",
+      "answer": "No, it didn't."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "Did the old lady want another sweet?",
+      "answer": "Yes, she did."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "Who told the passengers to fasten their seatbelts?",
+      "answer": "The air hostess told the passengers to fasten their seatbelts."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "Who feels nervous?",
+      "answer": "The old lady feels nervous."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "Who has given the passengers some sweets?",
+      "answer": "The air hostess gave the passengers some sweets."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "Who wants another sweet?",
+      "answer": "The old lady wants another sweet."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "How long did it take, for the plane to take off?",
+      "answer": "The plane took a short moment to take off after it moved down the runway."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "Why was the old lady nervous?",
+      "answer": "The old lady was nervous because she had never been on an aeroplane before."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "How did the air hostess help the old lady initially?",
+      "answer": "The air hostess helped the old lady by fastening her seatbelt and offering her a sweet."
+    },
+    {
+      "kind": "Choice",
+      "prompt": "How did the old lady feel when the plane started to shake and rattle?",
+      "answer": "Initially, she was nervous, but the sweet took her mind off the plane temporarily."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "What did the old lady ask for after the plane started climbing into the air?",
+      "answer": "She asked for another sweet."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "Why did the old lady ask for another sweet?",
+      "answer": "Because the sweet helped take her mind off the flight."
+    },
+    {
+      "kind": "Choice",
+      "prompt": "What did the old lady think about the sweet?",
+      "answer": "She thought the sweet didn't help her to swallow but it took her mind off the plane."
+    }
+  ]
+}

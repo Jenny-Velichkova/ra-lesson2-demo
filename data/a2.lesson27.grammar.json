@@ -1,0 +1,32 @@
+{
+  "feedbackDefaults": {},
+  "lessons": {
+    "L27": {
+      "exercises": [
+        {
+          "title": "MCQ",
+          "items": [
+            {
+              "kind": "MCQ",
+              "prompt": "Questions and negatives (speak the words or reorder the words in sentences) Ако е подреждане в изречения-ще трябва да се дадат отговорите на английски с разбъркани думи-те да ги подредят.",
+              "options": [],
+              "answer": null
+            },
+            {
+              "kind": "MCQ",
+              "prompt": "Word Order (speak the words or reorder the sentences)",
+              "options": [],
+              "answer": null
+            },
+            {
+              "kind": "MCQ",
+              "prompt": "Translation / превод (speak the words or reorder the words in sentences)",
+              "options": [],
+              "answer": null
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

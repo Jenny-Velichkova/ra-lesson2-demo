@@ -1,0 +1,121 @@
+{
+  "title": "L24 • story",
+  "intro": "The two tramps and the dog\nTwo tramps were walking along a quiet road. A sorry-looking dog was following them.\n“We've had a bad day, Joe,” the first tramp said. “We haven't any money and we can't get anything to eat.”\n“We'll find something,” the second tramp answered cheerfully. Suddenly, the tramps saw a car in the distance. It was coming towards them very quickly. Both the tramps moved to one side, but the dog stayed in the middle of the road.\nThe driver tried to stop the car, but it was too late. The car hit the dog and killed it. The driver got out of the car and went towards the first tramp.\n“Poor little dog,” the tramp said sadly.\n“Terribly sorry,” the driver said. “I tried to avoid your dog but I couldn't.” He took out his wallet and gave five pounds to the tramp. “Will that be all right?” the driver asked.\n“Yes, sir. Thank you, sir,” the tramp said.\nThe driver got into his car and drove away.\n“Poor little dog,” the first tramp said and put the money into his pocket.\n“Whose dog was it?” the second tramp asked.",
+  "items": [
+    {
+      "kind": "YesNo",
+      "prompt": "Was a dog following the two tramps?",
+      "answer": "Yes, it was."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "Have the tramps any money?",
+      "answer": "No, they haven't."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "Can't they get anything to eat?",
+      "answer": "No, they can't."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "The tramps saw a car, didn't they?",
+      "answer": "Yes, they did."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "The car was coming towards them, wasn't it?",
+      "answer": "Yes, it was."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "Did the tramps stay in the middle of the road?",
+      "answer": "No, they didn’t."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "Did the dog stay in the middle of the road?",
+      "answer": "Yes, it did."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "Didn't the car run over the dog?",
+      "answer": "Yes, it did."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "The driver was very sorry, wasn't he?",
+      "answer": "Yes, he was."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "Didn't he give the tramps some money?",
+      "answer": "Yes, he did."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "The tramps accepted the money, didn't they?",
+      "answer": "Yes, they did."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "Did the dog belong to the tramps?",
+      "answer": "No, it didn't."
+    },
+    {
+      "kind": "Choice",
+      "prompt": "Were the tramps walking along a road or across a field?",
+      "answer": "The tramps were walking along a road but they were not walking across a field."
+    },
+    {
+      "kind": "Choice",
+      "prompt": "Did they see a car or a lorry?",
+      "answer": "They saw a car but they didn’t see a lorry."
+    },
+    {
+      "kind": "Choice",
+      "prompt": "Did the tramps stay in the middle of the road or did they move to one side?",
+      "answer": "They moved to one side but they didn’t stay in the middle of the road."
+    },
+    {
+      "kind": "Choice",
+      "prompt": "Did the car run over a dog or a cat?",
+      "answer": "The car ran over a dog but it didn’t run over a cat."
+    },
+    {
+      "kind": "Choice",
+      "prompt": "Did the first tramp accept the money or did he refuse it?",
+      "answer": "The first tramp accepted the money but he didn’t refuse it."
+    },
+    {
+      "kind": "Choice",
+      "prompt": "Did the driver stay with the tramps or did he drive away?",
+      "answer": "The driver drove away but he didn’t stay with the tramps."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "Where were the tramps?",
+      "answer": "The tramps were walking along a quiet road."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "Why can't the tramps get anything to eat?",
+      "answer": "Because they haven't any money."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "Why did the tramps move to one side of the road?",
+      "answer": "Because they saw a car coming towards them very quickly."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "Why did the driver try to stop the car?",
+      "answer": "Because the dog was in the middle of the road."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "How much did the driver give the tramps?",
+      "answer": "The driver gave the tramps five pounds."
+    }
+  ]
+}

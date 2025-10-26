@@ -1,0 +1,116 @@
+{
+  "title": "L40 • story",
+  "intro": "An unwelcome visitor\nThe doorbell rang and Mrs. Carson opened the front door. Her heart sank when she saw Mrs Burbidge. Whenever Mrs. Burbidge called, she stayed for hours and hours.\n\"Good afternoon, Mrs. Carson,\" Mrs. Burbidge said. \"I was just passing and thought I'd drop in to say hello.\"\n\"How very thoughtful of you,\" Mrs. Carson replied. \"Do come in.\"\nJust as Mrs. Carson had feared, Mrs. Burbidge stayed for several hours. It was nearly six o'clock and Mr. Carson would be home from work soon. He couldn't stand Mrs Burbidge. Mrs. Carson kept wondering how she could persuade Mrs. Burbidge to leave without offending her.\n\"Has your husband got home from work yet?\" Mrs. Carson asked.\n\"Yes,\" Mrs. Burbidge answered. \"He always gets home about five o'clock.\"\n\"It's nearly six o'clock. Won't he be getting worried about you?\" Mrs. Carson said.\n\"I thought of that,\" Mrs. Burbidge said, \"but it's so pleasant here. We've had such a lovely afternoon. You know what I'll do? I'll ring up my husband and tell him to come around too. May I use your phone please?\"\n(speak the words) - и трите упражнения",
+  "items": [
+    {
+      "kind": "YesNo",
+      "prompt": "Didn't Mrs. Carson open the front door?",
+      "answer": "Yes, she did."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "Mrs. Burbidge was at the door, wasn't she?",
+      "answer": "Yes, she was."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "Was Mrs. Carson pleased to see her?",
+      "answer": "No, she wasn't"
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "Didn't Mrs. Carson ask Mrs. Burbidge to come in?",
+      "answer": "Yes, she did."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "Mrs. Burbidge stayed for a long time, didn't she?",
+      "answer": "Yes, she did."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "Did Mr Carson like Mrs Burbidge?",
+      "answer": "No, he didn't."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "He couldn't stand her, could he?",
+      "answer": "No, he couldn't."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "Couldn't Mrs. Carson get rid of her visitor?",
+      "answer": "No, she couldn't."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "Mrs Burbidge wouldn't go, would she?",
+      "answer": "No, she wouldn't."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "She was going to ask her husband to come as well, wasn't she?",
+      "answer": "Yes, she was going to."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "Who opened the door?",
+      "answer": "Mrs. Carson opened the door."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "Who was at the door?",
+      "answer": "Mrs. Burbidge was at the door."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "Who couldn't stand Mrs Burbidge?",
+      "answer": "Mr Carson couldn't stand Mrs Burbidge."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "Who stayed for several hours?",
+      "answer": "Mrs. Burbidge stayed for several hours."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "Who opened the front door?",
+      "answer": "Mrs. Carson opened the front door."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "Who was at the door?",
+      "answer": "Mrs. Burbidge was at the door."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "Who wants to use the telephone?",
+      "answer": "Mrs. Burbidge wants to use the telephone."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "Who will ring up Mr. Burbidge?",
+      "answer": "Mrs. Burbidge will ring up Mr. Burbidge."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "Did Mrs. Carson think of a reason to make Mrs. Burbidge leave?",
+      "answer": "Yes, Mrs Carson suggested that Mrs Burbidge's husband might be worried about her."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "Did it work to make Mrs. Burbidge leave?",
+      "answer": "No, it did not work."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "What did Mrs. Burbidge decide to do instead?",
+      "answer": "Mrs. Burbidge decided to call her husband and ask him to come around as well."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "Did Mrs. Burbidge ask to use the phone?",
+      "answer": "Yes, Mrs. Burbidge asked to use the phone."
+    }
+  ]
+}

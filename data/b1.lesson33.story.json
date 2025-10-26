@@ -1,0 +1,156 @@
+{
+  "title": "L33 • story",
+  "intro": "The student\nMy cousin, John, is a university student. Last year, he went to Italy and stayed there for two months. I was surprised that John was able to have such a long holiday because he never had any money.\n\"How did you manage it, John?\" I asked. \"I thought you were going to stay for two weeks.\"\n\"It was easy,\" John answered. \"I got a job.\"\n\"A job!\" I exclaimed. \"What did you do?\"\n\"I gave English lessons to a grocer,\" John answered. \"His name is Luigi. We have become great friends.\"\n\"But you're not a teacher,\" I said.\n\"I told Luigi I couldn't teach,\" John explained. \"But he insisted on having conversation lessons. He wanted to practice his English. He has a lot of American customers, so it is important for him to speak English. I spent three hours a day talking to him. In return, he gave me a room, three meals a day, and a little pocket money.\"\n\"Did your pupil learn much English?\" I asked.\n\"I don't know,\" John said, \"but I learnt a lot of Italian!\"\n(speak the words) - и трите упражнения",
+  "items": [
+    {
+      "kind": "YesNo",
+      "prompt": "Is your cousin John still at school?",
+      "answer": "No, he is not."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "He's a university student, isn't he?",
+      "answer": "Yes, he is."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "Didn't John go to Italy last year?",
+      "answer": "Yes, he did."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "He stayed there for two months, didn't he?",
+      "answer": "Yes, he did."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "Did John intend to stay in Italy for so long?",
+      "answer": "No, he didn't."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "He's always short of money, isn't he?",
+      "answer": "Yes, he is."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "Didn't he teach English in Italy?",
+      "answer": "Yes, he did."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "Was his pupil a butcher?",
+      "answer": "No, he wasn't."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "His pupil was a grocer, wasn't he?",
+      "answer": "Yes, he was."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "Did Luigi want to practise his English?",
+      "answer": "Yes, he did."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "Luigi has a lot of American customers, doesn't he?",
+      "answer": "Yes, he has."
+    },
+    {
+      "kind": "YesNo",
+      "prompt": "Did John learn any Italian?",
+      "answer": "Yes, he did."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "Who taught English in Italy last year?",
+      "answer": "John taught English in Italy last year."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "Who wanted to practice his English?",
+      "answer": "Luigi wanted to practice his English."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "Who has a lot of American customers?",
+      "answer": "Luigi has a lot of American customers."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "Who learnt a lot of Italian?",
+      "answer": "John learnt a lot of Italian."
+    },
+    {
+      "kind": "Choice",
+      "prompt": "Is John a university student or is he still at school?",
+      "answer": "John is a university student but he is not still at school."
+    },
+    {
+      "kind": "Choice",
+      "prompt": "Is John rich or is he always short of money?",
+      "answer": "He is always short of money but he is not rich."
+    },
+    {
+      "kind": "Choice",
+      "prompt": "Did John stay in Italy for two weeks or two months?",
+      "answer": "He stayed in Italy for two months but he didn't stay for two weeks."
+    },
+    {
+      "kind": "Choice",
+      "prompt": "Did John get a job as a teacher or as a grocer?",
+      "answer": "He got a job as a teacher but he didn't get the job as a grocer."
+    },
+    {
+      "kind": "Choice",
+      "prompt": "Did John teach English or Italian?",
+      "answer": "John taught English but he didn't teach Italian."
+    },
+    {
+      "kind": "Choice",
+      "prompt": "Did Luigi want to practise speaking or writing?",
+      "answer": "Luigi wanted to practise speaking but he didn't want to practise writing."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "When did John go to Italy?",
+      "answer": "John went to Italy last year."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "How long did he stay there?",
+      "answer": "He stayed there for two months."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "Why were you surprised when you heard this?",
+      "answer": "Because John never has any money."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "How long did John originally intend to stay in Italy?",
+      "answer": "He originally intended to stay for two weeks."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "How did John manage to stay in Italy for two months?",
+      "answer": "John managed to stay in Italy by getting a job teaching English."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "What did John teach?",
+      "answer": "John taught English."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "Why did Luigi want to practise his English?",
+      "answer": "Luigi wanted to practise his English because he had many American customers."
+    },
+    {
+      "kind": "Fill",
+      "prompt": "What did John get in return for the lessons he gave?",
+      "answer": "John got a room, three meals a day, and a little pocket money."
+    }
+  ]
+}

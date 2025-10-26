@@ -1,0 +1,384 @@
+{
+  "feedbackDefaults": {},
+  "lessons": {
+    "L41": {
+      "exercises": [
+        {
+          "title": "QA",
+          "items": [
+            {
+              "kind": "Fill",
+              "prompt": "She told me that she _____ (go) to the market.?",
+              "answer": "had gone"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "I understood that he _____ (be) sick for several days.?",
+              "answer": "had been"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "The teacher explained that there _____ (be) a test next week.?",
+              "answer": "would be"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "I didn't know that you already _____ (write) your homework.?",
+              "answer": "had written"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "He informed me that he _____ (travel) to Paris next month.?",
+              "answer": "would travel"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "I realized that she _____ (study) all night for the exam.?",
+              "answer": "had been studying"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "I thought they _____ (come) to the party last night.?",
+              "answer": "had come"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "She told me that she _____ (love) reading historical novels.?",
+              "answer": "loved"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "I didn't know that you _____ (move) to a new apartment.?",
+              "answer": "had moved"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "He explained to me that he _____ (work) on a new project.?",
+              "answer": "was working"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "I understood that she _____ (be) abroad last year.?",
+              "answer": "had been"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "I thought they _____ (get married) this summer.?",
+              "answer": "would get married"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "He told me that he _____ (start) a new job.?",
+              "answer": "had started"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "I didn't know that you _____ (can) play the piano.?",
+              "answer": "could"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "She informed me that she _____ (move) to another city.?",
+              "answer": "was moving"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "I know he is a good person.?",
+              "answer": "I knew he was a good person."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "I think it will rain tomorrow.?",
+              "answer": "I thought it would rain the next day."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "I believe she will succeed.?",
+              "answer": "I believed she would succeed."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "I understand you have a lot of work.?",
+              "answer": "I understood you had a lot of work."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "I hear they have moved to a new house.?",
+              "answer": "I heard they had moved to a new house."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "I see the children are playing in the park.?",
+              "answer": "I saw the children playing in the park."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "I assume you will come to the party.?",
+              "answer": "I assumed you would come to the party."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "I consider he is right about the situation.?",
+              "answer": "I considered he was right about the situation."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "I feel something is wrong.?",
+              "answer": "I felt something was wrong."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "I hope you will help me with the project.?",
+              "answer": "I hoped you would help me with the project."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "I notice she is upset.?",
+              "answer": "I noticed she was upset."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "I wonder if he will finish on time.?",
+              "answer": "I wondered if he would finish on time."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "I doubt we will manage to arrive on time.?",
+              "answer": "I doubted we would manage to arrive on time."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "I suspect he is hiding something from me.?",
+              "answer": "I suspected he was hiding something from me."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "I have a feeling something good will happen.?",
+              "answer": "I had a feeling something good would happen."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "He / say / I / be / sick?",
+              "answer": "He said I was sick."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "We / think / they / come / to party?",
+              "answer": "We thought they would come to the party."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "She / explain / cannot / come / tomorrow?",
+              "answer": "She explained that she couldn't come the next day."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "I / know / you / graduate / university?",
+              "answer": "I knew you had graduated from university."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "They / believe / we / win / competition?",
+              "answer": "They believed we would win the competition."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "We / understand / you / be / very busy?",
+              "answer": "We understood that you were very busy."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "I / hear / he / quit / job?",
+              "answer": "I heard that he had quit his job."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "She / assume / we / travel / next week?",
+              "answer": "She assumed we would travel the following week."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "They / notice / weather / change?",
+              "answer": "They noticed the weather was changing."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "We / hope / you / help / us?",
+              "answer": "We hoped you would help us."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "I / suspect / she / hide / something / from me?",
+              "answer": "I suspected she was hiding something from me."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "He / wonder / whether / manage / finish / project?",
+              "answer": "He wondered whether we would manage to finish the project."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "We / doubt / they / tell / truth?",
+              "answer": "We doubted that they were telling the truth."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "She / feel / something / not be / right?",
+              "answer": "She felt something was not right."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "I / have a feeling / happen / something / interesting?",
+              "answer": "I had a feeling something interesting would happen."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "He / believe / we / achieve / great things?",
+              "answer": "He believed we would achieve great things."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "She / realize / opportunity / be / important?",
+              "answer": "She realized the opportunity was important."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "They / expect / project / take / longer / than / planned?",
+              "answer": "They expected the project would take longer than planned."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "We / worry / climate change / affect / future generations?",
+              "answer": "We worried climate change would affect future generations."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "I / imagine / technology / revolutionize / industry?",
+              "answer": "I imagined technology would revolutionize the industry."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "She / predict / company / expand / globally?",
+              "answer": "She predicted the company would expand globally."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "They / assume / economy / improve / next year?",
+              "answer": "They assumed the economy would improve the next year."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "We / fear / pollution / cause / irreversible damage?",
+              "answer": "We feared pollution would cause irreversible damage."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "He / guess / team / win / championship?",
+              "answer": "He guessed the team would win the championship."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "I / suppose / government / implement / new policies?",
+              "answer": "I supposed the government would implement new policies."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "She / anticipate / changes / bring / positive results?",
+              "answer": "She anticipated the changes would bring positive results."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "We / presume / research / lead / breakthrough?",
+              "answer": "We presumed the research would lead to a breakthrough."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "They / calculate / investment / yield / significant returns?",
+              "answer": "They calculated the investment would yield significant returns."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "I / theorize / experiment / prove / hypothesis?",
+              "answer": "I theorized the experiment would prove the hypothesis."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "He told me he will come, but he didn't come.?",
+              "answer": "He told me he would come, but he didn't come."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "I knew she will succeed in her exam.?",
+              "answer": "I knew she would succeed in her exam."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "I thought they arrive tomorrow.?",
+              "answer": "I thought they would arrive the next day."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "She explained to me that she was sick, but now she is fine.?",
+              "answer": "She explained to me that she had been sick, but now she is fine."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "I understood that he will leave for abroad next week.?",
+              "answer": "I understood that he would leave for abroad next week."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "I didn't know you graduated from university last year.?",
+              "answer": "I didn't know you had graduated from university last year."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "She told me she loves reading books.?",
+              "answer": "She told me she loved reading books."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "I thought they will come to the party last night.?",
+              "answer": "I thought they would come to the party last night."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "He explained to me that he works on a new project now.?",
+              "answer": "He explained to me that he was working on a new project."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "I didn't know you moved to a new apartment.?",
+              "answer": "I didn't know you had moved to a new apartment."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "She informed me that she will move to another city next month.?",
+              "answer": "She informed me that she would move to another city next month."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "I understood he was abroad last year.?",
+              "answer": "I understood he had been abroad last year."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "I thought they will get married this summer.?",
+              "answer": "I thought they would get married this summer."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "He told me he started a new job a month ago.?",
+              "answer": "He told me he had started a new job a month ago."
+            },
+            {
+              "kind": "Fill",
+              "prompt": "I didn't know you can play the piano.?",
+              "answer": "I didn't know you could play the piano."
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

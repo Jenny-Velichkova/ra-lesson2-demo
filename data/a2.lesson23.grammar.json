@@ -1,0 +1,164 @@
+{
+  "feedbackDefaults": {},
+  "lessons": {
+    "L23": {
+      "exercises": [
+        {
+          "title": "QA",
+          "items": [
+            {
+              "kind": "Fill",
+              "prompt": "She is sitting ___ on the chair.?",
+              "answer": "on"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "They walked ___ the street.?",
+              "answer": "across"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "The cat jumped ___ the table.?",
+              "answer": "onto"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "We will meet ___ the restaurant.?",
+              "answer": "at"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "The keys are ___ the drawer.?",
+              "answer": "in"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "He travelled ___ train.?",
+              "answer": "by"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "The dog ran ___ the yard.?",
+              "answer": "around"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "The picture is hanging ___ the wall.?",
+              "answer": "on"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "She looked ___ her watch.?",
+              "answer": "at"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "They arrived ___ the same time.?",
+              "answer": "at"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "The flowers are ___ the window.?",
+              "answer": "by"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "He went ___ his bike.?",
+              "answer": "by"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "The meeting will be held ___ the office.?",
+              "answer": "in"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "She is studying ___ the library.?",
+              "answer": "in"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "The car is parked ___ the garage.?",
+              "answer": "in"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "The book is ___ the table.?",
+              "answer": "on"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "She walked ___ the park.?",
+              "answer": "through"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "We will meet ___ the café.?",
+              "answer": "at"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "The cat is hiding ___ the bed.?",
+              "answer": "under"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "He travelled ___ bus.?",
+              "answer": "by"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "The dog ran ___ the street.?",
+              "answer": "across"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "I will stay ___ home tomorrow.?",
+              "answer": "at"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "They arrived ___ 5 PM.?",
+              "answer": "at"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "The picture is hanging ___ the wall.?",
+              "answer": "on"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "She lives ___ London.?",
+              "answer": "in"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "The keys are ___ my pocket.?",
+              "answer": "in"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "We went ___ shopping yesterday.?",
+              "answer": "(no preposition needed)"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "The bird flew ___ the tree.?",
+              "answer": "over"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "The meeting is ___ Friday.?",
+              "answer": "on"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "The train goes ___ the tunnel.?",
+              "answer": "through."
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

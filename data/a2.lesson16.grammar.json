@@ -1,0 +1,20 @@
+{
+  "feedbackDefaults": {},
+  "lessons": {
+    "L16": {
+      "exercises": [
+        {
+          "title": "MCQ",
+          "items": [
+            {
+              "kind": "MCQ",
+              "prompt": "Words order (speak the set of words or reorder the words)",
+              "options": [],
+              "answer": null
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

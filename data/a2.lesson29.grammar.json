@@ -1,0 +1,314 @@
+{
+  "feedbackDefaults": {},
+  "lessons": {
+    "L29": {
+      "exercises": [
+        {
+          "title": "QA",
+          "items": [
+            {
+              "kind": "Fill",
+              "prompt": "You like coffee, _______?",
+              "answer": "don't you?"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "She doesn't study French, _______?",
+              "answer": "does she?"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "They went to the beach yesterday, _______?",
+              "answer": "didn't they?"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "He's working late tonight, _______?",
+              "answer": "isn't he?"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "We haven't seen that movie, _______?",
+              "answer": "have we?"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "You'll come to the party, _______?",
+              "answer": "won't you?"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "She can swim very well, _______?",
+              "answer": "can't she?"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "I'm not disturbing you, _______?",
+              "answer": "am I?"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "They should arrive soon, _______?",
+              "answer": "shouldn't they?"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "He won't be late, _______?",
+              "answer": "will he?"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "You've been to Paris, _______?",
+              "answer": "haven't you?"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "She must be tired, _______?",
+              "answer": "mustn't she?"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "We aren't going to the concert, _______?",
+              "answer": "are we?"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "I'm right, _______?",
+              "answer": "aren't I?"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "They had finished before we arrived, _______?",
+              "answer": "hadn't they?"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "You are a student,_______.?",
+              "answer": "You are a student, aren't you?"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "He doesn't like spicy food,_______.?",
+              "answer": "He doesn't like spicy food, does he?"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "They will attend the meeting_______.?",
+              "answer": "They will attend the meeting, won't they?"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "She has never been to London_______.?",
+              "answer": "She has never been to London, has she?"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "We shouldn't tell her the truth,_______.?",
+              "answer": "We shouldn't tell her the truth, should we?"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "You can speak Spanish,_______.?",
+              "answer": "You can speak Spanish, can't you?"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "It isn't raining,_______.?",
+              "answer": "It isn't raining, is it?"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "He was watching TV all night,_______.?",
+              "answer": "He was watching TV all night, wasn't he?"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "They haven't called yet,_______.?",
+              "answer": "They haven't called yet, have they?"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "You would prefer tea,_______.?",
+              "answer": "You would prefer tea, wouldn't you?"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "She must be joking,_______.?",
+              "answer": "She must be joking, mustn't she?"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "We aren't late,_______.?",
+              "answer": "We aren't late, are we?"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "You've met my sister before,_______.?",
+              "answer": "You've met my sister before, haven't you?"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "He won't mind if we come,_______.?",
+              "answer": "He won't mind if we come, will he?"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "I'm not bothering you,_______.?",
+              "answer": "I'm not bothering you, am I?"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "She likes chocolate, doesn't she?",
+              "answer": "She likes chocolate, doesn't she?"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "They aren't coming, aren't they?",
+              "answer": "They aren't coming, are they?"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "He can swim, can he?",
+              "answer": "He can swim, can't he?"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "You've been to Rome, haven't you?",
+              "answer": "You've been to Rome, haven't you? (Correct)"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "We should leave now, should we?",
+              "answer": "We should leave now, shouldn't we?"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "She won't be late, will she?",
+              "answer": "She won't be late, will she? (Correct)"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "I'm annoying you, am I?",
+              "answer": "I'm annoying you, aren't I?"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "They had left, had they?",
+              "answer": "They had left, hadn't they?"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "You don't like coffee, don't you?",
+              "answer": "You don't like coffee, do you?"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "He's a doctor, isn't he?",
+              "answer": "He's a doctor, isn't he? (Correct)"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "We can't afford it, can we?",
+              "answer": "We can't afford it, can we? (Correct)"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "You'll help me, won't you?",
+              "answer": "You'll help me, won't you? (Correct)"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "She hasn't arrived yet, has she?",
+              "answer": "She hasn't arrived yet, has she? (Correct)"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "I'm not wrong, am I?",
+              "answer": "I'm not wrong, am I? (Correct)"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "They were sleeping, weren't they?",
+              "answer": "They were sleeping, weren't they? (Correct)"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "Ти обичаш пица, нали?",
+              "answer": "You like pizza, don't you?"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "Те не са тук, нали?",
+              "answer": "They aren't here, are they?"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "Ще дойдеш на партито, нали?",
+              "answer": "You'll come to the party, won't you?"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "Тя може да шофира, нали?",
+              "answer": "She can drive, can't she?"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "Не сме закъснели, нали?",
+              "answer": "We aren't late, are we?"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "Той е лекар, нали?",
+              "answer": "He's a doctor, isn't he?"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "Вие бяхте в Лондон миналата година, нали?",
+              "answer": "You were in London last year, weren't you?"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "Няма да вали днес, нали?",
+              "answer": "It won't rain today, will it?"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "Тя трябва да е много уморена, нали?",
+              "answer": "She must be very tired, mustn't she?"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "Не съм те обидил, нали?",
+              "answer": "I haven't offended you, have I?"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "Те ще пристигнат скоро, нали?",
+              "answer": "They'll arrive soon, won't they?"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "Ти не говориш китайски, нали?",
+              "answer": "You don't speak Chinese, do you?"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "Ние сме приятели, нали?",
+              "answer": "We're friends, aren't we?"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "Той не е гладен, нали?",
+              "answer": "He isn't hungry, is he?"
+            },
+            {
+              "kind": "Fill",
+              "prompt": "Вие бихте искали още кафе, нали?",
+              "answer": "You would like more coffee, wouldn't you?"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
