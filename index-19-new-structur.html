@@ -1,0 +1,769 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>RA Exercises</title>
+<style>
+  :root{--w:980px;}
+  body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:#0b0e12;color:#e7e9ee;margin:0;padding:16px;}
+  .wrap{max-width:var(--w);margin:0 auto;}
+  .head{display:flex;gap:8px;align-items:center;justify-content:space-between;margin-bottom:12px}
+  .pills{display:flex;gap:6px;flex-wrap:wrap}
+  .pill{font-size:12px;background:#1a2230;border:1px solid #2b3a55;padding:6px 10px;border-radius:999px;cursor:pointer;user-select:none}
+  .pill[aria-pressed="true"]{background:#142034;border-color:#3b5a8f}
+  h1{font-size:18px;margin:0}
+  .card{background:#10161f;border:1px solid #223047;border-radius:14px;padding:16px;margin:12px 0;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+  .block-title{font-weight:700;margin:0 0 6px 0}
+  .block-sub{color:#9aa7bd;font-size:13px;margin-bottom:10px}
+  .prompt{font-weight:600;margin-bottom:10px}
+  .controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;align-items:center}
+  button{cursor:pointer;border:1px solid #314462;background:#172133;color:#e7e9ee;border-radius:10px;padding:8px 12px}
+  button:hover{background:#1e2a40}
+  input[type="text"]{width:100%;max-width:420px;background:#0e131b;border:1px solid #32445f;color:#fff;border-radius:10px;padding:8px 10px}
+  .ok{color:#6ee7a8}
+  .bad{color:#fca5a5}
+  .muted{color:#9aa7bd;font-size:13px}
+  .note{font-size:13px;color:#c9d6f2}
+  .hr{height:1px;background:#1f2a3d;margin:18px 0}
+  .foot{display:flex;gap:8px;align-items:center;justify-content:flex-end}
+  .listening{border-color:#3a7bd5; box-shadow:0 0 0 2px rgba(58,123,213,.15) inset}
+  .wave{width:10px;height:10px;border-radius:999px;background:#4da3ff;display:inline-block;animation:pulse 1.2s infinite ease-in-out;margin-left:6px}
+  @keyframes pulse{0%{transform:scale(.9);opacity:.6}50%{transform:scale(1.2);opacity:1}100%{transform:scale(.9);opacity:.6}}
+  .kbd{font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;background:#0b1220;border:1px solid #2a3b57;padding:0 6px;border-radius:6px;font-size:.9em}
+
+  /* Reorder UI */
+  .reorder-wrap{display:flex;flex-direction:column;gap:8px}
+  .bank,.built{min-height:46px;display:flex;flex-wrap:wrap;gap:8px;padding:8px;border:1px dashed #2a3b57;border-radius:12px;background:#0e141e}
+  .token{padding:6px 10px;border:1px solid #33445f;border-radius:999px;background:#151e2c;user-select:none}
+  .token:hover{background:#1a2637}
+  .reorder-ctrls{display:flex;gap:8px;flex-wrap:wrap}
+  .yn-quick{display:flex;gap:8px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head">
+    <h1>Interactive Exercises</h1>
+    <div class="pills">
+      <div class="pill" id="meta"></div>
+      <div class="pill" id="pillSpeech" aria-pressed="true">Speech: ON</div>
+      <div class="pill" id="pillTTS" aria-pressed="true">TTS: ON</div>
+      <div class="pill" id="pillAutoCheck" aria-pressed="false" title="Auto-check after speech">Auto-check: OFF</div>
+      <div class="pill" id="pillAutoMic" aria-pressed="true" title="Auto mic after Listen">Auto-mic: ON</div>
+    </div>
+  </div>
+
+  <div class="card note" id="howto">
+    <strong>Как да отговориш / How to answer:</strong><br/>
+    Натисни <span class="kbd">Listen</span> и след като чуеш изречението, кажи липсващата дума или отговор. Думата/изречението ще се изпише в полето – можеш да го редактираш, после натисни <span class="kbd">Check</span>.<br/>
+    If you prefer typing, just write the answer instead. <span class="kbd">L</span>=Listen, <span class="kbd">S</span>=Speak, <span class="kbd">Enter</span>=Check, <span class="kbd">Esc</span>=Stop.
+  </div>
+
+  <div id="list"></div>
+
+  <div class="hr"></div>
+  <div class="foot muted">Tip: Use the 🔊 button to hear the sentence. Your answers are checked locally.</div>
+</div>
+
+<script>
+/* --- 0) URL params + meta --- */
+const url = new URL(location.href);
+const level   = (url.searchParams.get('level')   || 'A1').toUpperCase();
+const unit    = (url.searchParams.get('unit')    || 'L02').toUpperCase();
+const section = (url.searchParams.get('section') || 'story').toLowerCase();
+const typeParam = (url.searchParams.get('type')  || '').toLowerCase(); // 'fill' | 'yesno' | 'reorder'
+document.getElementById('meta').textContent = `${level} • ${unit} • ${section}`;
+
+const explicitFile = url.searchParams.get('file') || null;
+
+// GH Pages е статичен → AI feedback само локално
+const IS_LOCAL = ['localhost','127.0.0.1'].includes(location.hostname);
+const API_BASE = IS_LOCAL ? 'http://127.0.0.1:3000' : '';
+
+/* --- Global toggles (with localStorage) --- */
+const store = {
+  get(k, def){ try{ const v=localStorage.getItem(k); return v===null?def:JSON.parse(v);}catch{ return def; } },
+  set(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch{} }
+};
+let speechEnabled   = store.get('speechEnabled', true);
+let ttsEnabled      = store.get('ttsEnabled', true);
+let autoCheck       = store.get('autoCheck', false);
+let autoMicAfterListen = store.get('autoMicAfterListen', true);
+function syncPills(){
+  const pS = document.getElementById('pillSpeech');
+  const pT = document.getElementById('pillTTS');
+  const pA = document.getElementById('pillAutoCheck');
+  const pM = document.getElementById('pillAutoMic');
+  pS.setAttribute('aria-pressed', String(speechEnabled)); pS.textContent = `Speech: ${speechEnabled?'ON':'OFF'}`;
+  pT.setAttribute('aria-pressed', String(ttsEnabled));    pT.textContent = `TTS: ${ttsEnabled?'ON':'OFF'}`;
+  pA.setAttribute('aria-pressed', String(autoCheck));     pA.textContent = `Auto-check: ${autoCheck?'ON':'OFF'}`;
+  pM.setAttribute('aria-pressed', String(autoMicAfterListen)); pM.textContent = `Auto-mic: ${autoMicAfterListen?'ON':'OFF'}`;
+}
+document.getElementById('pillSpeech').onclick   = ()=>{ speechEnabled=!speechEnabled; store.set('speechEnabled', speechEnabled); syncPills(); };
+document.getElementById('pillTTS').onclick      = ()=>{ ttsEnabled=!ttsEnabled; store.set('ttsEnabled', ttsEnabled); syncPills(); };
+document.getElementById('pillAutoCheck').onclick= ()=>{ autoCheck=!autoCheck; store.set('autoCheck', autoCheck); syncPills(); };
+document.getElementById('pillAutoMic').onclick  = ()=>{ autoMicAfterListen=!autoMicAfterListen; store.set('autoMicAfterListen', autoMicAfterListen); syncPills(); };
+syncPills();
+
+/* --- 1) TTS helpers --- */
+function normalizeForSpeech(t){
+  return String(t)
+    .replace(/\([^)]*\)/g, ' ')
+    .replace(/→/g, ' to ')
+    .replace(/[•◆◦■\-–—]/g, ' ')
+    .replace(/\s{2,}/g, ' ')
+    .trim();
+}
+function toInstructionalSpeech(prompt){
+  const hasBlank = /_{2,}/.test(prompt||'');
+  const clean = normalizeForSpeech(prompt||'');
+  if (hasBlank) return "Complete the sentence: " + clean.replace(/_{2,}/g, " … ");
+  return clean;
+}
+let preferredVoice = null;
+function pickMaleVoice(){
+  const voices = window.speechSynthesis.getVoices?.() || [];
+  const byMaleName = voices.find(v => /(male|david|george|guy|daniel|microsoft|google uk english male)/i.test(v.name));
+  const byLangEN   = voices.find(v => /^en(-|_)/i.test(v.lang));
+  preferredVoice = byMaleName || byLangEN || voices[0] || null;
+}
+window.speechSynthesis.onvoiceschanged = pickMaleVoice; pickMaleVoice();
+function say(text, onend){
+  if(!ttsEnabled) { onend && setTimeout(onend, 400); return; }
+  try{
+    const u = new SpeechSynthesisUtterance(normalizeForSpeech(text));
+    if (preferredVoice) u.voice = preferredVoice;
+    u.rate = 1.0; u.pitch = 1.0;
+    if (onend) u.onend = onend;
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(u);
+  }catch{ onend && setTimeout(onend, 400); }
+}
+
+/* --- 1a) Smart feedback --- */
+function smartWrongFeedback(it){
+  const t = (it.prompt || "").toLowerCase();
+  if (/\bhave\b|\bhas\b|have\/has/.test(t)) {
+    return "Not quite. With 'I, you, we, they' use 'have'; with 'he, she, it' use 'has'. Try repeating the sentence out loud.";
+  }
+  if (t.includes("plural") || /boxes|buses|churches|tomatoes|classes|wishes/.test(t)) {
+    return "Not quite. For nouns ending in -x, -s, -sh, -ch, or -o, add '-es'. Say the plural form out loud.";
+  }
+  if (/_+/.test(it.prompt || "") && /\b(at|on|in)\b/.test(t)) {
+    return "Not quite. Use 'at' for specific places/times (at home, at 5), 'on' for days/dates (on Monday), and 'in' for months/longer periods (in June, in the morning). Try the sentence again.";
+  }
+  if ((it.kind||it.templateType||"").toLowerCase() === "yesno") {
+    return "Not quite. Use short answers correctly: Yes, he does. / No, he doesn't. Repeat the correct short answer out loud.";
+  }
+  return "Not quite. Check the story and try again. / Не точно. Върнете се към историята и опитайте пак.";
+}
+
+/* --- 2) Normalize + translit (BG->LAT) --- */
+function translitBgWord(w){
+  const map = {
+    'а':'a','б':'b','в':'v','г':'g','д':'d','е':'e','ж':'zh','з':'z','и':'i','й':'y','к':'k',
+    'л':'l','м':'m','н':'n','о':'o','п':'p','р':'r','с':'s','т':'t','у':'u','ф':'f','х':'h',
+    'ц':'ts','ч':'ch','ш':'sh','щ':'sht','ъ':'a','ь':'','ю':'yu','я':'ya',
+    'А':'a','Б':'b','В':'v','Г':'g','Д':'d','Е':'e','Ж':'zh','З':'z','И':'i','Й':'y','К':'k',
+    'Л':'l','М':'m','Н':'n','О':'o','П':'p','Р':'r','С':'s','Т':'t','У':'u','Ф':'f','Х':'h',
+    'Ц':'ts','Ч':'ch','Ш':'sh','Щ':'sht','Ъ':'a','Ь':'','Ю':'yu','Я':'ya'
+  };
+  let out = '';
+  for (const ch of w) out += (map[ch] ?? ch);
+  out = out.replace(/ks\b/, 'x'); // tiny fixes
+  out = out.replace(/ts\b/, 'c');
+  return out;
+}
+function normWord(s){
+  return String(s||'').toLowerCase()
+    .replace(/[“”"‘’']/g,'"')
+    .replace(/[.,!?;:()]/g,' ')
+    .replace(/\s+/g,' ')
+    .trim();
+}
+function normalizeForMatch(s){
+  const base = normWord(s);
+  if (/[а-яА-Я]/.test(base)) return translitBgWord(base);
+  return base;
+}
+
+/* --- 3) ASR (speech-to-text) --- */
+const Recog = window.SpeechRecognition || window.webkitSpeechRecognition;
+function startRecognitionFor(input, resultEl){
+  if(!speechEnabled || !Recog){
+    resultEl.textContent = "Speech input unavailable on this browser. / Говорният вход не е наличен в този браузър.";
+    resultEl.className='muted'; return null;
+  }
+  stopRecognition();
+  const r = new Recog();
+  r.lang = 'bg-BG';
+  r.interimResults = false;
+  r.maxAlternatives = 1;
+  input.classList.add('listening');
+  resultEl.className='muted';
+  resultEl.innerHTML = `Listening… <span class="wave"></span>`;
+  r.onresult = (e)=>{
+    const heard = (e.results?.[0]?.[0]?.transcript || '').trim();
+    if (heard) {
+      if (/[а-яА-Я]/.test(heard)) {
+        const lat = translitBgWord(heard);
+        input.value = lat;
+        resultEl.textContent = `Heard: “${heard}” → ${lat}. Press Check. / Чуто: „${heard}“ → ${lat}. Натисни Check.`;
+      } else {
+        input.value = heard;
+        resultEl.textContent = `Heard: “${heard}”. Press Check. / Чуто: „${heard}“. Натисни Check.`;
+      }
+      if (autoCheck) {
+        setTimeout(()=> {
+          const btn = input.parentElement.querySelector('button[data-role="check"]');
+          btn?.click();
+        }, 500);
+      }
+    } else {
+      resultEl.textContent = "I didn’t catch that. Try again. / Не те чух. Опитай пак.";
+    }
+  };
+  r.onspeechend = ()=> r.stop();
+  r.onend = ()=>{
+    input.classList.remove('listening');
+    if(!input.value){
+      resultEl.textContent = "I didn’t catch that. Say the word clearly or type it. / Не те чух. Кажи думата ясно или я напиши.";
+    }
+  };
+  r.onerror = ()=>{
+    input.classList.remove('listening');
+    resultEl.textContent = "Microphone error. Check permissions. / Проблем с микрофона – позволи достъп.";
+  };
+  try{ r.start(); }catch{}
+  window.__activeRecog = r;
+  return r;
+}
+function stopRecognition(){
+  const r = window.__activeRecog;
+  if (r) { try{ r.stop(); }catch{} }
+  window.__activeRecog = null;
+}
+
+/* --- helpers for Reorder --- */
+function tokenize(s){
+  return String(s||'').trim().split(/\s+/).filter(Boolean);
+}
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+function compareTokens(userArr, goldArr){
+  let match = 0;
+  for(let i=0;i<Math.max(userArr.length,goldArr.length);i++){
+    if (userArr[i]===goldArr[i]) match++;
+  }
+  const pct = Math.round((match/Math.max(goldArr.length,1))*100);
+  return {ok: (match===goldArr.length && userArr.length===goldArr.length), pct};
+}
+
+/* --- 4) TEMPLATE MAP (template_type → UI kind) --- */
+const TEMPLATE_MAP = {
+  // A1 Story – първите уроци
+  "story_fill_01":       { kind: "fill" },
+  "story_reorder":       { kind: "reorder" },
+
+  // A1 Story – от L06 до L15 (по описанието ти)
+  "story_short_answers": { kind: "yesno" },
+  "story_pos_neg":       { kind: "fill" },
+  "story_full_answers":  { kind: "fill" }
+
+  // по-нататък тук ще добавяме grammar_* и други
+};
+
+function mapTemplateToKind(templateType, rawItem){
+  const t = (templateType || '').toLowerCase().trim();
+  if (TEMPLATE_MAP[t]) return TEMPLATE_MAP[t].kind;
+
+  if (/reorder|rearrange/.test(t)) return 'reorder';
+  if (/yesno|short_answer_yesno/.test(t)) return 'yesno';
+  if (/fill|gap|blank/.test(t)) return 'fill';
+
+  const ans = normalizeForMatch(rawItem && rawItem.a || rawItem && rawItem.answer || '');
+  if (ans === 'yes' || ans === 'no') return 'yesno';
+  return 'fill';
+}
+
+/* --- 5) A1 Story seed нормализатор (seed.LXX.story.json = масив) --- */
+function normalizeA1StorySeedArray(dataArr, ctx){
+  const blocks = [];
+  const defaults = {}; // засега няма глобални feedbackDefaults в тези файлове
+
+  dataArr = Array.isArray(dataArr) ? dataArr : [];
+
+  dataArr.forEach((ex, exIdx) => {
+    if (!ex || ex.section !== 'story') return;
+
+    const template = (ex.template_type || ex.templateType || '').toLowerCase();
+    const title = ex.title || `Exercise ${exIdx+1}`;
+    const instr = ex.instruction || ex.instructions || null;
+
+    const block = { title, sub: instr, items: [] };
+
+    // 5.1 Reorder – подреждане на изречения
+    if (template === 'story_reorder') {
+      const items = Array.isArray(ex.items) ? ex.items.slice() : [];
+      const correct = Array.isArray(ex.correct_order) && ex.correct_order.length
+        ? ex.correct_order.slice()
+        : items.slice();
+
+      if (correct.length) {
+        block.items.push({
+          kind: 'reorder',
+          templateType: template,
+          prompt: instr || title,
+          answer: correct.join(' '),       // за TTS
+          answerTokens: correct.slice(),   // за UI
+          feedback: undefined,
+          acceptable: []
+        });
+      }
+    } else {
+      // 5.2 Всички останали story_fill_01, story_short_answers, story_pos_neg, story_full_answers
+      const items = Array.isArray(ex.items) ? ex.items : [];
+      items.forEach((row, rowIdx) => {
+        if (!row) return;
+        const q = row.q || row.question || '';
+        const a = row.a || row.answer || '';
+
+        const kind = mapTemplateToKind(template, row);
+
+        block.items.push({
+          kind,
+          templateType: template,
+          prompt: q,
+          answer: a,
+          explain: instr || '',
+          feedback: row.feedback || undefined,
+          acceptable: Array.isArray(row.acceptable) ? row.acceptable : []
+        });
+      });
+    }
+
+    if (typeParam) {
+      block.items = block.items.filter(it => (it.kind||'').toLowerCase() === typeParam);
+    }
+    if (block.items.length) blocks.push(block);
+  });
+
+  return { blocks, defaults };
+}
+
+/* --- 6) Loader – резолвира JSON според level/unit/section --- */
+
+async function fetchStoryJson(level, unit, explicitFile){
+  if (explicitFile){
+    const res = await fetch(explicitFile, { cache: 'no-store' });
+    if (!res.ok) throw new Error(`Fetch failed: ${res.status} ${res.statusText} (${explicitFile})`);
+    return res.json();
+  }
+
+  const m = /^L?(\d+)/i.exec(unit);
+  const unit2 = m ? String(m[1]).padStart(2,'0') : '02';
+  const lvlLower   = level.toLowerCase();
+
+  const candidates = [
+    // най-близко до това, което имаш локално: out/A1/story/seed.L02.story.json
+    `data/${level}/story/seed.L${unit2}.story.json`,
+    `data/${lvlLower}/story/seed.L${unit2}.story.json`,
+    `data/story/seed.L${unit2}.story.json`,
+    // старият формат – за всеки случай
+    `data/${lvlLower}.lesson${unit2}.full.json`
+  ];
+
+  let lastErr = null;
+  for (const path of candidates){
+    try{
+      const res = await fetch(path, { cache: 'no-store' });
+      if (res.ok){
+        return res.json();
+      } else {
+        lastErr = new Error(`Fetch failed: ${res.status} ${res.statusText} (${path})`);
+      }
+    }catch(e){
+      lastErr = e;
+    }
+  }
+  throw lastErr || new Error('No story JSON found for '+level+'/'+unit);
+}
+
+async function loadData(level, unit, section, explicitFile, typeParam){
+  let data;
+
+  if (section === 'story') {
+    data = await fetchStoryJson(level, unit, explicitFile);
+  } else {
+    // Grammar / други – запазваме стария подход
+    let file = explicitFile;
+    if (!file){
+      if (section === 'grammar') file = 'data/a1_grammar.json';
+      else file = 'data/a1.json';
+    }
+    const res = await fetch(file, { cache: 'no-store' });
+    if (!res.ok) throw new Error(`Fetch failed: ${res.status} ${res.statusText} (${file})`);
+    data = await res.json();
+  }
+
+  const defaults = data && data.feedbackDefaults ? data.feedbackDefaults : {};
+  const blocks = [];
+
+  /* --- A) A1 Story seed формат = масив от упражнения --- */
+  if (section === 'story' && Array.isArray(data)) {
+    return normalizeA1StorySeedArray(data, { level, unit, section, typeParam });
+  }
+
+  /* --- B) Общ еднофайлов формат: { title, sub?, items:[] } --- */
+  if (Array.isArray(data.items)) {
+    let items = data.items.slice();
+    if (typeParam) {
+      items = items.filter(it => {
+        const k = (it.kind || it.templateType || '').toLowerCase();
+        if (typeParam === 'fill')    return k === 'fill';
+        if (typeParam === 'yesno')   return k === 'yesno';
+        if (typeParam === 'reorder') return k === 'reorder';
+        return true;
+      });
+    }
+    blocks.push({
+      title: data.title || `${level} ${unit} • ${section}`,
+      sub: data.sub || null,
+      items
+    });
+    return { blocks, defaults };
+  }
+
+  /* --- C) Стар курс формат с lessons{} (за съвместимост) --- */
+  const lessons = data.lessons || {};
+  const rawNum = String(unit).replace(/^L/i,'').replace(/^0+/, '');
+  const num2   = rawNum.padStart(2,'0');
+  const candidatesKeys = [unit, unit.toUpperCase(), unit.toLowerCase(), 'L'+rawNum, 'l'+rawNum, 'L'+num2, 'l'+num2];
+  const key = candidatesKeys.find(k => Object.prototype.hasOwnProperty.call(lessons, k)) || null;
+
+  const lesson   = key ? lessons[key] : null;
+  if (!lesson) return {blocks:[], defaults};
+
+  (lesson.exercises || []).forEach((ex, exIdx) => {
+    const lines = (ex.payload && Array.isArray(ex.payload.lines)) ? ex.payload.lines.slice() : [];
+    if (!lines.length){ return; }
+
+    const block = { title: ex.title || `Exercise ${exIdx+1}`, sub: null, items: [] };
+    const firstInfo = lines.find(s => /fill|translate|rearrange|подредете|попълнете|преведете/i.test(s));
+    if (firstInfo) block.sub = firstInfo;
+
+    const getKindLegacy = (declared, answer) => {
+      const t = (declared || '').toLowerCase();
+      if (t === 'short_answer_yesno' || t === 'yesno') return 'YesNo';
+      if (t === 'reorder') return 'Reorder';
+      const a = String(answer || '').trim().toLowerCase();
+      if (['yes','no','да','не'].includes(a)) return 'YesNo';
+      return 'Fill';
+    };
+
+    const ansPos = lines.findIndex(s => /^answers\s*:?/i.test(s));
+    if (ansPos !== -1){
+      const prompts = lines.slice(0, ansPos).filter(s => /___/.test(s));
+      const answers = lines.slice(ansPos+1).map(s => s.trim()).filter(Boolean);
+      const n = Math.min(prompts.length, answers.length);
+      for (let i = 0; i < n; i++){
+        const kindLegacy = getKindLegacy(block.type || block.templateType || (block.meta && block.meta.type), answers[i]);
+        const kind = (kindLegacy === 'Reorder') ? 'reorder' : (kindLegacy === 'YesNo' ? 'yesno' : 'fill');
+        block.items.push({
+          kind,
+          prompt: prompts[i],
+          answer: answers[i],
+          explain: block.sub || '',
+          feedback: (defaults && (defaults[kind] || defaults.Fill)) || undefined,
+          acceptable: block.acceptable || []
+        });
+      }
+      if (typeParam) {
+        block.items = block.items.filter(it => (it.kind||'').toLowerCase()===typeParam);
+      }
+      if (block.items.length) blocks.push(block);
+      return;
+    }
+
+    for (let i = 0; i < lines.length; i++){
+      const q = lines[i];
+      const mQ = /^(.*\?)\s*(?:\(.*?\))?\s*$/i.exec(q);
+      const next = lines[i+1] || '';
+      const mA = /^\s*(?:correct\s*answer\s*:\s*)(.*)$/i.exec(next);
+      if (mQ && mA){
+        const kindLegacy = getKindLegacy(block.type || block.templateType || (block.meta && block.meta.type), mA[1]);
+        const kind = (kindLegacy === 'Reorder') ? 'reorder' : (kindLegacy === 'YesNo' ? 'yesno' : 'fill');
+        block.items.push({
+          kind,
+          prompt: mQ[1],
+          answer: mA[1],
+          explain: block.sub || '',
+          feedback: (defaults && (defaults[kind] || defaults.Fill)) || undefined,
+          acceptable: block.acceptable || []
+        });
+        i++;
+      }
+    }
+
+    if (typeParam) {
+      block.items = block.items.filter(it => (it.kind||'').toLowerCase() === typeParam);
+    }
+    if (block.items.length){ blocks.push(block); }
+  });
+
+  if (!blocks.length){
+    const flat = Array.isArray(lesson.exercises) ? lesson.exercises : [];
+    blocks.push({ title: `${unit} • ${section}`, sub: null, items: flat });
+  }
+  return {blocks, defaults};
+}
+
+/* --- 7) Render --- */
+function render(blocks){
+  const list = document.getElementById('list');
+  list.innerHTML = '';
+
+  if(!blocks.length){
+    list.innerHTML = `<div class="card"><div class="prompt">No items for ${level}/${unit}/${section}.</div>
+    <div class="muted">Check URL parameters or dataset.</div></div>`;
+    return;
+  }
+
+  blocks.forEach((block, bi) => {
+    const head = document.createElement('div');
+    head.className = 'card';
+    const t = document.createElement('div'); t.className='block-title'; t.textContent = `${bi+1}. ${block.title}`;
+    head.appendChild(t);
+    if (block.sub){
+      const s = document.createElement('div'); s.className='block-sub'; s.textContent = block.sub;
+      head.appendChild(s);
+    }
+    list.appendChild(head);
+
+    if (!Array.isArray(block.items) || !block.items.length) return;
+
+    block.items.forEach((it, idx) => {
+      const card = document.createElement('div'); card.className = 'card';
+
+      const p = document.createElement('div'); p.className = 'prompt';
+      p.textContent = `${idx+1}. ${it.prompt || ''}`;
+      card.appendChild(p);
+
+      const kind = (it.kind || it.templateType || 'fill').toLowerCase();
+      if (kind === 'reorder') {
+        renderReorderCard(card, it);
+      } else {
+        renderStandardCard(card, it);
+      }
+
+      list.appendChild(card);
+      card.tabIndex = 0;
+    });
+  });
+}
+
+/* --- Standard card (Fill + YesNo quick buttons) --- */
+function renderStandardCard(card, it){
+  const controls = document.createElement('div'); controls.className = 'controls';
+
+  const listen = document.createElement('button'); listen.textContent = '🔊 Listen';
+  const answerUI = document.createElement('input');
+  answerUI.type = 'text'; answerUI.placeholder = 'Say or type your answer…';
+  let userTyped = false;
+  answerUI.addEventListener('input', ()=>{ userTyped = true; stopRecognition(); });
+
+  const check = document.createElement('button'); check.textContent = 'Check'; check.dataset.role = 'check';
+  const speakBtn = document.createElement('button'); speakBtn.textContent = '🎙️ Speak';
+  const show = document.createElement('button'); show.textContent = 'Show answer';
+
+  let result = document.createElement('div'); result.className='muted';
+
+  const isYesNo = ((it.kind||'').toLowerCase()==='yesno');
+  let quickWrap = null;
+  if (isYesNo){
+    quickWrap = document.createElement('div'); quickWrap.className='yn-quick';
+    const btnYes = document.createElement('button'); btnYes.textContent = 'Yes ✓';
+    const btnNo  = document.createElement('button'); btnNo.textContent  = 'No ✗';
+    btnYes.onclick = ()=>{ answerUI.value='Yes'; check.click(); };
+    btnNo.onclick  = ()=>{ answerUI.value='No';  check.click(); };
+    quickWrap.append(btnYes, btnNo);
+  }
+
+  listen.onclick = () => {
+    userTyped = false;
+    say(toInstructionalSpeech(it.prompt || ''), ()=>{
+      if (autoMicAfterListen && !userTyped) startRecognitionFor(answerUI, result);
+    });
+  };
+  speakBtn.onclick = ()=> startRecognitionFor(answerUI, result);
+
+  check.onclick = () => {
+    stopRecognition();
+
+    const rawUser = (answerUI.value || '');
+    const user = normalizeForMatch(rawUser);
+    const gold = normalizeForMatch(it.answer || '');
+
+    const acc = Array.isArray(it.acceptable) ? it.acceptable.map(normalizeForMatch) : [];
+    let ok = Boolean(user) && (user === gold || acc.includes(user));
+
+    let pct = 0;
+    if (!ok && user && gold) {
+      const u = user.split(/\s+/).filter(Boolean);
+      const g = gold.split(/\s+/).filter(Boolean);
+      const inter = u.filter(w => g.includes(w)).length;
+      pct = Math.round((inter / Math.max(g.length, 1)) * 100);
+    }
+
+    const oldAI = card.querySelector('.ai-feedback');
+    if (oldAI) oldAI.remove();
+
+    if (ok) {
+      result.textContent = 'Correct! Well done. / Вярно! Браво.';
+      result.className = 'ok';
+      if (ttsEnabled) say('Correct! Well done.');
+    } else {
+      const baseMsg = (it.feedback && (it.feedback.wrong || it.feedback.try)) 
+        ? (it.feedback.wrong || it.feedback.try) 
+        : smartWrongFeedback(it);
+
+      result.textContent = pct ? `${baseMsg} (${pct}%)` : baseMsg;
+      result.className = 'bad';
+      if (ttsEnabled) {
+        say('Not quite. Check the story and try again.');
+        if (it.answer) setTimeout(()=> say(`Correct answer: ${it.answer}`), 600);
+      }
+
+      if (rawUser.trim() && IS_LOCAL) {
+        fetch(`${API_BASE}/api/feedback`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            prompt: it.prompt,
+            userAnswer: rawUser,
+            correctAnswer: it.answer,
+            kind: it.kind || 'fill',
+            templateType: it.templateType || null
+          })
+        })
+        .then(r => r.ok ? r.json() : null)
+        .then(data => {
+          if (data && data.feedback) {
+            const ai = document.createElement('div');
+            ai.className = 'note ai-feedback';
+            ai.textContent = data.feedback;
+            result.insertAdjacentElement('afterend', ai);
+          }
+        })
+        .catch(()=>{});
+      }
+    }
+  };
+
+  show.onclick = () => {
+    stopRecognition();
+    answerUI.value = it.answer||'';
+    result.textContent = `Answer: ${it.answer||''}`;
+    result.className='muted';
+    if (ttsEnabled && it.answer) say(`Answer: ${it.answer}`);
+  };
+
+  controls.append(listen, answerUI, check, speakBtn, show);
+  if (quickWrap) controls.append(quickWrap);
+  card.appendChild(controls);
+  card.appendChild(result);
+
+  card.addEventListener('keydown', (e)=>{
+    if (e.key==='L' || e.key==='l'){ e.preventDefault(); listen.click(); }
+    if (e.key==='S' || e.key==='s'){ e.preventDefault(); speakBtn.click(); }
+    if (e.key==='Enter'){ e.preventDefault(); check.click(); }
+    if (e.key==='Escape'){ e.preventDefault(); stopRecognition(); }
+  });
+}
+
+/* --- Reorder card --- */
+function renderReorderCard(card, it){
+  const goldTokens = Array.isArray(it.answerTokens) && it.answerTokens.length
+    ? it.answerTokens.slice()          // нашите изречения от correct_order
+    : tokenize(it.answer);             // fallback – по думи
+
+  let bankTokens = shuffle(goldTokens);
+  const builtTokens = [];
+
+  const wrap = document.createElement('div'); wrap.className='reorder-wrap';
+  const bank = document.createElement('div'); bank.className='bank';
+  const built = document.createElement('div'); built.className='built';
+  const ctrls = document.createElement('div'); ctrls.className='reorder-ctrls';
+  const result = document.createElement('div'); result.className='muted';
+
+  function renderTokens(){
+    bank.innerHTML = ''; built.innerHTML='';
+    bankTokens.forEach((w, i)=>{
+      const t = document.createElement('span'); t.className='token'; t.textContent = w;
+      t.onclick = ()=>{ builtTokens.push(w); bankTokens.splice(i,1); renderTokens(); };
+      bank.appendChild(t);
+    });
+    builtTokens.forEach((w, i)=>{
+      const t = document.createElement('span'); t.className='token'; t.textContent = w;
+      t.title = 'Click to move back';
+      t.onclick = ()=>{ bankTokens.push(w); builtTokens.splice(i,1); renderTokens(); };
+      built.appendChild(t);
+    });
+  }
+  renderTokens();
+
+  const listen = document.createElement('button'); listen.textContent='🔊 Listen';
+  listen.onclick = ()=> say(toInstructionalSpeech(it.prompt || it.answer || ''), null);
+
+  const shuffleBtn = document.createElement('button'); shuffleBtn.textContent='Shuffle';
+  shuffleBtn.onclick = ()=>{ bankTokens = shuffle(goldTokens); builtTokens.length=0; renderTokens(); result.textContent=''; result.className='muted'; };
+
+  const clearBtn = document.createElement('button'); clearBtn.textContent='Clear';
+  clearBtn.onclick = ()=>{ bankTokens = goldTokens.slice(); builtTokens.length=0; renderTokens(); result.textContent=''; result.className='muted'; };
+
+  const checkBtn = document.createElement('button'); checkBtn.textContent='Check';
+  checkBtn.onclick = ()=>{
+    const {ok, pct} = compareTokens(builtTokens, goldTokens);
+    if (ok){
+      result.textContent = 'Correct! Well done. / Вярно! Браво.';
+      result.className = 'ok';
+      if (ttsEnabled) say('Correct! Well done.');
+    } else {
+      const baseMsg = (it.feedback && (it.feedback.wrong || it.feedback.try)) 
+        ? (it.feedback.wrong || it.feedback.try)
+        : 'Not quite. Arrange the sentences in the correct order.';
+      result.textContent = `${baseMsg} (${pct}%)`;
+      result.className = 'bad';
+      if (ttsEnabled) {
+        say('Not quite. Try again.');
+        if (it.answer) setTimeout(()=> say(`Correct order: ${it.answer}`), 600);
+      }
+    }
+  };
+
+  ctrls.append(listen, shuffleBtn, clearBtn, checkBtn);
+  wrap.appendChild(bank);
+  wrap.appendChild(built);
+  wrap.appendChild(ctrls);
+  wrap.appendChild(result);
+  card.appendChild(wrap);
+}
+
+/* --- 8) boot --- */
+loadData(level, unit, section, explicitFile, typeParam)
+  .then(({blocks}) => render(blocks))
+  .catch(err => {
+    const list = document.getElementById('list');
+    list.innerHTML = `<div class="card"><div class="prompt">Error loading data.</div>
+    <div class="muted">${String(err)}</div></div>`;
+  });
+</script>
+</body>
+</html>
