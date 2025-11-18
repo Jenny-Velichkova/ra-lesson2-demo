@@ -1,0 +1,78 @@
+[
+  {
+    "level": "A1",
+    "unit": "L14",
+    "section": "story",
+    "template_type": "story_short_answers",
+    "title": "At the Grocer's – Ex1",
+    "exercise_id": "L14-Ex1",
+    "items": [
+      { "q": "Does Mrs. Ford want any butter?", "a": "Yes, she does." },
+      { "q": "Doesn't she want any cheese?", "a": "Yes, she does." },
+      { "q": "Doesn't Mrs. Ford want a tin of tomato soup?", "a": "No, she doesn’t." },
+      { "q": "Has the grocer any tomato soup?", "a": "No, he hasn’t." },
+      { "q": "Are there any tins on the shelf?", "a": "Yes, there are." },
+      { "q": "Do these tins contain tomato soup?", "a": "Yes, they do." },
+      { "q": "Don't they contain tomatoes?", "a": "Yes, they do." },
+      { "q": "Will the grocer send the things to Mrs. Ford's house?", "a": "No, he won’t." },
+      { "q": "Can he send the eggs too?", "a": "No, he can’t." },
+      { "q": "Will he send the eggs?", "a": "No, he won’t." }
+    ]
+  },
+  {
+    "level": "A1",
+    "unit": "L14",
+    "section": "story",
+    "template_type": "story_pos_neg",
+    "title": "At the Grocer's – Ex2",
+    "exercise_id": "L14-Ex2",
+    "items": [
+      {
+        "q": "Does Mrs. Ford want some biscuits or some bread?",
+        "a": "Mrs. Ford wants some biscuits but she doesn’t want any bread."
+      },
+      {
+        "q": "Does she want a tin of tomato soup or a tin of tomatoes?",
+        "a": "She wants a tin of tomato soup but she doesn’t want a tin of tomatoes."
+      },
+      {
+        "q": "Are the tins on the shelf or on the counter?",
+        "a": "The tins are on the counter but they are not on the shelf."
+      },
+      {
+        "q": "Will the grocer send the things or will Mrs. Ford carry them?",
+        "a": "Mrs. Ford will carry the things but the grocer will not send them."
+      },
+      {
+        "q": "Will Mrs. Ford take the eggs with her or will the grocer send them?",
+        "a": "Mrs. Ford will carry the eggs but the grocer will not."
+      }
+    ]
+  },
+  {
+    "level": "A1",
+    "unit": "L14",
+    "section": "story",
+    "template_type": "story_full_answers",
+    "title": "At the Grocer's – Ex3",
+    "exercise_id": "L14-Ex3",
+    "items": [
+      {
+        "q": "Who wants some butter and cheese?",
+        "a": "Mrs. Ford wants some butter and cheese."
+      },
+      {
+        "q": "Who will send the things to Mrs. Ford's house?",
+        "a": "Mrs. Ford will carry the things."
+      },
+      {
+        "q": "Who will carry the eggs?",
+        "a": "Mrs. Ford will carry the eggs."
+      },
+      {
+        "q": "Who is very careless?",
+        "a": "The delivery boy is very careless."
+      }
+    ]
+  }
+]

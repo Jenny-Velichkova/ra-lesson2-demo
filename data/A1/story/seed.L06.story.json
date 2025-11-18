@@ -1,0 +1,53 @@
+[
+  {
+    "level": "A1",
+    "unit": "L06",
+    "section": "story",
+    "template_type": "story_short_answers",
+    "title": "A Good Book – Ex1",
+    "exercise_id": "L06-Ex1",
+    "items": [
+      { "q": "Is Robert Jones a detective?", "a": "Yes, he is." },
+      { "q": "Is Robert Jones a librarian?", "a": "No, he isn’t." },
+      { "q": "Is Robert Jones in the library now?", "a": "Yes, he is." },
+      { "q": "Is Miss Green a detective?", "a": "No, she isn’t." },
+      { "q": "Is she a librarian?", "a": "Yes, she is." },
+      { "q": "Is the Inspector looking for a book?", "a": "Yes, he is." },
+      { "q": "Is the book good?", "a": "Yes, it is." }
+    ]
+  },
+  {
+    "level": "A1",
+    "unit": "L06",
+    "section": "story",
+    "template_type": "story_pos_neg",
+    "title": "A Good Book – Ex2",
+    "exercise_id": "L06-Ex2",
+    "items": [
+      {
+        "q": "Is Robert Jones a detective or a librarian?",
+        "a": "He is a detective but he is not a librarian."
+      },
+      {
+        "q": "Is Miss Green a detective or a librarian?",
+        "a": "She is a librarian but she is not a detective."
+      },
+      {
+        "q": "Are Robert Jones and Miss Green in the library or at school?",
+        "a": "They are in the library but they are not at school."
+      },
+      {
+        "q": "Is Robert Jones looking for a book or a newspaper?",
+        "a": "He is looking for a book but he is not looking for a newspaper."
+      },
+      {
+        "q": "Is the book a story about animals or a detective story?",
+        "a": "It is a detective story but it is not a story about animals."
+      },
+      {
+        "q": "Is the book good or bad?",
+        "a": "It is good but it is not bad."
+      }
+    ]
+  }
+]

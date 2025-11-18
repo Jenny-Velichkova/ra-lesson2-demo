@@ -1,0 +1,126 @@
+[
+  {
+    "level": "A1",
+    "unit": "L04",
+    "section": "story",
+    "template_type": "story_fill_01",
+    "title": "The Family – Ex1",
+    "exercise_id": "L04-Ex1",
+    "items": [
+      { "q": "Lily is a __________.", "a": "girl" },
+      { "q": "Tom is her __________.", "a": "brother" },
+      { "q": "Their mother is __________.", "a": "kind" },
+      { "q": "Their father is __________.", "a": "tall" },
+      { "q": "Lily and Tom are __________ friends.", "a": "good" },
+      { "q": "Their parents __________ Lily and Tom.", "a": "love" },
+      { "q": "“Are you __________?” their mother asks.", "a": "happy" },
+      { "q": "“Yes, we are __________!” Lily replies.", "a": "happy" }
+    ]
+  },
+  {
+    "level": "A1",
+    "unit": "L04",
+    "section": "story",
+    "template_type": "story_reorder",
+    "title": "The Family – Ex2",
+    "exercise_id": "L04-Ex2",
+    "items": [
+      "\"Are you happy?\" their mother asks.",
+      "Lily and Tom are good friends.",
+      "Their mother is kind.",
+      "Lily is a girl, and Tom is her brother.",
+      "Their father is tall.",
+      "\"Yes, we are happy!\" Lily replies.",
+      "\"Is it sunny today?\" their father asks."
+    ],
+    "correct_order": [
+      "Lily is a girl, and Tom is her brother.",
+      "Lily and Tom are good friends.",
+      "Their mother is kind.",
+      "Their father is tall.",
+      "\"Are you happy?\" their mother asks.",
+      "\"Yes, we are happy!\" Lily replies.",
+      "\"Is it sunny today?\" their father asks."
+    ]
+  },
+  {
+    "level": "A1",
+    "unit": "L04",
+    "section": "story",
+    "template_type": "story_fill_01",
+    "title": "The Family – Ex3",
+    "exercise_id": "L04-Ex3",
+    "items": [
+      { "q": "Am I Lily? (Lily)", "a": "Yes, you are." },
+      { "q": "Is he Tom? (Tom)", "a": "Yes, he is." },
+      { "q": "Is she their mother? (mother)", "a": "Yes, she is." },
+      { "q": "Are they friends? (friends)", "a": "Yes, they are." },
+      { "q": "Are we happy? (happy)", "a": "Yes, we are." },
+      { "q": "Is it sunny today? (sunny)", "a": "Yes, it is." },
+      { "q": "Are you my best friend? (best friend)", "a": "Yes, I am." },
+      { "q": "Is he a good student? (student)", "a": "Yes, he is." },
+      { "q": "Is she my sister? (sister)", "a": "Yes, she is." },
+      { "q": "Are we ready to go? (ready)", "a": "Yes, we are." }
+    ]
+  },
+  {
+    "level": "A1",
+    "unit": "L04",
+    "section": "story",
+    "template_type": "story_rewrite",
+    "title": "The Family – Ex4",
+    "exercise_id": "L04-Ex4",
+    "items": [
+      {
+        "statement": "I am Lily.",
+        "question": "Am I Lily?",
+        "negative": "I am not Lily."
+      },
+      {
+        "statement": "He is Tom.",
+        "question": "Is he Tom?",
+        "negative": "He is not Tom."
+      },
+      {
+        "statement": "She is their mother.",
+        "question": "Is she their mother?",
+        "negative": "She is not their mother."
+      },
+      {
+        "statement": "They are friends.",
+        "question": "Are they friends?",
+        "negative": "They are not friends."
+      },
+      {
+        "statement": "We are happy.",
+        "question": "Are we happy?",
+        "negative": "We are not happy."
+      },
+      {
+        "statement": "It is sunny today.",
+        "question": "Is it sunny today?",
+        "negative": "It is not sunny today."
+      },
+      {
+        "statement": "You are my best friend.",
+        "question": "Are you my best friend?",
+        "negative": "You are not my best friend."
+      },
+      {
+        "statement": "I am a student.",
+        "question": "Am I a student?",
+        "negative": "I am not a student."
+      },
+      {
+        "statement": "He is my brother.",
+        "question": "Is he my brother?",
+        "negative": "He is not my brother."
+      },
+      {
+        "statement": "She is happy.",
+        "question": "Is she happy?",
+        "negative": "She is not happy."
+      }
+    ]
+  }
+]

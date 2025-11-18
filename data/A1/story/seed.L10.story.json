@@ -1,0 +1,76 @@
+[
+  {
+    "level": "A1",
+    "unit": "L10",
+    "section": "story",
+    "template_type": "story_short_answers",
+    "title": "My Next-Door Neighbour – Ex1",
+    "exercise_id": "L10-Ex1",
+    "items": [
+      { "q": "Do Mr. Taylor and the stranger live in Hampstead?", "a": "Yes, they do." },
+      { "q": "Does Mr Taylor know his next-door neighbour?", "a": "No, he doesn't." },
+      { "q": "Does Mr. Taylor live in Pond Street?", "a": "Yes, he does." },
+      { "q": "Does the stranger live in Lake Street?", "a": "No, he doesn't." },
+      { "q": "Does the stranger live in Pond Street too?", "a": "Yes, he does." },
+      { "q": "Are they next-door neighbours?", "a": "Yes, they are." },
+      { "q": "Is the stranger's name Taylor?", "a": "No, it isn't." },
+      { "q": "Is the stranger's name Bennet?", "a": "Yes, it is." }
+    ]
+  },
+  {
+    "level": "A1",
+    "unit": "L10",
+    "section": "story",
+    "template_type": "story_pos_neg",
+    "title": "My Next-Door Neighbour – Ex2",
+    "exercise_id": "L10-Ex2",
+    "items": [
+      {
+        "q": "Is Mr. Taylor on a ship or in an aeroplane?",
+        "a": "Mr. Taylor is on a ship but he is not on an aeroplane."
+      },
+      {
+        "q": "Is the ship going to America or Australia?",
+        "a": "The ship is going to America but the ship is not going to Australia."
+      },
+      {
+        "q": "Is Mr. Taylor talking to a friend or to a stranger?",
+        "a": "Mr. Taylor is talking to a stranger but he is not talking to a friend."
+      },
+      {
+        "q": "Does the stranger live in London or in New York?",
+        "a": "The stranger lives in London but he doesn't live in New York."
+      },
+      {
+        "q": "Do Mr. Taylor and the stranger live in Pond Street or Lake Street?",
+        "a": "They live in Pond Street but they don't live in Lake Street."
+      },
+      {
+        "q": "Is the stranger's name Taylor or Bennet?",
+        "a": "The stranger's name is Bennet but the stranger's name is not Taylor."
+      }
+    ]
+  },
+  {
+    "level": "A1",
+    "unit": "L10",
+    "section": "story",
+    "template_type": "story_full_answers",
+    "title": "My Next-Door Neighbour – Ex3",
+    "exercise_id": "L10-Ex3",
+    "items": [
+      {
+        "q": "What is Mr. Taylor's address?",
+        "a": "Mr Taylor's address is 24 Pond Street, Hampstead."
+      },
+      {
+        "q": "What is the stranger's address?",
+        "a": "The stranger's address is 25 Pond Street, Hampstead."
+      },
+      {
+        "q": "What is the stranger's name?",
+        "a": "The stranger's name is Bennet."
+      }
+    ]
+  }
+]

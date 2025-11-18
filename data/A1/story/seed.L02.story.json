@@ -1,0 +1,70 @@
+[
+  {
+    "level": "A1",
+    "unit": "L02",
+    "section": "story",
+    "template_type": "story_fill_01",
+    "title": "The Box of Toys – Ex1",
+    "exercise_id": "L02-Ex1",
+    "items": [
+      { "q": "Lily has a _______________________________.", "a": "box" },
+      { "q": "Inside the box, Lily finds a ________________________________________.", "a": "ball" },
+      { "q": "Lily says, \"This is my new _________________________________________.\"", "a": "toy" },
+      { "q": "Lily's mother says, \"This is a _________________________________________.\"", "a": "doll" },
+      { "q": "Lily smiles because she has a _________________________________________.", "a": "toy" },
+      { "q": "Lily picks up the _________________________________________.", "a": "doll" },
+      { "q": "\"This is not a _________________________________________\", says Lily.", "a": "ball" },
+      { "q": "Lily opens the _________________________________________.", "a": "box" }
+    ]
+  },
+  {
+    "level": "A1",
+    "unit": "L02",
+    "section": "story",
+    "template_type": "story_reorder",
+    "title": "The Box of Toys – Ex2",
+    "exercise_id": "L02-Ex2",
+    "items": [
+      "\"This is my new toy!\"",
+      "Lily finds a doll.",
+      "Lily opens the box.",
+      "Lily asks, \"What is this?\"",
+      "Lily's mother says, \"This is a doll.\"",
+      "Lily picks up the doll.",
+      "Lily's mother says, \"This is a ball.\""
+    ],
+    "correct_order": [
+      "Lily opens the box.",
+      "Lily asks, \"What is this?\"",
+      "Lily's mother says, \"This is a ball.\"",
+      "Lily asks, \"What is this?\"",
+      "Lily's mother says, \"This is a doll.\"",
+      "Lily picks up the doll.",
+      "Lily says, \"This is my new toy!\""
+    ]
+  },
+  {
+    "level": "A1",
+    "unit": "L02",
+    "section": "story",
+    "template_type": "story_fill_01",
+    "title": "The Box of Toys – Ex3",
+    "exercise_id": "L02-Ex3",
+    "items": [
+      { "q": "Is this a box? (toy)", "a": "No, it isn’t. This is a toy." },
+      { "q": "Is this a ball? (ball)", "a": "Yes, it is. This is a ball." },
+      { "q": "Is this a doll? (ring)", "a": "No, it isn’t. This is a ring." },
+      { "q": "Is this a car? (bike)", "a": "No, it isn’t. This is a bike." },
+      { "q": "Is this a chair? (chair)", "a": "Yes, it is. This is a chair." },
+      { "q": "Is this milk? (water)", "a": "No, it isn’t. This is water." },
+      { "q": "Is this bread? (bread)", "a": "Yes, it is. This is bread." },
+      { "q": "Is this a cake? (cake)", "a": "Yes, it is. This is a cake." },
+      { "q": "Is this a book? (apple)", "a": "No, it isn’t. This is an apple." },
+      { "q": "Is this a toy? (doll)", "a": "No, it isn’t. This is a doll." },
+      { "q": "Is this a bike? (bike)", "a": "Yes, it is. This is a bike." },
+      { "q": "Is this an apple? (ball)", "a": "No, it isn’t. This is a ball." },
+      { "q": "Is this water? (water)", "a": "Yes, it is. This is water." },
+      { "q": "Is this a ring? (chair)", "a": "No, it isn’t. This is a chair." }
+    ]
+  }
+]

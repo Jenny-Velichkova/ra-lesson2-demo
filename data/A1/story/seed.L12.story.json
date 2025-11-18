@@ -1,0 +1,94 @@
+[
+  {
+    "level": "A1",
+    "unit": "L12",
+    "section": "story",
+    "template_type": "story_short_answers",
+    "title": "A Modern Picture – Ex1",
+    "exercise_id": "L12-Ex1",
+    "items": [
+      { "q": "Is Sally five years old?", "a": "Yes, she is." },
+      { "q": "Is she ten years old?", "a": "No, she isn't." },
+      { "q": "Does she go to school every day?", "a": "Yes, she does." },
+      { "q": "Does Sally paint pictures at school?", "a": "Yes, she does." },
+      { "q": "Does Sally leave the pictures at school?", "a": "No, she doesn't." },
+      { "q": "Does she bring them home?", "a": "Yes, she does." },
+      { "q": "Does she show the pictures to her mother?", "a": "Yes, she does." },
+      { "q": "Can her mother understand them?", "a": "No, she can't." },
+      { "q": "Can Sally understand her pictures?", "a": "Yes, she can." },
+      { "q": "Can mother see a house in Sally's picture?", "a": "Yes, she can." },
+      { "q": "Can she see lines in the picture?", "a": "Yes, she can." },
+      { "q": "Are the lines trees?", "a": "Yes, they are." },
+      { "q": "Is the tree in the sky?", "a": "Yes, it is." },
+      { "q": "Is Sally's mother in the picture too?", "a": "Yes, she is." }
+    ]
+  },
+  {
+    "level": "A1",
+    "unit": "L12",
+    "section": "story",
+    "template_type": "story_pos_neg",
+    "title": "A Modern Picture – Ex2",
+    "exercise_id": "L12-Ex2",
+    "items": [
+      {
+        "q": "Is Sally five or six?",
+        "a": "She is five but she is not six."
+      },
+      {
+        "q": "Does she go to school or does she stay at home?",
+        "a": "She goes to school but she doesn't stay at home."
+      },
+      {
+        "q": "Does she paint pictures at school or does she read books?",
+        "a": "She paints pictures at school but she doesn't read books."
+      },
+      {
+        "q": "Does Sally bring the pictures home or does she leave them at school?",
+        "a": "She brings them home but she doesn't leave them at school."
+      },
+      {
+        "q": "Is Sally's mother looking at a picture or at a book?",
+        "a": "She is looking at a picture but she is not looking at a book."
+      },
+      {
+        "q": "Are the lines in the picture green or red?",
+        "a": "They are green but they are not red."
+      },
+      {
+        "q": "Is the tree in the sky or near the house?",
+        "a": "It is in the sky but it is not near the house."
+      }
+    ]
+  },
+  {
+    "level": "A1",
+    "unit": "L12",
+    "section": "story",
+    "template_type": "story_full_answers",
+    "title": "A Modern Picture – Ex3",
+    "exercise_id": "L12-Ex3",
+    "items": [
+      {
+        "q": "What does Sally do at school?",
+        "a": "She paints pictures."
+      },
+      {
+        "q": "What does she do with the pictures?",
+        "a": "She brings them home."
+      },
+      {
+        "q": "What does she show her mother?",
+        "a": "She shows her mother the pictures."
+      },
+      {
+        "q": "What can her mother see in the picture?",
+        "a": "She can see trees."
+      },
+      {
+        "q": "What colour are the trees in Sally's picture?",
+        "a": "They are green."
+      }
+    ]
+  }
+]

@@ -1,0 +1,111 @@
+[
+  {
+    "level": "A1",
+    "unit": "L05",
+    "section": "story",
+    "template_type": "story_fill_01",
+    "title": "The Classroom – Ex1",
+    "exercise_id": "L05-Ex1",
+    "items": [
+      { "q": "Lily and Tom are in the __________.", "a": "classroom" },
+      { "q": "The classroom is __________ and nice.", "a": "bright" },
+      { "q": "There is a __________ on the wall.", "a": "whiteboard" },
+      { "q": "The __________ and chairs are in front of the whiteboard.", "a": "desks" },
+      { "q": "Lily is at the __________.", "a": "desk" },
+      { "q": "Tom is __________ to Lily.", "a": "next" },
+      { "q": "The __________ is on the book.", "a": "pencil" },
+      { "q": "The __________ is on the desk.", "a": "book" },
+      { "q": "The teacher is at the __________.", "a": "whiteboard" },
+      { "q": "Lily says, \"We are here, __________!\"", "a": "Mrs. Smith" }
+    ]
+  },
+  {
+    "level": "A1",
+    "unit": "L05",
+    "section": "story",
+    "template_type": "story_reorder",
+    "title": "The Classroom – Ex2",
+    "exercise_id": "L05-Ex2",
+    "items": [
+      "\"Where are my students?\" she asks with a smile.",
+      "Lily says, \"We are here, Mrs. Smith!\"",
+      "The classroom is bright and nice.",
+      "The desks and chairs are in front of the whiteboard.",
+      "Lily is at the desk, and Tom is next to her.",
+      "The pencil is on the book, and the book is on the desk.",
+      "The teacher is at the whiteboard."
+    ],
+    "correct_order": [
+      "The classroom is bright and nice.",
+      "The desks and chairs are in front of the whiteboard.",
+      "Lily is at the desk, and Tom is next to her.",
+      "The pencil is on the book, and the book is on the desk.",
+      "The teacher is at the whiteboard.",
+      "\"Where are my students?\" she asks with a smile.",
+      "Lily says, \"We are here, Mrs. Smith!\""
+    ]
+  },
+  {
+    "level": "A1",
+    "unit": "L05",
+    "section": "story",
+    "template_type": "story_rewrite",
+    "title": "The Classroom – Ex3",
+    "exercise_id": "L05-Ex3",
+    "items": [
+      {
+        "statement": "The classroom is bright.",
+        "question": "Is the classroom bright?",
+        "negative": "The classroom is not bright."
+      },
+      {
+        "statement": "The whiteboard is on the wall.",
+        "question": "Is the whiteboard on the wall?",
+        "negative": "The whiteboard is not on the wall."
+      },
+      {
+        "statement": "The desks are in the classroom.",
+        "question": "Are the desks in the classroom?",
+        "negative": "The desks are not in the classroom."
+      },
+      {
+        "statement": "The teacher is at the whiteboard.",
+        "question": "Is the teacher at the whiteboard?",
+        "negative": "The teacher is not at the whiteboard."
+      },
+      {
+        "statement": "The book is on the desk.",
+        "question": "Is the book on the desk?",
+        "negative": "The book is not on the desk."
+      },
+      {
+        "statement": "The pencil is on the book.",
+        "question": "Is the pencil on the book?",
+        "negative": "The pencil is not on the book."
+      },
+      {
+        "statement": "The students are in the classroom.",
+        "question": "Are the students in the classroom?",
+        "negative": "The students are not in the classroom."
+      }
+    ]
+  },
+  {
+    "level": "A1",
+    "unit": "L05",
+    "section": "story",
+    "template_type": "story_fill_01",
+    "title": "The Classroom – Ex4",
+    "exercise_id": "L05-Ex4",
+    "items": [
+      { "q": "Where is the classroom?", "a": "The classroom is in the school." },
+      { "q": "Where is the whiteboard?", "a": "The whiteboard is on the wall." },
+      { "q": "Where are the desks?", "a": "The desks are in the classroom." },
+      { "q": "Where is the teacher?", "a": "The teacher is at the whiteboard." },
+      { "q": "Where is the book?", "a": "The book is on the desk." },
+      { "q": "Where are the students?", "a": "The students are at the desks." },
+      { "q": "Where is the pencil?", "a": "The pencil is on the book." },
+      { "q": "Where is Tom?", "a": "Tom is next to Lily." }
+    ]
+  }
+]

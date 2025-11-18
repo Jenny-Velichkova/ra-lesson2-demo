@@ -1,0 +1,68 @@
+[
+  {
+    "level": "A1",
+    "unit": "L03",
+    "section": "story",
+    "template_type": "story_fill_01",
+    "title": "The Box of Toys – Ex1",
+    "exercise_id": "L03-Ex1",
+    "items": [
+      { "q": "Lily has three_________________.", "a": "toys" },
+      { "q": "Lily asks, \"What are_________________?\"", "a": "these" },
+      { "q": "Her mother replies, \"These are_________________.\"", "a": "toys" },
+      { "q": "Lily picks up one of the_________________.", "a": "toys" },
+      { "q": "Lily says, \"These are not_________________.\"", "a": "cars" },
+      { "q": "Lily smiles and says, \"These are my new_________________.\"", "a": "toys" }
+    ]
+  },
+  {
+    "level": "A1",
+    "unit": "L03",
+    "section": "story",
+    "template_type": "story_reorder",
+    "title": "The Box of Toys – Ex2",
+    "exercise_id": "L03-Ex2",
+    "items": [
+      "\"These are my new toys!\"",
+      "Lily finds a doll.",
+      "Lily opens the box.",
+      "Lily asks, \"What is this?\"",
+      "Lily's mother says, \"This is a doll.\"",
+      "Lily points to the last toy.",
+      "Lily's mother says, \"This is a ball.\""
+    ],
+    "correct_order": [
+      "Lily opens the box.",
+      "Lily asks, \"What is this?\"",
+      "Lily's mother says, \"This is a ball.\"",
+      "Lily finds a doll.",
+      "Lily asks, \"What is this?\"",
+      "Lily's mother says, \"This is a doll.\"",
+      "Lily says, \"These are my new toys!\""
+    ]
+  },
+  {
+    "level": "A1",
+    "unit": "L03",
+    "section": "story",
+    "template_type": "story_fill_01",
+    "title": "The Box of Toys – Ex3",
+    "exercise_id": "L03-Ex3",
+    "items": [
+      { "q": "Are these toys? (toys)", "a": "Yes, they are. These are toys." },
+      { "q": "Are these cars? (toys)", "a": "No, they aren’t. These are toys." },
+      { "q": "Are these dolls? (balls)", "a": "No, they aren’t. These are balls." },
+      { "q": "Are these bikes? (cars)", "a": "No, they aren’t. These are cars." },
+      { "q": "Are these chairs? (chairs)", "a": "Yes, they are. These are chairs." },
+      { "q": "Are these apples? (dolls)", "a": "No, they aren’t. These are dolls." },
+      { "q": "Are these cakes? (cakes)", "a": "Yes, they are. These are cakes." },
+      { "q": "Are these rings? (balls)", "a": "No, they aren’t. These are balls." },
+      { "q": "Are these bikes? (bikes)", "a": "Yes, they are. These are bikes." },
+      { "q": "Are these books? (chairs)", "a": "No, they aren’t. These are chairs." },
+      { "q": "Are these apples? (toys)", "a": "No, they aren’t. These are toys." },
+      { "q": "Are these balls? (balls)", "a": "Yes, they are. These are balls." },
+      { "q": "Are these toys? (toys)", "a": "Yes, they are. These are toys." },
+      { "q": "Are these rings? (dolls)", "a": "No, they aren’t. These are dolls." }
+    ]
+  }
+]

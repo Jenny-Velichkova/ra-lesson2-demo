@@ -1,0 +1,90 @@
+[
+  {
+    "level": "A1",
+    "unit": "L11",
+    "section": "story",
+    "template_type": "story_short_answers",
+    "title": "In the Park – Ex1",
+    "exercise_id": "L11-Ex1",
+    "items": [
+      { "q": "Are Tommy and Alice in the park?", "a": "Yes, they are." },
+      { "q": "Are they with their mother?", "a": "Yes, they are." },
+      { "q": "Are the children with their father?", "a": "No, they aren't." },
+      { "q": "Are the children tired?", "a": "Yes, they are." },
+      { "q": "Is their mother tired too?", "a": "Yes, she is." },
+      { "q": "Can they sit on the grass?", "a": "No, they can't." },
+      { "q": "Is the grass wet?", "a": "Yes, it is." },
+      { "q": "Can the children sit on the bench?", "a": "No, they can't." },
+      { "q": "Is the bench wet?", "a": "Yes, it is." },
+      { "q": "Is it raining?", "a": "No, it isn't." },
+      { "q": "Can they see a notice on the bench?", "a": "Yes, they can." },
+      { "q": "Can Alice read the notice?", "a": "Yes, she can." },
+      { "q": "Can Tommy read it?", "a": "Yes, he can." },
+      { "q": "Does the notice say 'Wet Paint'?", "a": "Yes, it does." }
+    ]
+  },
+  {
+    "level": "A1",
+    "unit": "L11",
+    "section": "story",
+    "template_type": "story_pos_neg",
+    "title": "In the Park – Ex2",
+    "exercise_id": "L11-Ex2",
+    "items": [
+      {
+        "q": "Are the children with their mother or with their father?",
+        "a": "They are with their mother but they are not with their father."
+      },
+      {
+        "q": "Are they walking or running?",
+        "a": "They are walking but they are not running."
+      },
+      {
+        "q": "Can the children see a bench or a pond?",
+        "a": "They can see a bench but they can't see a pond."
+      },
+      {
+        "q": "Is the bench near a tree or near a pond?",
+        "a": "The bench is near a tree but it is not near a pond."
+      },
+      {
+        "q": "Is the notice on the bench or on the grass?",
+        "a": "The notice is on the bench but it is not on the grass."
+      },
+      {
+        "q": "Does the notice say 'Wet Paint' or 'Keep Off the Grass'?",
+        "a": "The notice says 'Wet Paint' but it does not say 'Keep off the grass'."
+      }
+    ]
+  },
+  {
+    "level": "A1",
+    "unit": "L11",
+    "section": "story",
+    "template_type": "story_full_answers",
+    "title": "In the Park – Ex3",
+    "exercise_id": "L11-Ex3",
+    "items": [
+      {
+        "q": "What are the children's names?",
+        "a": "The children's names are Alice and Tommy."
+      },
+      {
+        "q": "What are the children doing?",
+        "a": "The children are walking in the park."
+      },
+      {
+        "q": "What can Alice see?",
+        "a": "Alice can see a bench near a tree."
+      },
+      {
+        "q": "What is on the bench?",
+        "a": "There is a notice on the bench."
+      },
+      {
+        "q": "What does the notice say?",
+        "a": "The notice says 'Wet Paint'."
+      }
+    ]
+  }
+]

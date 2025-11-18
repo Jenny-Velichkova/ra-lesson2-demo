@@ -1,0 +1,67 @@
+[
+  {
+    "level": "A1",
+    "unit": "L08",
+    "section": "story",
+    "template_type": "story_short_answers",
+    "title": "He is not an Artist – Ex1",
+    "exercise_id": "L08-Ex1",
+    "items": [
+      { "q": "Is Mrs. Robinson in her garden?", "a": "Yes, she is." },
+      { "q": "Is she in her kitchen?", "a": "No, she isn't." },
+      { "q": "Is Mrs. Robinson standing near the fence?", "a": "Yes, she is." },
+      { "q": "Is Mrs. Robinson talking to Mrs. Price?", "a": "Yes, she is." },
+      { "q": "Is Mrs. Robinson talking to her husband?", "a": "No, she isn't." },
+      { "q": "Is Mr. Price using the ladder now?", "a": "Yes, he is." },
+      { "q": "Is Mr. Price upstairs?", "a": "Yes, he is." },
+      { "q": "Is he painting?", "a": "Yes, he is." },
+      { "q": "Is this his hobby?", "a": "No, it isn't." },
+      { "q": "Is Mr. Price an artist?", "a": "No, he isn't." },
+      { "q": "Is Mr. Price painting the bathroom?", "a": "Yes, he is." }
+    ]
+  },
+  {
+    "level": "A1",
+    "unit": "L08",
+    "section": "story",
+    "template_type": "story_pos_neg",
+    "title": "He is not an Artist – Ex2",
+    "exercise_id": "L08-Ex2",
+    "items": [
+      {
+        "q": "Is Mrs. Robinson in the kitchen or in the garden?",
+        "a": "She is in the garden but she is not in the kitchen."
+      },
+      {
+        "q": "Is Mrs. Robinson talking to Mrs. Price or to her husband?",
+        "a": "She is talking to Mrs. Price but she is not talking to her husband."
+      },
+      {
+        "q": "Is Mr. Price upstairs, or is he in the garden?",
+        "a": "He is upstairs but he is not in the garden."
+      },
+      {
+        "q": "Is he painting a picture, or is he painting the bathroom?",
+        "a": "He is painting the bathroom but he is not painting a picture."
+      }
+    ]
+  },
+  {
+    "level": "A1",
+    "unit": "L08",
+    "section": "story",
+    "template_type": "story_full_answers",
+    "title": "He is not an Artist – Ex3",
+    "exercise_id": "L08-Ex3",
+    "items": [
+      {
+        "q": "What are Mrs. Robinson and Mrs. Price doing?",
+        "a": "They are talking."
+      },
+      {
+        "q": "What is Mr. Price doing?",
+        "a": "He is painting the bathroom."
+      }
+    ]
+  }
+]

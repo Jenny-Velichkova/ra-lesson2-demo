@@ -1,0 +1,106 @@
+[
+  {
+    "level": "A1",
+    "unit": "L15",
+    "section": "story",
+    "template_type": "story_short_answers",
+    "title": "Early One Morning – Ex1",
+    "exercise_id": "L15-Ex1",
+    "items": [
+      { "q": "Did they get up very early last Sunday?", "a": "Yes, they did." },
+      { "q": "Did father start the car?", "a": "No, he didn't." },
+      { "q": "Did the car move?", "a": "No, the car didn't move." },
+      { "q": "Isn't there any petrol in the tank?", "a": "Yes, there isn't any petrol in the tank." },
+      { "q": "Can Jimmy go to the garage?", "a": "No, he can't." },
+      { "q": "Is the garage shut?", "a": "Yes, it is." },
+      { "q": "Will father and mother stay in the car?", "a": "No, they won't." },
+      { "q": "Won't the children stay in the car?", "a": "Yes, they will." },
+      { "q": "Did the children go to sleep?", "a": "No, they didn't." }
+    ]
+  },
+  {
+    "level": "A1",
+    "unit": "L15",
+    "section": "story",
+    "template_type": "story_pos_neg",
+    "title": "Early One Morning – Ex2",
+    "exercise_id": "L15-Ex2",
+    "items": [
+      {
+        "q": "Do they go to the country on Sundays or do they stay at home?",
+        "a": "They go to the country on Sundays but they don't stay at home."
+      },
+      {
+        "q": "Did they get up early or late last Sunday?",
+        "a": "They got up early, but they didn't get up late."
+      },
+      {
+        "q": "Were mother and father ready at 6:30 or at 10:00 o'clock?",
+        "a": "They were ready at 6:30 but they weren't ready at 10 o'clock."
+      },
+      {
+        "q": "Did father start the engine or did Jimmy start it?",
+        "a": "Father started the engine but Jimmy didn't start it."
+      },
+      {
+        "q": "Is there any petrol in the tank or is the tank empty?",
+        "a": "The tank is empty and there isn't any petrol."
+      },
+      {
+        "q": "Will Jimmy get some petrol, or will he stay in the car?",
+        "a": "Jimmy will get some petrol but he will not stay in the car."
+      },
+      {
+        "q": "Is the garage open or shut?",
+        "a": "The garage is shut but it is not open."
+      },
+      {
+        "q": "Did mother and father go back to bed, or did they stay in the car?",
+        "a": "Mother and father went back to bed, but they didn't stay in the car."
+      },
+      {
+        "q": "Did father wake up the children or did mother wake up the children?",
+        "a": "Father woke up the children but the mother didn't wake up the children."
+      }
+    ]
+  },
+  {
+    "level": "A1",
+    "unit": "L15",
+    "section": "story",
+    "template_type": "story_full_answers",
+    "title": "Early One Morning – Ex3",
+    "exercise_id": "L15-Ex3",
+    "items": [
+      {
+        "q": "When does father take the children to the country?",
+        "a": "Father takes the children to the country on Sundays."
+      },
+      {
+        "q": "At what time were mother and father ready?",
+        "a": "Mother and father were ready at 6:30."
+      },
+      {
+        "q": "Whose car was it?",
+        "a": "It was my father's car."
+      },
+      {
+        "q": "Where did father sit?",
+        "a": "Father sat behind the wheel."
+      },
+      {
+        "q": "Why did mother and father go back to bed?",
+        "a": "They went back to bed because the car wouldn't start and the garage was shut."
+      },
+      {
+        "q": "What did the children do?",
+        "a": "Jimmy and I stayed in the car and didn't go back to sleep."
+      },
+      {
+        "q": "When did father knock at the window of the car?",
+        "a": "Father knocked at the window of the car at nine o'clock."
+      }
+    ]
+  }
+]
+     

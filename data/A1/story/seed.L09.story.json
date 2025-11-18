@@ -1,0 +1,81 @@
+[
+  {
+    "level": "A1",
+    "unit": "L09",
+    "section": "story",
+    "template_type": "story_short_answers",
+    "title": "In a Department Store – Ex1",
+    "exercise_id": "L09-Ex1",
+    "items": [
+      { "q": "Is Mrs Jenkins in a department store?", "a": "Yes, she is." },
+      { "q": "Is she buying a coat?", "a": "Yes, she is." },
+      { "q": "Is she buying a toothbrush?", "a": "No, she isn't." },
+      { "q": "Is Mrs Jenkins standing near the counter?", "a": "Yes, she is." },
+      { "q": "Is she waiting for the shop assistant?", "a": "Yes, she is." },
+      { "q": "Is the lady fat?", "a": "Yes, she is." },
+      { "q": "Are Mrs Jenkins and the fat lady waiting for the shop assistant?", "a": "Yes, they are." },
+      { "q": "Is Mrs Jenkins serving the fat lady?", "a": "No, she isn't." },
+      { "q": "Does the fat lady want a coat?", "a": "Yes, she does." },
+      { "q": "Does she want a toothbrush?", "a": "No, she doesn't." },
+      { "q": "Does Mrs Jenkins want a coat too?", "a": "Yes, she does." },
+      { "q": "Is Mrs Jenkins a shop assistant?", "a": "No, she isn't." },
+      { "q": "Is Mrs Jenkins a customer?", "a": "Yes, she is." }
+    ]
+  },
+  {
+    "level": "A1",
+    "unit": "L09",
+    "section": "story",
+    "template_type": "story_pos_neg",
+    "title": "In a Department Store – Ex2",
+    "exercise_id": "L09-Ex2",
+    "items": [
+      {
+        "q": "Is Mrs Jenkins buying a coat or a toothbrush?",
+        "a": "She is buying a coat but she is not buying a toothbrush."
+      },
+      {
+        "q": "Is she standing near the counter or near the door?",
+        "a": "She is standing near the counter but she is not standing near the door."
+      },
+      {
+        "q": "Is a lady standing near the counter or near the door?",
+        "a": "She is standing near the counter but she is not standing near the door."
+      },
+      {
+        "q": "Is the lady fat or thin?",
+        "a": "She is fat but she is not thin."
+      },
+      {
+        "q": "Is Mrs Jenkins a customer or a shop assistant?",
+        "a": "She is a customer but she is not a shop assistant."
+      }
+    ]
+  },
+  {
+    "level": "A1",
+    "unit": "L09",
+    "section": "story",
+    "template_type": "story_full_answers",
+    "title": "In a Department Store – Ex3",
+    "exercise_id": "L09-Ex3",
+    "items": [
+      {
+        "q": "What is Mrs Jenkins buying?",
+        "a": "She is going to buy a coat."
+      },
+      {
+        "q": "What is the fat lady doing?",
+        "a": "She is talking to Mrs Jenkins."
+      },
+      {
+        "q": "What do Mrs Jenkins and the fat lady want?",
+        "a": "They want to buy a coat."
+      },
+      {
+        "q": "What is Mrs Jenkins?",
+        "a": "She is a customer."
+      }
+    ]
+  }
+]
